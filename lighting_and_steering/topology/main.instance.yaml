@@ -1,0 +1,70 @@
+schema: remotive-topology-instance:0.6
+
+name: lighting-and-steering
+
+includes:
+  - ./tester.instance.yaml
+  - ./jupyter.instance.yaml
+
+platform:
+  includes:
+    - ./topology.platform.yaml
+
+ecus:
+  BCM:
+    models:
+      bcm:
+        type: container
+        container:
+          build:
+            dockerfile: ../Dockerfile
+          volumes:
+            - ../ecus/bcm:/app/bcm
+          working_dir: /app
+          command: python -m bcm
+
+  DIM:
+    channels:
+      BodyCan0:
+
+  FLCM:
+    channels:
+      BodyCan0:
+
+  RLCM:
+    channels:
+      BodyCan0:
+
+  SCCM:
+    mock:
+      channels:
+        DriverCan0:
+
+  GWM:
+    models:
+      gwm:
+        type: container
+        container:
+          build:
+            dockerfile: ../Dockerfile
+          volumes:
+            - ../ecus/gwm:/app/gwm
+          working_dir: /app
+          command: python -m gwm
+
+  IHU:
+    models:
+      ihu:
+        type: container
+        container:
+          build:
+            dockerfile: ../Dockerfile
+          volumes:
+            - ../ecus/ihu:/app/ihu
+          working_dir: /app
+          command: python -m ihu
+
+settings:
+  remotivebroker:
+    version: v1.10.3
+    license_file: ../../REMOTIVEBROKER_LICENSE

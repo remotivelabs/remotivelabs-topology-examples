@@ -1,0 +1,48 @@
+BO_ 1 E2eAutosar01A_Frame: 3 ECUA
+ SG_ CRC : 7|8@0+ (1.0, 0.0) [0.0|255.0] "NoUnit" ECUB
+ SG_ Counter : 15|8@0+ (1.0, 0.0) [0.0|15.0] "NoUnit" ECUB
+ SG_ MyNumber : 23|8@0+ (1.0, 0.0) [0.0|255.0] "NoUnit" ECUB, ECUC
+
+BO_ 2 E2eAutosar01A_Frame_4bit: 3 ECUA
+ SG_ CRC_4bit : 7|8@0+ (1.0, 0.0) [0.0|255.0] "NoUnit" ECUB
+ SG_ Counter_4bit : 11|4@0+ (1.0, 0.0) [0.0|15.0] "NoUnit" ECUB
+ SG_ MyOtherNumber : 23|8@0+ (1.0, 0.0) [0.0|255.0] "NoUnit" ECUB
+
+BO_ 3 E2eAutosar01A_Ranged: 5 ECUB
+ SG_ Range_Before : 7|8@0+ (1.0, 0.0) [0.0|255.0] "NoUnit" ECUA, ECUC
+ SG_ Range_CRC : 15|8@0+ (1.0, 0.0) [0.0|255.0] "NoUnit" ECUA
+ SG_ Range_Counter : 19|4@0+ (1.0, 0.0) [0.0|15.0] "NoUnit" ECUA
+ SG_ Range_Number : 31|8@0+ (1.0, 0.0) [0.0|255.0] "NoUnit" ECUA
+ SG_ Range_After : 39|8@0+ (1.0, 0.0) [0.0|255.0] "NoUnit" ECUA
+
+BO_ 4 E2eAutosar01A_ThreeGroups: 7 ECUC
+ SG_ Group1_CRC : 7|8@0+ (1.0, 0.0) [0.0|255.0] "NoUnit" ECUA
+ SG_ Group1_Counter : 15|8@0+ (1.0, 0.0) [0.0|255.0] "NoUnit" ECUA
+ SG_ Group1_Number : 23|8@0+ (1.0, 0.0) [0.0|255.0] "NoUnit" ECUA
+ SG_ Group2_NumberA : 31|8@0+ (1.0, 0.0) [0.0|255.0] "NoUnit" ECUB
+ SG_ Group2_NumberB : 39|8@0+ (1.0, 0.0) [0.0|255.0] "NoUnit" ECUB
+ SG_ Group3_CRC : 47|8@0+ (1.0, 0.0) [0.0|255.0] "NoUnit" ECUB
+ SG_ Group3_Counter : 55|8@0+ (1.0, 0.0) [0.0|255.0] "NoUnit" ECUB
+
+BO_ 5 FrameWithNoCycleTime: 2 ECUB
+ SG_ Number1 : 7|8@0+ (1.0, 0.0) [0.0|255.0] "NoUnit" ECUA
+ SG_ Number2 : 7|8@0+ (1.0, 0.0) [0.0|255.0] "NoUnit" ECUA
+
+BO_ 123 SomeFrame_10ms : 64 ECUA
+ SG_ SomeSignal417 : 417|1@0+ (1,0) [0|1] "" ECUB, ECUC
+ SG_ SomeSignal417_UB : 416|1@0+ (1,0) [0|1] "" ECUB, ECUC
+ SG_ SomeSts : 91|2@0+ (1,0) [0|3] "" ECUB
+ SG_ SomeSts_UB : 92|1@0+ (1,0) [0|1] "" ECUB, ECUC
+ SG_ SomeCounter : 7|8@0+ (1,0) [0|3] "" ECUB
+
+BO_ 134 SomeOtherFrame_10ms : 48 ECUA
+ SG_ FeatureA_UB : 7|1@0+ (1,0) [0|1] "" ECUB
+
+BA_ "GenMsgCycleTime" BO_ 1 1000.000;
+BA_ "GenMsgCycleTime" BO_ 2 5.000;
+BA_ "GenMsgCycleTime" BO_ 3 2000.000;
+BA_ "GenMsgCycleTime" BO_ 4 3000.000;
+BA_ "GenMsgCycleTime" BO_ 123 50.000;
+BA_ "GenMsgCycleTime" BO_ 134 50.000;
+
+BA_DEF_ BO_ "GenMsgCycleTime" FLOAT 0 300000; // [ms]

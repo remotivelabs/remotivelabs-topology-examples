@@ -1,0 +1,14 @@
+schema: remotive-topology-instance:0.6
+
+ecus:
+  ecu_b:
+    models:
+      ecub:
+        type: container
+        container:
+          build:
+            dockerfile: ../Dockerfile
+          volumes:
+            - ../ecus/ecu_b:/app/ecu_b
+          working_dir: /app
+          command: python -m ecu_b

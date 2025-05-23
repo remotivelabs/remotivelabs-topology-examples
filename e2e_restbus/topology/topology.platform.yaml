@@ -1,0 +1,16 @@
+schema: remotive-topology-platform:0.6
+
+channels:
+  Can0:
+    type: can
+    database: ../databases/test.dbc
+    can_physical_channel_name: Can0
+
+ecus:
+  ECUA:
+    channels:
+      Can0:
+
+  ECUB:
+    channels:
+      Can0:

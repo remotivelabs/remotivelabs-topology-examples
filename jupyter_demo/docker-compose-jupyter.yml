@@ -1,0 +1,19 @@
+services:
+  jupyter:
+    tty: true
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./jupyter/work:/work
+    working_dir: /work
+    environment:
+      - REMOTIVE_BROKER_URL=${REMOTIVE_BROKER_URL}
+    networks:
+      - docker_local
+
+networks:
+  docker_local:
+    driver: bridge

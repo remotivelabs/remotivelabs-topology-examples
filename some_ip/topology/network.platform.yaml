@@ -1,0 +1,30 @@
+schema: remotive-topology-platform:0.6
+
+channels:
+  ETH:
+    type: ethernet
+    database: ../db/someip.fibex.xml
+    subnet: 10.0.2.0/24
+    endpoints:
+      udp/10.0.2.15:30509:
+        provided_service_instances:
+          - MyTestService
+      udp/10.0.2.12:2001:
+        consumed_service_instances:
+          - MyTestService
+
+
+ecus:
+  ecu_a:
+    channels:
+      ETH:
+        config:
+          type: ethernet
+          host: 10.0.2.15
+
+  ecu_b:
+    channels:
+      ETH:
+        config:
+          type: ethernet
+          host: 10.0.2.12

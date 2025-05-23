@@ -1,0 +1,10 @@
+schema: remotive-topology-instance:0.6
+
+includes:
+  - ./bcm.instance.yaml
+  - ./settings.instance.yaml
+  - ./tester.instance.yaml
+
+platform:
+  includes:
+    - ./topology.platform.yaml

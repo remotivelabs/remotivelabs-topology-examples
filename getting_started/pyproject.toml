@@ -1,0 +1,28 @@
+[project]
+name = "remotivelabs-topology-getting-started-example"
+description = "RemotiveTopology Getting Started example"
+version = "1.0.0"
+readme = "README.md"
+license-files = ["LICENSE"]
+
+requires-python = ">=3.9,<4.0"
+
+dependencies = [
+  "pytest==8.3.5",
+  "pytest-asyncio==1.0.0",
+  "pytest-timeout==2.4.0",
+  "remotivelabs-topology~=0.9.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["ecus/"]
+include = ["bcm"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+consider_namespace_packages = true
+
+[build-system]
+requires = ["setuptools>=80.0.0", "wheel"]
+build-backend = "setuptools.build_meta"

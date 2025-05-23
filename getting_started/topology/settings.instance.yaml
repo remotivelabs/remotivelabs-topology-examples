@@ -1,0 +1,6 @@
+schema: remotive-topology-instance:0.6
+
+settings:
+  remotivebroker:
+    version: v1.10.3
+    license_file: ../../REMOTIVEBROKER_LICENSE

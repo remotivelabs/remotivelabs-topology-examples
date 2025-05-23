@@ -1,0 +1,60 @@
+schema: remotive-topology-platform:0.6
+channels:
+  DriverCan0:
+    database: ../databases/driver_can.dbc
+    type: can
+    can_physical_channel_name: DriverCan0
+
+  BodyCan0:
+    database: ../databases/body_can.dbc
+    type: can
+    can_physical_channel_name: BodyCan0
+
+  SOMEIP:
+    database: ../databases/someip.fibex.xml
+    type: ethernet
+    subnet: 172.31.0.0/24
+    endpoints:
+      udp/172.31.0.18:16000:
+        provided_service_instances:
+          - TurnlightIndicator
+      udp/172.31.0.12:16000:
+        consumed_service_instances:
+          - TurnlightIndicator
+
+ecus:
+  BCM:
+    channels:
+      DriverCan0:
+      BodyCan0:
+
+  DIM:
+    channels:
+      BodyCan0:
+
+  FLCM:
+    channels:
+      BodyCan0:
+
+  RLCM:
+    channels:
+      BodyCan0:
+
+  SCCM:
+    channels:
+      DriverCan0:
+
+  GWM:
+    channels:
+      BodyCan0:
+      SOMEIP:
+        config:
+          type: ethernet
+          host: 172.31.0.18
+
+  IHU:
+    channels:
+      SOMEIP:
+        config:
+          type: ethernet
+          host: 172.31.0.12

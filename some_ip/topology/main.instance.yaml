@@ -1,0 +1,22 @@
+schema: remotive-topology-instance:0.6
+name: some_ip
+
+includes:
+  - ./settings.instance.yaml
+  - ./python-ecua.instance.yaml
+  - ./python-ecub.instance.yaml
+
+platform:
+  includes:
+    - ./network.platform.yaml
+
+containers:
+  tester:
+    build:
+      dockerfile: ../Dockerfile
+    profiles:
+      - tester
+    volumes:
+      - ../test:/app/test
+    working_dir: /app
+    command: "pytest --broker_url=http://topology-broker.com:50051 -s -vv"

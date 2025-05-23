@@ -1,0 +1,17 @@
+{
+  "chains": [
+    {
+      "type": "virtual",
+      "namespace": "virt"
+    },
+    {
+      "database" : "can/test.dbc",
+      "namespace" : "vcan0",
+      "server_port" : 5001,
+      "target_host" : "127.0.0.1",
+      "target_port" : 2000,
+      "type" : "udp",
+      "short_names": false
+    }
+  ]
+}

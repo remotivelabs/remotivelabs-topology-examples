@@ -1,0 +1,12 @@
+schema: remotive-topology-instance:0.6
+
+containers:
+  tester:
+    profiles:
+      - tester
+    build:
+      dockerfile: ../Dockerfile
+    volumes:
+      - ../testsuite:/app
+    working_dir: /app
+    command: "pytest"
