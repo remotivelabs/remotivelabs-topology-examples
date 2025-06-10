@@ -53,7 +53,7 @@ RemotiveTopology now understands that there exists 4 other ECUs `DIM`, `FLCM`, `
 Since the DBC files doesn't include information about what the CAN channels are called you need to add additional information using a RemotiveTopology platform.yaml file:
 
 ```yaml
-schema: remotive-topology-platform:0.6
+schema: remotive-topology-platform:0.7
 channels:
   DriverCan0:
     type: can
@@ -135,7 +135,7 @@ While being a simplified example, the structure is common to most kinds of behav
 In RemotiveTopology you create a topology by combining one or more instance.yaml files. Each file can contain one or more ECUs or other settings. In this case you need to instantiate the Behavioral Model for the `BCM` ECU:
 
 ```yaml
-schema: remotive-topology-instance:0.6
+schema: remotive-topology-instance:0.7
 
 ecus:
   BCM:
@@ -253,7 +253,7 @@ platform:
         DriverCan0:
       source:
         - <path>/getting_started/databases/driver_can.dbc
-schema: remotive-topology-instance:0.6
+schema: remotive-topology-instance:0.7
 settings:
   remotivebroker:
     license_file: <path>/REMOTIVEBROKER_LICENSE
@@ -275,7 +275,7 @@ A minimal test case that checks that the lights turn on when pressing the hazard
 These tests are added in the topology with an instance file like:
 
 ```yaml
-schema: remotive-topology-instance:0.6
+schema: remotive-topology-instance:0.7
 
 containers:
   tester:
@@ -306,7 +306,7 @@ Notice:
 Before running the tests it's necessary to define some settings for how to instantiate the topology. These settings can potentially be used across all topology instances:
 
 ```yaml
-schema: remotive-topology-instance:0.6
+schema: remotive-topology-instance:0.7
 
 settings:
   remotivebroker:
@@ -332,7 +332,7 @@ DockerCAN is needed to connect to physical hardware and to use standard CAN tool
 To make this example run on all platforms use CAN over UDP. This is configured by adding the following instance.yaml:
 
 ```yaml
-schema: remotive-topology-instance:0.6
+schema: remotive-topology-instance:0.7
 
 settings:
   can:
@@ -344,7 +344,7 @@ settings:
 Tests need to be configured in what environment they should run. This is done using yet another instance.yaml:
 
 ```yaml
-schema: remotive-topology-instance:0.6
+schema: remotive-topology-instance:0.7
 
 includes:
   - ./bcm.instance.yaml
@@ -370,34 +370,10 @@ Notice:
 
 To run the topology generate the runtime environment:
 
-<Tabs>
-<TabItem value="can" label="CAN" default>
-
 ```sh
-$ remotive-topology generate -f getting_started/topology/main.instance.yaml --name getting_started build
+$ remotive-topology generate -f getting_started/topology/main.instance.yaml -f getting_started/topology/can_over_udp.instance.yaml --name getting_started build
 Generated topology at: build/getting_started
-```
-
-On Linux you use SocketCan which is the default.
-
-</TabItem>
-<TabItem value="can_over_udp" label="CAN emulation">
-
-```sh
-$ cd remotivelabs-ecu-simulations
-$ remotive-topology generate -f getting_started/topology/can_over_udp.instance.yaml -f getting_started/topology/main.instance.yaml --name getting_started build
-Generated topology at: build/getting_started
-```
-
-On Mac and Windows, add the extra settings to use CAN emulation over UDP. You can also use this option on Linux.
-
-</TabItem>
-</Tabs>
-
-Then to run the tests:
-
-```sh
-docker compose -f build/getting_started/docker-compose.yml --profile tester up --abort-on-container-exit
+$ docker compose -f build/getting_started/docker-compose.yml --profile tester up --abort-on-container-exit
 ```
 
 You can run the tests several times. Once you are done, you should clean up the docker resources:
