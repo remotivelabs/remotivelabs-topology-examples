@@ -234,3 +234,22 @@ docker compose -f lighting_and_steering/build/lighting-and-steering/docker-compo
 ```
 
 Browse to [http://localhost:8080](http://localhost:8080) and select the signals you like to monitor.
+
+## Running unit tests
+
+It is important to test early, and local unit/integration tests are important tools to achieve this. This example shows how to install and run the unit tests for the `bcm` ECU located in [tests](./tests) using [setuptools and a local venv](http://packaging.python.org/en/latest/tutorials/installing-packages/).
+
+```bash
+# create and activate virtualenv
+python -m venv .venv
+source .venv/bin/activate
+
+# update pip/setuptools
+pip install --upgrade pip setuptools wheel
+
+# install project and its dependencies
+pip install -e .
+
+# run unit tests
+python -m pytest
+```

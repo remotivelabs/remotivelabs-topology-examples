@@ -16,12 +16,11 @@ dependencies = [
 
 [tool.setuptools.packages.find]
 where = ["ecus/"]
-include = ["bcm"]
+include = ["bcm*"]
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "function"
-consider_namespace_packages = true
 
 [build-system]
 requires = ["setuptools>=80.0.0", "wheel"]

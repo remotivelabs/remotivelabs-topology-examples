@@ -14,18 +14,17 @@ dependencies = [
   "pillow >=11.1.0",
   "gherkin-official >=30.0.4",
   "behave >=1.2.6",
-  "remotivelabs-broker==0.9.0b3",
+  "remotivelabs-broker~=0.9.0b3",
   "remotivelabs-topology~=0.9.0",
 ]
 
 [tool.setuptools.packages.find]
 where = ["ecus/"]
-include = ["ecu_a", "ecu_b", "ihu"]
+include = ["ecu_a", "ecu_b"]
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "function"
-consider_namespace_packages = true
 
 [build-system]
 requires = ["setuptools>=80.0.0", "wheel"]
