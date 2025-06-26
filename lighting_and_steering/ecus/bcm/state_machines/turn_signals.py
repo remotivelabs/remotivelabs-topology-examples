@@ -33,12 +33,12 @@ class TurnSignalsStateMachine:
         ]
         transitions = [
             {"trigger": "emergency_mode", "source": "*", "dest": "hazard_on"},
-            # Hazard transitions (we only trigger when hazard button is pressed, so that we dont have to press and hold it)
+            # Hazard transitions (we only trigger when hazard button is pressed, so that we don't have to press and hold it)
             {"trigger": "hazard_pressed", "source": ["off", "left_on", "left_off", "right_on", "right_off"], "dest": "hazard_on"},
             {"trigger": "hazard_pressed", "source": ["hazard_on", "hazard_off"], "dest": "left_on", "conditions": "is_turnstalk_to_left"},
             {"trigger": "hazard_pressed", "source": ["hazard_on", "hazard_off"], "dest": "right_on", "conditions": "is_turnstalk_to_right"},
             {"trigger": "hazard_pressed", "source": ["hazard_on", "hazard_off"], "dest": "off"},
-            # Turnstalk transitions
+            # Turn stalk transitions
             {"trigger": "turn_left", "source": ["off", "right_on", "right_off"], "dest": "left_on"},
             {"trigger": "turn_right", "source": ["off", "left_on", "left_off"], "dest": "right_on"},
             {"trigger": "turn_off", "source": ["left_on", "left_off", "right_on", "right_off"], "dest": "off"},
@@ -62,17 +62,19 @@ class TurnSignalsStateMachine:
         self.last_turnstalk_position = TurnStalkPosition.OFF
         self._ticker: asyncio.Task | None = None
 
-    async def __aenter__(self) -> TurnSignalsStateMachine:
+    def __enter__(self) -> TurnSignalsStateMachine:
         return self
 
-    async def __aexit__(self, exc_type, exc_value, traceback) -> None:
-        await self.close()
+    def __exit__(self, exc_type, exc_value, traceback) -> None:
+        self.close()
 
-    async def close(self) -> None:
-        if self._ticker:
-            self._ticker.cancel()
-            await self._ticker
-        self._ticker = None
+    def reset(self) -> None:
+        self.close()
+
+    def close(self) -> None:
+        self.machine.set_state("off")
+        self.last_turnstalk_position = TurnStalkPosition.OFF
+        self._stop_blinking()
 
     def _start_blinking(self) -> None:
         self._ticker = create_ticker(on_tick=self.on_blink_tick, interval_in_sec=self._blink_interval)

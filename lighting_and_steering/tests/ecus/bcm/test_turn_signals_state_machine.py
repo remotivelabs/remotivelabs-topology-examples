@@ -12,14 +12,16 @@ def callback():
 
 @pytest.fixture()
 async def turn_signals(callback):
-    async with TurnSignalsStateMachine(callback=callback) as tsm:
+    with TurnSignalsStateMachine(callback=callback) as tsm:
         yield tsm
+    await asyncio.sleep(0)  # give state machine a chance to properly cancel tasks
 
 
 async def test_initial_state_is_off(turn_signals):
     assert turn_signals.state == "off"
 
 
+@pytest.mark.asyncio
 async def test_hazard_on_off(turn_signals):
     assert turn_signals.state == "off"
 
@@ -30,6 +32,7 @@ async def test_hazard_on_off(turn_signals):
     assert turn_signals.state == "off"
 
 
+@pytest.mark.asyncio
 async def test_left_on_off(turn_signals):
     assert turn_signals.state == "off"
 
@@ -40,6 +43,7 @@ async def test_left_on_off(turn_signals):
     assert turn_signals.state == "off"
 
 
+@pytest.mark.asyncio
 async def test_right_on_off(turn_signals):
     assert turn_signals.state == "off"
 
@@ -50,6 +54,7 @@ async def test_right_on_off(turn_signals):
     assert turn_signals.state == "off"
 
 
+@pytest.mark.asyncio
 async def test_hazard_on_from_any_state(turn_signals):
     assert turn_signals.state == "off"
 
@@ -76,6 +81,7 @@ async def test_hazard_on_from_any_state(turn_signals):
     assert turn_signals.state == "off"
 
 
+@pytest.mark.asyncio
 async def test_turn_signals(turn_signals):
     assert turn_signals.state == "off"
 
@@ -95,6 +101,7 @@ async def test_turn_signals(turn_signals):
     assert turn_signals.state == "off"
 
 
+@pytest.mark.asyncio
 async def test_turn_signals_from_hazard_should_not_transition(turn_signals):
     assert turn_signals.state == "off"
 
@@ -111,6 +118,7 @@ async def test_turn_signals_from_hazard_should_not_transition(turn_signals):
     assert turn_signals.state == "hazard_on"
 
 
+@pytest.mark.asyncio
 async def test_turn_signals_from_hazard(turn_signals):
     assert turn_signals.state == "off"
 
@@ -131,6 +139,18 @@ async def test_turn_signals_from_hazard(turn_signals):
 
     turn_signals.set_hazard_button_pressed()
     assert turn_signals.state == "right_on"
+
+
+@pytest.mark.asyncio
+async def test_reset(turn_signals):
+    assert turn_signals.state == "off"
+
+    turn_signals.set_turn_stalk_position(TurnStalkPosition.LEFT)
+    assert turn_signals.state == "left_on"
+
+    turn_signals.reset()
+    assert turn_signals.state == "off"
+    assert turn_signals.last_turnstalk_position == TurnStalkPosition.OFF
 
 
 @pytest.mark.asyncio

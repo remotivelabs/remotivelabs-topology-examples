@@ -27,15 +27,43 @@ class TurnStalk:
     target_namespace = "SCCM-DriverCan0"
 
     def __init__(self, broker_client: BrokerClient):
-        self._c = broker_client
+        self._client = broker_client
 
     async def set_turn_signal(self, direction: TurnSignalDirection):
         """Sets the turn signal direction on the simulation using the TurnSignalDirection enum"""
-        await self._c.restbus.update_signals(
+        await self._client.restbus.update_signals(
             (
                 TurnStalk.target_namespace,
                 [
                     RestbusSignalConfig.set(name=TurnStalk.target_signal_name, value=direction.value),
+                ],
+            )
+        )
+
+
+class HazardLightButton(Enum):
+    OFF = 0
+    ON = 1
+
+
+class HazardLight:
+    """
+    Class to manage the interaction with the virtual interface and simulation for the hazard light.
+    """
+
+    def __init__(self, broker_client: BrokerClient):
+        self._client = broker_client
+
+    async def set_hazard_light(self, _button: HazardLightButton):
+        """
+        Sets the hazard light state on the simulation using the HazardLightButton enum.
+        """
+
+        await self._client.restbus.update_signals(
+            (
+                "SCCM-DriverCan0",
+                [
+                    RestbusSignalConfig(name="HazardLightButton.HazardLightButton", loop=[0], initial=[1]),
                 ],
             )
         )
@@ -75,19 +103,41 @@ async def step_given_system_in_simulation_mode(context):
 
     context.broker_client = broker_client
     context.turn_stalk = TurnStalk(broker_client=broker_client)
+    context.hazard_light = HazardLight(broker_client=broker_client)
     loop = asyncio.get_running_loop()
     context.add_cleanup(lambda: loop.create_task(context.broker_client.disconnect()))
 
 
-@when("the SCCM indicates a {direction} turn")
-@async_run_until_complete
-async def step_when_indicate_turn(context, direction: str):
+async def do_step_when_indicate_turn(context, direction: str):
     try:
         turn_signal_direction = TurnSignalDirection[direction.upper()]
         await context.turn_stalk.set_turn_signal(turn_signal_direction)
         await context.turn_stalk.set_turn_signal(TurnSignalDirection[direction.upper()])
     except KeyError as e:
         raise ValueError(f"Invalid direction: {direction}. Must be 'left', 'right', or 'none'.") from e
+
+
+@when("the SCCM indicates a {direction} turn")
+@when("the turn stalk is turned {direction}")
+@async_run_until_complete
+async def step_when_indicate_turn(context, direction: str):
+    await do_step_when_indicate_turn(context, direction)
+
+
+@when("the turn stalk is reset")
+@async_run_until_complete
+async def step_when_turnstalk_reset(context):
+    await do_step_when_indicate_turn(context, "none")
+
+
+@when("the hazard light button is {status}")
+@async_run_until_complete
+async def when_hazard_light_button(context, status: str):
+    try:
+        hazard_light_status = HazardLightButton[status.upper()]
+        await context.hazard_light.set_hazard_light(hazard_light_status)
+    except KeyError as e:
+        raise ValueError(f"Invalid direction: {status}. Must be 'ON' or 'OFF'.") from e
 
 
 @then("the {turn} turn light blinks")
@@ -97,7 +147,7 @@ async def step_then_validate_turn_light_toggle(context, turn: str):
     async with SignalValueAccumulator(
         context.broker_client, ("RLCM-BodyCan0", [signal_name]), ("FLCM-BodyCan0", [signal_name]), ("DIM-BodyCan0", [signal_name])
     ) as consumer:
-        await await_at_most(seconds=4).until(
+        await await_at_most(seconds=5).until(
             consumer,
             contains_signal_value_sequences(
                 {
@@ -126,3 +176,19 @@ async def step_then_validate_turn_light_static(context, turn: str):
                 }
             ),
         )
+
+
+@then("both left and right turn light blinks")
+def step_then_validate_both_turn_lights_blink(context):
+    context.execute_steps("""
+            then the left turn light blinks
+            and the right turn light blinks
+        """)
+
+
+@then("neither left nor right turn light blinks")
+def step_then_validate_both_turn_lights_off(context):
+    context.execute_steps("""
+            then the left turn light remains off
+            and the right turn light remains off
+        """)

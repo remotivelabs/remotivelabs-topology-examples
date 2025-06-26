@@ -83,3 +83,13 @@ def test_drl_from_low_beam(beams):
 
     beams.set_light_mode_position(LightModePosition.OFF)
     assert beams.state == "off"
+
+
+def test_reset(beams):
+    assert beams.state == "off"
+
+    beams.set_light_mode_position(LightModePosition.DRL)
+    assert beams.state == "drl"
+
+    beams.reset()
+    assert beams.state == "off"

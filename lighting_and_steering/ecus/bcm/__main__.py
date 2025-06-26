@@ -6,7 +6,7 @@ from typing import cast
 
 import structlog
 from remotivelabs.broker import BrokerClient, Frame, RestbusSignalConfig
-from remotivelabs.topology.behavioral_model import BehavioralModel
+from remotivelabs.topology.behavioral_model import BehavioralModel, RebootRequest
 from remotivelabs.topology.cli.behavioral_model import BehavioralModelArgs
 from remotivelabs.topology.control import (
     ControlRequest,
@@ -101,7 +101,11 @@ class BCM:
                 self.driver_can_0.create_input_handler([filters.FrameFilter(BCM.brake_pedal_position_frame)], self.on_brake),
                 self.driver_can_0.create_input_handler([filters.FrameFilter(BCM.steering_angle_frame)], self.on_steering_angle),
             ],
-            control_handlers=[("emergency_mode", self.on_set_emergency_mode)],
+            control_handlers=[
+                ("emergency_mode", self.on_set_emergency_mode),
+                # override built-in RebootRequest so that we can reset the state machine(s) as well
+                (RebootRequest.type, self.on_reboot),
+            ],
         )
         self.beams_machine = BeamsStateMachine()
         self.beams_output_for_state = BEAMS_OUTPUT_FOR_STATE
@@ -115,11 +119,22 @@ class BCM:
         return self
 
     async def __aexit__(self, exc_type, exc_val, exc_tb):
+        self.turn_signals_machine.close()
         await self.bm.stop()
         await self._broker_client.disconnect()
 
     def __await__(self):
         return self.bm.run_forever().__await__()
+
+    async def on_reboot(self, request: ControlRequest) -> ControlResponse:  # noqa: ARG002
+        logger.info("Rebooting BCM")
+        self.turn_signals_machine.reset()
+        self.beams_machine.reset()
+        await self.reset_restbus()
+        return ControlResponse(status="ok")
+
+    async def reset_restbus(self) -> None:
+        await self.body_can_0.restbus.reset()
 
     async def on_light_mode(self, frame: Frame) -> None:
         """Handle light mode position change"""

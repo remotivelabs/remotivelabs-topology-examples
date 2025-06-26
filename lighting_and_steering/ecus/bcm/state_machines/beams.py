@@ -36,6 +36,9 @@ class BeamsStateMachine:
             ignore_invalid_triggers=True,
         )
 
+    def reset(self) -> None:
+        self.machine.set_state("off")
+
     def _after_state_change(self) -> None:
         logger.debug(f"{self.__class__.__name__}", state=self.state)
 

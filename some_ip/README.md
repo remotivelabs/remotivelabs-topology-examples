@@ -1,6 +1,6 @@
 # SOME/IP example
 
-The purpose of this example is to show more advanced SOME/IP usage, including RPC and more datatypes.
+The purpose of this example is to show more advanced SOME/IP usage, including RPC and more data types.
 
 In this setup, `ECU A` emits events on a designated service ID using raw byte payloads. `ECU B` subscribes to the same event, capturing and logging the incoming raw data. Additionally, the web application is integrated into the system, allowing you to observe these events with.
 
