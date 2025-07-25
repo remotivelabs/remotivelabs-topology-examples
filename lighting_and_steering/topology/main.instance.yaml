@@ -64,6 +64,22 @@ ecus:
           working_dir: /app
           command: python -m ihu
 
+  LocationECU:
+    models:
+      location_ecu:
+        type: container
+        container:
+          build:
+            dockerfile: ../Dockerfile
+          volumes:
+            - ../ecus/location_ecu:/app/location_ecu
+          working_dir: /app
+          command: python -m location_ecu
+    # channels:
+    #   LocationCan0:
+    # source:
+    #   - ../databases/location_can.dbc
+
 settings:
   remotivebroker:
     version: v1.10.3
