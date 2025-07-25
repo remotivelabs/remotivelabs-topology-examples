@@ -32,5 +32,5 @@ NS_ :
 BU_: LocationECU
 
 BO_ 200 LocationFrame: 8 LocationECU
- SG_ Latitude : 0|32@1+ (1,0) [0|4294967295] ""  
- SG_ Longitude : 32|32@1+ (1,0) [0|4294967295] ""  
+ SG_ Longitude : 28|28@1- (1E-006,0) [-134.218|134.218] "Deg"  Receiver
+ SG_ Latitude : 0|28@1- (1E-006,0) [-134.218|134.218] "Deg"  Receiver
