@@ -4,11 +4,12 @@ import asyncio
 from dataclasses import dataclass
 
 import structlog
-from remotivelabs.broker import BrokerClient
+from remotivelabs.broker import BrokerClient, Frame
 from remotivelabs.topology.behavioral_model import BehavioralModel
 from remotivelabs.topology.cli.behavioral_model import BehavioralModelArgs
 from remotivelabs.topology.namespaces import filters
 from remotivelabs.topology.namespaces.some_ip import SomeIPEvent, SomeIPNamespace
+from remotivelabs.topology.namespaces.can import CanNamespace
 
 from .log import configure_logging
 
@@ -24,14 +25,19 @@ class IHU:
         self._broker_client = BrokerClient(url=avp.url, auth=avp.auth)
 
         self._some_ip_eth = SomeIPNamespace(IHU.someip_ns, client_id=3, broker_client=self._broker_client)
+        self._location_can = CanNamespace("IHU-LocationCan0", broker_client=self._broker_client)
         self.bm = BehavioralModel(
             IHU.ecu_name,
-            namespaces=[self._some_ip_eth],
+            namespaces=[self._some_ip_eth, self._location_can],
             broker_client=self._broker_client,
             input_handlers=[
                 self._some_ip_eth.create_input_handler(
                     [filters.SomeIPEventFilter(service_instance_name="TurnlightIndicator", event_name="TurnlightControlEvent")],
                     self.on_indicator,
+                ),
+                self._location_can.create_input_handler(
+                    [filters.FrameFilter("LocationFrame")],
+                    self._location_listener,
                 )
             ],
         )
@@ -50,6 +56,9 @@ class IHU:
 
     async def on_indicator(self, event: SomeIPEvent) -> None:
         pass
+
+    async def _location_listener(self, frame: Frame) -> None:
+        logger.info(f"Location: {frame.signals}")
 
 
 async def main(avp: BehavioralModelArgs):

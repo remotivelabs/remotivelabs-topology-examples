@@ -9,9 +9,9 @@ remotive cloud recordings mount 13303517729834103000 \
   --project aleks-base-on-open
 
 # Seek to 60 seconds in the recording
-remotive cloud recordings seek 13303517729834103000 \
-  --seconds 60 \
-  --project aleks-base-on-open
+# remotive cloud recordings seek 13303517729834103000 \
+#   --seconds 60 \
+#   --project aleks-base-on-open
 
 # Play the recording
 remotive cloud recordings play 13303517729834103000 \
