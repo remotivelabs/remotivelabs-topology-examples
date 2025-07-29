@@ -65,6 +65,7 @@ ecus:
           command: python -m ihu
           environment:
             - ANDROID_ADB_SERVER_PORT=5038
+            - ANDROID_ADB_SERVER_ADDRESS=host.docker.internal
           extra_hosts:
             - "host.docker.internal:host-gateway"
 

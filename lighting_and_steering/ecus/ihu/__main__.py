@@ -24,7 +24,7 @@ class IHU:
     someip_ns: str = "IHU-SOMEIP"
     ecu_name: str = "IHU"
 
-    def __init__(self, avp: BehavioralModelArgs) -> None:
+    def __init__(self, avp: BehavioralModelArgs, br_emu: brokerToEmu) -> None:
         self._broker_client = BrokerClient(url=avp.url, auth=avp.auth)
 
         self._some_ip_eth = SomeIPNamespace(IHU.someip_ns, client_id=3, broker_client=self._broker_client)
@@ -44,6 +44,7 @@ class IHU:
                 )
             ],
         )
+        self.br_emu = br_emu
 
     async def __aenter__(self):
         await self._broker_client.connect()
@@ -61,12 +62,16 @@ class IHU:
         pass
 
     async def _location_listener(self, frame: Frame) -> None:
+        br_emu.redirect_location_to_emulator_signals(frame.signals)
+        for name, value in frame.signals.items():
+            logger.info("Location signal", signal=name, value=value)
         logger.info(f"Location: {frame.signals}")
 
-async def main(avp: BehavioralModelArgs):
+
+async def main(avp: BehavioralModelArgs, br_emu: brokerToEmu):
     logger.info("Starting IHU ECU", args=avp)
 
-    async with IHU(avp) as ihu:
+    async with IHU(avp, br_emu) as ihu:
         await ihu
 
 # async def main(avp: BehavioralModelArgs):
@@ -85,8 +90,8 @@ async def main(avp: BehavioralModelArgs):
 if __name__ == "__main__":
     # Instantiate brokerToEmu and start location updates
     adb_device = adb.get_emulator_device()
-    # br_emu = brokerToEmu(adb_device)
+    br_emu = brokerToEmu(adb_device)
 
     args = BehavioralModelArgs.parse()
     configure_logging(args.loglevel)
-    asyncio.run(main(args))
+    asyncio.run(main(args, br_emu))
