@@ -160,6 +160,12 @@ remotive-topology generate -f lighting_and_steering/topology/main.instance.yaml 
 # Windows/MacOS
 remotive-topology generate -f lighting_and_steering/topology/main.instance.yaml -f lighting_and_steering/topology/can_over_udp.instance.yaml lighting_and_steering/build
 
+# Feed to android with DockerCAN
+remotive-topology generate -f lighting_and_steering/topology/main.instance.yaml -f lighting_and_steering/topology/android.instance.yaml lighting_and_steering/build
+
+# Feed to android on Windows/MacOS
+remotive-topology generate -f lighting_and_steering/topology/main.instance.yaml -f lighting_and_steering/topology/android.instance.yaml -f lighting_and_steering/topology/can_over_udp.instance.yaml lighting_and_steering/build
+
 # Run the simulation and test suite
 docker compose -f lighting_and_steering/build/lighting-and-steering/docker-compose.yml --profile tester up --abort-on-container-exit
 

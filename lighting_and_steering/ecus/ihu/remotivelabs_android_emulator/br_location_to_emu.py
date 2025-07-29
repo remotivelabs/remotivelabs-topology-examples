@@ -7,17 +7,19 @@ import os
 class brokerToEmu:
     def __init__(self, adb_dev):
 
-        def get_telnet_session(host="host.docker.internal", port=5554):
+        def get_telnet_session(host="host.docker.internal", port=6554):
+        # def get_telnet_session(host="192.168.64.1", port=6554):
             auth_cmd = f"auth {os.environ.get('ANDROID_EMULATOR_AUTH', '')}"
             if os.environ.get('ANDROID_EMULATOR_AUTH') is None:
                 raise RuntimeError("Environment variable ANDROID_EMULATOR_AUTH is not set or empty.")
             s = socket.create_connection((host, port))
             response = s.recv(2024)
-            print("telnet resp", response)
+            # print("telnet resp", response)
             s.sendall(auth_cmd.encode('ascii') + b"\n")
             # Optionally, read response
             response = s.recv(2024)
-            print("telnet resp", response)
+            if response != b'OK\r\n':
+                print(f"Inital emu socket response: {response}, command was: {auth_cmd}")
             return s
 
         # def get_telnet_session(host="host.docker.internal", port=5554, auth_cmd="auth 5uovu5TQXKNBa0GI"):
@@ -45,13 +47,14 @@ class brokerToEmu:
         if lat is not None and lon is not None:
             self.lat = lat
             self.lon = lon
-            self.adb_dev.root()
+            # self.adb_dev.root()
             # adb shell am start -a android.intent.action.VIEW -d "geo:55.618750999999996,12.982083"
             geofix_command = f"geo fix {self.lon} {self.lat}"
 
             self.session.sendall(geofix_command.encode('ascii') + b"\n")
             response = self.session.recv(2024)
-            print("telnet resp", response)
+            if response != b'OK\r\n':
+                print(f"Unexpected emu socket response: {response}, command was: {geofix_command}")
 
     def redirect_location_to_emulator(self, signals):
         for signal in signals:

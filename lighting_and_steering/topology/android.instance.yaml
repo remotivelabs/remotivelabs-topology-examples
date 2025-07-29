@@ -1,0 +1,15 @@
+schema: remotive-topology-instance:0.7
+
+ecus:
+  LocationECU:
+    models:
+      location_ecu:
+        type: container
+        container:
+          build:
+            dockerfile: ../Dockerfile
+          volumes:
+            - ../ecus/location_ecu:/app/location_ecu
+          working_dir: /app
+          command: python -m location_ecu
+

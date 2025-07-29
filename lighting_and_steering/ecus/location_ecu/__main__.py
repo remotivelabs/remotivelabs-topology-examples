@@ -12,8 +12,9 @@ logger = structlog.get_logger(__name__)
 
 async def main(avp: BehavioralModelArgs):
     logger.info("Starting LocationECU")
-    async with BrokerClient(url="https://personal-xktvetbdzw-aleks-base-on-open-sglnqbpwoa-ez.a.run.app:443", auth=ApiKeyAuth(api_key="F2385283-170A67D3-792CBBC9-DFF4FE14")) as cloud_broker_client:
-    # async with BrokerClient(url="https://personal-xktvetbdzw-aleks-base-on-open-sglnqbpwoa-ez.a.run.app:443", auth=TokenAuth("add your token here")) as cloud_broker_client:
+    # async with BrokerClient(url="https://personal-xktvetbdzw-arm-demo-sglnqbpwoa-ez.a.run.app:443", auth=ApiKeyAuth(api_key="05C8A73B-18F85959-B8AA8717-1776F8B6")) as cloud_broker_client:
+    async with BrokerClient(url="https://demo-broker-arm-demo-sglnqbpwoa-ez.a.run.app:443", auth=ApiKeyAuth(api_key="E4B0A556-F114998D-5CC8ED2A-3F3A13C0")) as cloud_broker_client:
+    # async with BrokerClient(url="https://personal-xktvetbdzw-aleks-base-on-open-sglnqbpwoa-ez.a.run.app:443", auth=TokenAuth("pa1.0/977EA719-AAFE48E1-6D2ADC17-19AADE3F-AD951324-C402B9D0-1A351C3D-F2A200D2")) as cloud_broker_client:
         logger.info("connected LocationECU")
 
         async with BrokerClient(url=avp.url, auth=avp.auth) as broker_client:
@@ -21,7 +22,7 @@ async def main(avp: BehavioralModelArgs):
                 name="LocationECU-LocationCan0",
                 broker_client=broker_client,
                 restbus_configs=[
-                    RestbusConfig([filters.SenderFilter(ecu_name="LocationECU")], cycle_time_millis=500)
+                    RestbusConfig([filters.SenderFilter(ecu_name="LocationECU")])
                 ],
             )
             async with BehavioralModel(
@@ -34,7 +35,7 @@ async def main(avp: BehavioralModelArgs):
                 await chassis_bus.open()
                 itr = await chassis_bus.subscribe_frames(FrameSubscription("ID04FGPSLatLong"), on_change=False, decode_named_values=True)
                 async for frame in itr:
-                    logger.info(f"Location: {frame.signals}")
+                    # logger.info(f"Location: {frame.signals}")
 
                     await can.restbus.update_signals(
                         RestbusSignalConfig.set(name="LocationFrame.Latitude", value=frame.signals["ID04FGPSLatLong.GPSLatitude04F"]),
@@ -45,5 +46,5 @@ if __name__ == "__main__":
     args = BehavioralModelArgs.parse()
     logging.basicConfig(level=args.loglevel)
     logging.getLogger("remotivelabs.topology").setLevel(logging.DEBUG)
-    logging.getLogger("remotivelabs.broker").setLevel(logging.DEBUG)
+    # logging.getLogger("remotivelabs.broker").setLevel(logging.DEBUG)
     asyncio.run(main(args))

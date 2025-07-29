@@ -4,18 +4,23 @@ set -euo pipefail
 # Authenticate with Remotive Cloud
 # remotive cloud auth login
 
+
+
 # Mount the recording with transformation
-remotive cloud recordings mount 13303517729834103000 \
-  --project aleks-base-on-open
+remotive cloud recordings mount 9459066702917749000 \
+  --project arm-demo
 
 # Seek to 60 seconds in the recording
-# remotive cloud recordings seek 13303517729834103000 \
+# remotive cloud recordings seek 9459066702917749000 \
 #   --seconds 60 \
-#   --project aleks-base-on-open
+#   --project arm-demo
 
 # Play the recording
-remotive cloud recordings play 13303517729834103000 \
-  --project aleks-base-on-open
+remotive cloud recordings playback play 9459066702917749000 --project arm-demo
+#remotive cloud recordings playback play 9459066702917749000 --repeat --project arm-demo
+
+echo 'open "https://console.cloud.remotivelabs.com/p/arm-demo/recordings/9459066702917749000?tab=playback"'
+echo 'open "https://console.cloud.remotivelabs.com/p/arm-demo/brokers"'
 
 # Start services via Docker Compose
 docker compose \

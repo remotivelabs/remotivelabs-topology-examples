@@ -34,3 +34,7 @@ BU_: LocationECU
 BO_ 200 LocationFrame: 8 LocationECU
  SG_ Longitude : 28|28@1- (1E-006,0) [-134.218|134.218] "Deg"  Receiver
  SG_ Latitude : 0|28@1- (1E-006,0) [-134.218|134.218] "Deg"  Receiver
+
+BA_DEF_ BO_ "GenMsgCycleTime" FLOAT 0 10000;
+
+BA_ "GenMsgCycleTime" BO_ 200 1000;

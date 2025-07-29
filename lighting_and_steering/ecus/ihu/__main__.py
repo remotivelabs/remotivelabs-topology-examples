@@ -63,9 +63,7 @@ class IHU:
 
     async def _location_listener(self, frame: Frame) -> None:
         br_emu.redirect_location_to_emulator_signals(frame.signals)
-        for name, value in frame.signals.items():
-            logger.info("Location signal", signal=name, value=value)
-        logger.info(f"Location: {frame.signals}")
+        # logger.info(f"Location: {frame.signals}")
 
 
 async def main(avp: BehavioralModelArgs, br_emu: brokerToEmu):
@@ -74,23 +72,11 @@ async def main(avp: BehavioralModelArgs, br_emu: brokerToEmu):
     async with IHU(avp, br_emu) as ihu:
         await ihu
 
-# async def main(avp: BehavioralModelArgs):
-#     logger.info("Starting IHU ECU", args=avp)
-
-#     # Instantiate brokerToEmu and start location updates
-#     adb_device = adb.get_emulator_device()
-#     br_emu = brokerToEmu(adb_device)
-#     # Run update_emu_location in a background task
-#     loop = asyncio.get_running_loop()
-#     loop.run_in_executor(None, br_emu.update_emu_location)
-
-#     async with IHU(avp) as ihu:
-#         await ihu
-
 if __name__ == "__main__":
     # Instantiate brokerToEmu and start location updates
-    adb_device = adb.get_emulator_device()
-    br_emu = brokerToEmu(adb_device)
+    # adb_device = adb.get_emulator_device()
+    br_emu = brokerToEmu(None)
+    # br_emu = None  # Replace with actual brokerToEmu instantiation if adb_device is needed
 
     args = BehavioralModelArgs.parse()
     configure_logging(args.loglevel)
