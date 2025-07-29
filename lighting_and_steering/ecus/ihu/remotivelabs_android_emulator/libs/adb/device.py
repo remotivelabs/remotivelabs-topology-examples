@@ -385,6 +385,11 @@ class AndroidDevice(object):
         # Sensor data is in string with format data0:data1:data2
         return self._simple_call(['emu', 'sensor', sensor_name, data])
 
+    def send_fix_intent(self, lon, lat):
+        return self._simple_call(['shell', 'am', 'start', '-a', 'android.intent.action.VIEW', '-d', f"geo:{lat},{lon}"])
+    # shell am start -a android.intent.action.VIEW -d "geo:55.618750999999996,12.982083"
+
+
     def send_fix(self, lon, lat):
         return self._simple_call(['emu', 'geo', 'fix', lon, lat])
 

@@ -12,7 +12,7 @@ logger = structlog.get_logger(__name__)
 
 async def main(avp: BehavioralModelArgs):
     logger.info("Starting LocationECU")
-    async with BrokerClient(url="https://personal-xktvetbdzw-aleks-base-on-open-sglnqbpwoa-ez.a.run.app:443", auth=ApiKeyAuth(api_key="F2385283-170A67D3-892CBBC9-DFF4FE14")) as cloud_broker_client:
+    async with BrokerClient(url="https://personal-xktvetbdzw-aleks-base-on-open-sglnqbpwoa-ez.a.run.app:443", auth=ApiKeyAuth(api_key="F2385283-170A67D3-792CBBC9-DFF4FE14")) as cloud_broker_client:
     # async with BrokerClient(url="https://personal-xktvetbdzw-aleks-base-on-open-sglnqbpwoa-ez.a.run.app:443", auth=TokenAuth("add your token here")) as cloud_broker_client:
         logger.info("connected LocationECU")
 
