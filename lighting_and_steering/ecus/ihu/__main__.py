@@ -13,6 +13,9 @@ from remotivelabs.topology.namespaces.can import CanNamespace
 
 from .log import configure_logging
 
+from .remotivelabs_android_emulator.br_location_to_emu import brokerToEmu
+from .remotivelabs_android_emulator.libs.adb import device as adb
+
 logger = structlog.get_logger(__name__)
 
 
@@ -60,15 +63,30 @@ class IHU:
     async def _location_listener(self, frame: Frame) -> None:
         logger.info(f"Location: {frame.signals}")
 
-
 async def main(avp: BehavioralModelArgs):
     logger.info("Starting IHU ECU", args=avp)
 
     async with IHU(avp) as ihu:
         await ihu
 
+# async def main(avp: BehavioralModelArgs):
+#     logger.info("Starting IHU ECU", args=avp)
+
+#     # Instantiate brokerToEmu and start location updates
+#     adb_device = adb.get_emulator_device()
+#     br_emu = brokerToEmu(adb_device)
+#     # Run update_emu_location in a background task
+#     loop = asyncio.get_running_loop()
+#     loop.run_in_executor(None, br_emu.update_emu_location)
+
+#     async with IHU(avp) as ihu:
+#         await ihu
 
 if __name__ == "__main__":
+    # Instantiate brokerToEmu and start location updates
+    adb_device = adb.get_emulator_device()
+    # br_emu = brokerToEmu(adb_device)
+
     args = BehavioralModelArgs.parse()
     configure_logging(args.loglevel)
     asyncio.run(main(args))

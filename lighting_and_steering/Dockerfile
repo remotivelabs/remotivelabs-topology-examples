@@ -5,5 +5,6 @@ FROM python:3.13-slim
 COPY pyproject.toml README.md LICENSE .
 COPY ecus/ ./ecus/
 RUN pip install .
+RUN apt update && apt install -y android-tools-adb
 
 CMD ["placeholder_override", "--allow-root"]

@@ -63,6 +63,10 @@ ecus:
             - ../ecus/ihu:/app/ihu
           working_dir: /app
           command: python -m ihu
+          environment:
+            - ANDROID_ADB_SERVER_PORT=5038
+          extra_hosts:
+            - "host.docker.internal:host-gateway"
 
   LocationECU:
     models:
