@@ -60,13 +60,13 @@ import sys
 import socket
 import struct
 import subprocess
-import libs.vhal_emulator.vhal_prop_consts_2_0 as vhal_props
+from . import vhal_prop_consts_2_0 as vhal_props
 
 # Generate the protobuf file from hardware/interfaces/automotive/vehicle/2.0/default/impl/vhal_v2_0
 # It is recommended to use the protoc provided in: prebuilts/tools/common/m2/repository/com/google/protobuf/protoc/3.0.0
 # or a later version, in order to provide Python 3 compatibility
 #   protoc -I=proto --python_out=proto proto/VehicleHalProto.proto
-import libs.vhal_emulator.VehicleHalProto_pb2 as VehicleHalProto_pb2
+from . import VehicleHalProto_pb2 as VehicleHalProto_pb2
 
 sys.dont_write_bytecode = True
 
@@ -114,6 +114,26 @@ class Vhal:
         # Then send the protobuf
         self.sock.sendall(msgStr)
 
+    # force usage of port 33452 for the socket connection, easier in containerized environments
+    # def open_socket_works(self, device=None):
+    #     """
+    #         Connects to an Android Auto device running a Vehicle HAL with simulator.
+    #     """
+    #     # Hard-coded socket port needs to match the one in DefaultVehicleHal
+    #     remotePortNumber = 33452
+    #     localPortNumber = 33452
+    #     extraArgs = '' if device is None else '-s %s' % device
+    #     adbCmd = 'adb %s forward tcp:%d tcp:%d' % (extraArgs, remotePortNumber, remotePortNumber)
+    #     adbResp = subprocess.check_output(adbCmd, shell=True)[0:-1]
+    #     print("ADB response:", adbResp)
+    #     # localPortNumber = remotePortNumber
+    #     print('Connecting local port %s to remote port %s on %s' % (
+    #         localPortNumber, remotePortNumber,
+    #         'default device' if device is None else 'device %s' % device))
+    #     # Open the socket and connect
+    #     self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    #     self.sock.connect(('host.docker.internal', localPortNumber))
+
     def open_socket(self, device=None):
         """
             Connects to an Android Auto device running a Vehicle HAL with simulator.
@@ -129,7 +149,7 @@ class Vhal:
             'default device' if device is None else 'device %s' % device))
         # Open the socket and connect
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.sock.connect(('localhost', localPortNumber))
+        self.sock.connect(('host.docker.internal', localPortNumber))
 
     def rx_msg(self):
         """
@@ -252,6 +272,7 @@ class Vhal:
         # Get the list of configs
         self.get_config_all()
         msg = self.rx_msg()
+        print("Received config message:", msg)
         # Parse the list of configs to generate a dictionary of prop_id to type
         for cfg in msg.config:
             self._propToType[cfg.prop] = cfg.value_type

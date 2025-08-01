@@ -114,23 +114,43 @@ Protos for location can be found here: https://android.googlesource.com/device/g
 
 # Android ADB and EMULATOR, how to get going
 
-Local                                                                                                                                                                                                      
+Local + ssh remotiv environment
+
 1. Change adb port in android studio. Debugger options, use port 5038. Only start one emulator
 
 2. ssh aleksandar@192.168.64.3 -L 50051:localhost:50051 -L 8080:1ocalhost:8080 -L 8081:localhost:8081 -L 8888:localhost:8888 -L 5001:localhost:5001 -L 5038:1ocalhost:5038 -R 5555:localhost:5555 -R 15554:l
 ocalhost:5554
 
-On ssh target
+On "ssh target" or "only local" 
 
 3. start `adb -a -P 5038 nodaemon server start`  
 
-4. `socat TCP-LISTEN:5554,fork,reuseaddr TCP:localhost:15554` (apt install socat)
+4. 
+    1. set up port redirection (adb only accepts connections from localhost)
+(with ssh). `socat TCP-LISTEN:5554,fork,reuseaddr TCP:localhost:15554` (apt install socat)
+    
+    2. (without ssh). `socat TCP-LISTEN:5554,fork,reuseaddr TCP:localhost:5554` (apt install socat, brew install socat)
 
 5. make sure to set ANDROID_EMULATOR_AUTH in instance file  correct ( cat ~/.emulator_console_auth_token)
 
 6. Generate toplogy
 
 7. Start toplogy docker compose up
+
+### VHAL properties
+make sure to BOOT in permissive mode
+```
+~/Library/Android/sdk/emulator.backup/emulator @SmallAutoAPI33 -selinux permissive -no-snapshot
+```
+check vhal
+```
+adb shell setenforce 0
+adb shell getenforce
+# Should return: Permissive
+adb logcat | grep "Vehicle"
+adb shell lsof -iTCP -sTCP:LISTEN 
+# make sure you see port 33452 or 9342 (this project is set prebuilt fgr 33452) 
+```
 
 
 ### Useful resources

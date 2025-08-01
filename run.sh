@@ -22,9 +22,13 @@ remotive cloud recordings playback play 9459066702917749000 --project arm-demo
 echo 'open "https://console.cloud.remotivelabs.com/p/arm-demo/recordings/9459066702917749000?tab=playback"'
 echo 'open "https://console.cloud.remotivelabs.com/p/arm-demo/brokers"'
 
+# Print personal broker URL
+PERSONAL_URL=$(remotive cloud brokers list --project arm-demo | jq -r '.[] | select(.personal == true) | .url')
+echo "Your personal broker url is: $PERSONAL_URL"
+
 # Start services via Docker Compose
-docker compose \
-  -f lighting_and_steering/build/lighting-and-steering/docker-compose.yml \
-  --profile jupyter \
-  --profile ui up
+#docker compose \
+#  -f lighting_and_steering/build/lighting-and-steering/docker-compose.yml \
+#  --profile jupyter \
+#  --profile ui up
 

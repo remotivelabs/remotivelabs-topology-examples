@@ -3,10 +3,10 @@ import argparse
 import json
 import os
 import sys
-import libs.adb.device as adb
-import libs.vhal_emulator.vhal_emulator as vhal_emu
-from libs.vhal_emulator.vhal_prop_consts_2_0 import vhal_props, vhal_vehicle_area, vhal_types
-from libs.remotive.subscribe import subscribe, get_proper_signal_value
+from .libs.adb import device as adb
+from .libs.vhal_emulator import vhal_emulator as vhal_emu
+from .libs.vhal_emulator.vhal_prop_consts_2_0 import vhal_props, vhal_vehicle_area, vhal_types
+# from .libs.remotive.subscribe import subscribe, get_proper_signal_value
 from inspect import getmembers
 
 
@@ -14,7 +14,8 @@ class BrokerToAAOS:
     def __init__(self, adb_dev):
         # Get the emulator device via adb only once
         self.adb_dev = adb_dev
-        self.vhal = vhal_emu.Vhal()
+        # self.vhal = vhal_emu.Vhal()
+        self.vhal = vhal_emu.Vhal(device="emulator-5554")
         self.signals_map = {}  # Map of signal names to list of property mappings
         self.signals_to_subscribe = []  # List of (namespace, signal) tuples to subscribe to
         
@@ -90,6 +91,27 @@ class BrokerToAAOS:
             # For string and bytes, return as is
             return value
     
+    def get_property(self, property_id, area_id):
+        """Get a property from AAOS via VHAL"""
+        try:
+            value = self.vhal.get_property(property_id, area_id)
+            if value is not None:
+                print(f"Property retrieved: ID=0x{property_id:08x}, Area=0x{area_id:08x}, Value={value}")
+            else:
+                print(f"Property ID 0x{property_id:08x} not found in area 0x{area_id:08x}")
+            return value
+        except Exception as e:
+            print(f"Error retrieving property ID 0x{property_id:08x} in area 0x{area_id:08x}: {e}")
+            return None 
+
+    def set_property(self, property_id, area_id, value):
+        """Set a property in AAOS via VHAL"""
+        try:
+            self.vhal.set_property(property_id, area_id, value)
+            print(f"Property set: ID=0x{property_id:08x}, Area=0x{area_id:08x}, Value={value}")
+        except Exception as e:
+            print(f"Error setting property ID 0x{property_id:08x}: {e}")
+            
     def redirect_signals_to_aaos(self, signals):
         """Process incoming signals from the broker and forward them to AAOS"""
         for signal in signals:
@@ -332,7 +354,7 @@ def main():
         sys.exit(1)
     
     # Start forwarding signals
-    broker_aaos.forward_signals(args.broker_url, args.api_key)
+    # broker_aaos.forward_signals(args.broker_url, args.api_key)
 
 
 if __name__ == "__main__":

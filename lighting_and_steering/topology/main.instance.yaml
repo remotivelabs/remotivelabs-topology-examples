@@ -68,6 +68,7 @@ ecus:
             - ANDROID_ADB_SERVER_PORT=5038
             - ANDROID_ADB_SERVER_ADDRESS=host.docker.internal
             - ANDROID_EMULATOR_AUTH=5uovu5TQXKNBa0GI
+            - PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
           extra_hosts:
             - "host.docker.internal:host-gateway"
 

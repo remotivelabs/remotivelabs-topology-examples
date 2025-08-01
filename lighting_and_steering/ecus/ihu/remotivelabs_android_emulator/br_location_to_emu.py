@@ -1,5 +1,4 @@
 from .libs.adb import device as adb
-# import telnetlib
 import socket
 # from .libs.remotive.subscribe import parsing_to_subscribe, subscribe
 import os
@@ -36,10 +35,7 @@ class brokerToEmu:
         if lat is not None and lon is not None:
             self.lat = lat
             self.lon = lon
-            # self.adb_dev.root()
-            # adb shell am start -a android.intent.action.VIEW -d "geo:55.618750999999996,12.982083"
             geofix_command = f"geo fix {self.lon} {self.lat}"
-
             self.session.sendall(geofix_command.encode('ascii') + b"\n")
             response = self.session.recv(2024)
             if response != b'OK\r\n':
@@ -53,14 +49,6 @@ class brokerToEmu:
         if lat is not None and lon is not None:
             self.lat = lat
             self.lon = lon
-            # self.adb_dev.root()
-            # adb shell am start -a android.intent.action.VIEW -d "geo:55.618750999999996,12.982083"
-            # geofix_command = f"geo fix {self.lon} {self.lat}"
-
-            # self.session.sendall(geofix_command.encode('ascii') + b"\n")
-            # response = self.session.recv(2024)
-            # if response != b'OK\r\n':
-            #     print(f"Unexpected emu socket response: {response}, command was: {geofix_command}")
             self.adb_dev.root()
             self.adb_dev.send_fix(str(self.lon), str(self.lat))
 
