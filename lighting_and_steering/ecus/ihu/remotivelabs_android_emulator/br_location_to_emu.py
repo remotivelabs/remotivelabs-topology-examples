@@ -7,8 +7,8 @@ import os
 class brokerToEmu:
     def __init__(self, adb_dev):
 
-        def get_telnet_session(host="host.docker.internal", port=6554):
-        # def get_telnet_session(host="192.168.64.1", port=6554):
+        def get_telnet_session(host="host.docker.internal", port=5554):
+        # def get_telnet_session(host="192.168.64.1", port=5554):
             auth_cmd = f"auth {os.environ.get('ANDROID_EMULATOR_AUTH', '')}"
             if os.environ.get('ANDROID_EMULATOR_AUTH') is None:
                 raise RuntimeError("Environment variable ANDROID_EMULATOR_AUTH is not set or empty.")
