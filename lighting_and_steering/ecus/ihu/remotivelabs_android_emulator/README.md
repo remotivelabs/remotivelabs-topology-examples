@@ -112,50 +112,28 @@ The coordinates are sent using `rest` to the Cuttlefish virtual Android device, 
 
 Protos for location can be found here: https://android.googlesource.com/device/google/cuttlefish/+/refs/heads/master/host/commands/gnss_grpc_proxy/gnss_grpc_proxy.proto
 
-# Start with location using the EMULATOR
+# Android ADB and EMULATOR, how to get going
 
-1. start emulator, make sure its the only emulator running (port 5554)
+Local                                                                                                                                                                                                      
+1. Change adb port in android studio. Debugger options, use port 5038. Only start one emulator
 
-1a. if on linux vm 
-```
-# 5554 is the key here
-ssh aleksandar@192.168.64.3 -L 50051:localhost:50051 -L 8080:localhost:8080  -L 8081:localhost:8081 -L 8888:localhost:8888 -L 5001:localhost:5001 -R 5554:localhost:5554
-```
+2. ssh aleksandar@192.168.64.3 -L 50051:localhost:50051 -L 8080:1ocalhost:8080 -L 8081:localhost:8081 -L 8888:localhost:8888 -L 5001:localhost:5001 -L 5038:1ocalhost:5038 -R 5555:localhost:5555 -R 15554:l
+ocalhost:5554
 
-2. start emu relay, forwards connections from 6554 to 5554
-```
-pyhton3 emu_bridge
-```
-3. Add your key to ANDROID_EMULATOR_AUTH
-```
-cat ~/.emulator_console_auth_token 
-```
-4. generate and launch you setup
+On ssh target
 
+3. start `adb -a -P 5038 nodaemon server start`  
 
-# Instructions for ADB access.
+4. `socat TCP-LISTEN:5554,fork,reuseaddr TCP:localhost:15554` (apt install socat)
 
-1. (debugger) Android emulator, use existing ADB server, select 5038
-2. start adb manually in terminal: 
-```
-adb -a -P 5038 nodaemon server start
-```
-3. Add your key to ANDROID_EMULATOR_AUTH
-```
-cat ~/.emulator_console_auth_token 
-```
-4. generate and launch you setup
+5. make sure to set ANDROID_EMULATOR_AUTH in instance file  correct ( cat ~/.emulator_console_auth_token)
 
-NB. Make sure to only have one emulator running.
+6. Generate toplogy
+
+7. Start toplogy docker compose up
 
 
-## Run ADB Access from a vm
-```
-# 5038 is hey here along with 5555
-ssh aleksandar@192.168.64.3 -L 50051: localhost:50051 -L 8080: 1ocalhost: 8080 -L 8081:localhost:8081 -L 8888:localhost: 8888 -L 5001:localhost:5001 -R 5555:localhost:5555 -L 5038:1ocalhost:5038 -R 5557:1ocalhost:5557 -R 5556:1ocalhost:5556
-```
-
-### resources
-https://developer.android.com/tools/adb
-https://twosixtech.com/blog/integrating-docker-and-adb/?utm_source=chatgpt.com
-https://stackoverflow.com/questions/46898322/emulator-5554-unauthorized-for-adb-devices
+### Useful resources
+- https://developer.android.com/tools/adb
+- https://twosixtech.com/blog/integrating-docker-and-adb/?utm_source=chatgpt.com
+- https://stackoverflow.com/questions/46898322/emulator-5554-unauthorized-for-adb-devices
