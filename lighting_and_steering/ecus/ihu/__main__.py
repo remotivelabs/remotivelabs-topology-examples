@@ -74,8 +74,8 @@ async def main(avp: BehavioralModelArgs, br_emu: brokerToEmu):
 
 if __name__ == "__main__":
     # Instantiate brokerToEmu and start location updates
-    # adb_device = adb.get_emulator_device()
-    br_emu = brokerToEmu(None)
+    adb_device = adb.get_emulator_device()
+    br_emu = brokerToEmu(adb_device)
     # br_emu = None  # Replace with actual brokerToEmu instantiation if adb_device is needed
 
     args = BehavioralModelArgs.parse()
