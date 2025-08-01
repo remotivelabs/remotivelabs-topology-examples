@@ -58,7 +58,7 @@ ecus:
         type: container
         container:
           build:
-            dockerfile: ../Dockerfile
+            dockerfile: ../Dockerfile.ihu
           volumes:
             - ../ecus/ihu:/app/ihu
           working_dir: /app

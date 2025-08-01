@@ -2,8 +2,8 @@ import socket
 import threading
 
 LOCAL_HOST = '127.0.0.1'
-LOCAL_PORT = 5554
-REMOTE_PORT = 6554
+LOCAL_PORT = 15554
+REMOTE_PORT = 5554
 
 def forward(src, dst):
     try:
