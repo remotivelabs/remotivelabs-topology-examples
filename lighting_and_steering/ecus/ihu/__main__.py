@@ -65,6 +65,8 @@ class IHU:
 
     async def _location_listener(self, frame: Frame) -> None:
         br_emu.redirect_location_to_emulator_signals(frame.signals)
+        # set speed PERF_VEHICLE_SPEED
+        br_prop.set_property(291504647, 0, 6.7777777777777795)
         # br_prop.redirect_signals_to_aaos(frame.signal)
         # logger.info(f"Location: {frame.signals}")
 
@@ -80,6 +82,7 @@ if __name__ == "__main__":
     adb_device = adb.get_emulator_device()
     br_emu = brokerToEmu(adb_device)
     br_prop = BrokerToAAOS(adb_device)
+    # br_prop.set_property(291504647, 0, 6.7777777777777795)
     # br_emu = None  # Replace with actual brokerToEmu instantiation if adb_device is needed
 
     args = BehavioralModelArgs.parse()

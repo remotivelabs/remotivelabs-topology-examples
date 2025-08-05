@@ -272,7 +272,9 @@ class Vhal:
         # Get the list of configs
         self.get_config_all()
         msg = self.rx_msg()
-        print("Received config message:", msg)
+        if msg is None:
+            raise RuntimeError("No config message received from Vehicle HAL emulator, make sure android image comes with vhal and is booted in permissive mode")
+
         # Parse the list of configs to generate a dictionary of prop_id to type
         for cfg in msg.config:
             self._propToType[cfg.prop] = cfg.value_type

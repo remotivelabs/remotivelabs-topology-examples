@@ -12,4 +12,7 @@ ecus:
             - ../ecus/location_ecu:/app/location_ecu
           working_dir: /app
           command: python -m location_ecu
+          environment:
+            - CLOUD_URL=${CLOUD_URL}
+            - CLOUD_AUTH=${CLOUD_AUTH}
 

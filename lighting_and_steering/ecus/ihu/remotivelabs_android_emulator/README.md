@@ -112,16 +112,33 @@ The coordinates are sent using `rest` to the Cuttlefish virtual Android device, 
 
 Protos for location can be found here: https://android.googlesource.com/device/google/cuttlefish/+/refs/heads/master/host/commands/gnss_grpc_proxy/gnss_grpc_proxy.proto
 
-# Android ADB and EMULATOR, how to get going
+# Android ADB and EMULATOR - how to get going
 
-Local + ssh remotiv environment
+## Prerequisites
 
-1. Change adb port in android studio. Debugger options, use port 5038. Only start one emulator
+```
+# linux
+sudo apt install jq socat
+```
+```
+# MacOS
+brew install jq socat
+```
 
-2. ssh aleksandar@192.168.64.3 -L 50051:localhost:50051 -L 8080:1ocalhost:8080 -L 8081:localhost:8081 -L 8888:localhost:8888 -L 5001:localhost:5001 -L 5038:1ocalhost:5038 -R 5555:localhost:5555 -R 15554:l
-ocalhost:5554
+1.
+    1. Start your android emulator
+    ```
+    ~/Library/Android/sdk/emulator.backup/emulator @SmallAutoAPI33 -selinux permissive -no-snapshot
+    ```
+    
+    2. Install Maps or similar, `adb install path_to_apk`
+    
 
-On "ssh target" or "only local" 
+2. Only for MacOS users who need socketcan
+
+    ssh aleksandar@192.168.64.3 -L 50051:localhost:50051 -L 8080:1ocalhost:8080 -L 8081:localhost:8081 -L 8888:localhost:8888 -L 5001:localhost:5001 -L 5038:1ocalhost:5038 -R 5555:localhost:5555 -R 15554:localhost:5554
+
+**If** step 2 was executed the following should be started in that ssh host
 
 3. start `adb -a -P 5038 nodaemon server start`  
 
@@ -129,15 +146,50 @@ On "ssh target" or "only local"
     1. set up port redirection (adb only accepts connections from localhost)
 (with ssh). `socat TCP-LISTEN:5554,fork,reuseaddr TCP:localhost:15554` (apt install socat)
     
-    2. (without ssh). `socat TCP-LISTEN:5554,fork,reuseaddr TCP:localhost:5554` (apt install socat, brew install socat)
+    2. (alternatively without ssh). `socat TCP-LISTEN:5554,fork,reuseaddr TCP:localhost:5554` (apt install socat, brew install socat)
 
 5. make sure to set ANDROID_EMULATOR_AUTH in instance file  correct ( cat ~/.emulator_console_auth_token)
 
-6. Generate toplogy
+6. Generate topology
 
-7. Start toplogy docker compose up
+# Linux
+```
+export CLOUD_URL=$(./run.sh)
+CLOUD_AUTH=$(remotive cloud auth print-access-token) \
+ANDROID_EMULATOR_AUTH=$(cat ~/.emulator_console_auth_token) \
+remotive-topology generate \
+  -f lighting_and_steering/topology/main.instance.yaml \
+  -f lighting_and_steering/topology/android.instance.yaml \
+  lighting_and_steering/build
+```
+# MacOS and Windows
+```
+export CLOUD_URL=$(./run.sh)
+CLOUD_AUTH=$(remotive cloud auth print-access-token) \
+ANDROID_EMULATOR_AUTH=$(cat ~/.emulator_console_auth_token) \
+remotive-topology generate \
+  -f lighting_and_steering/topology/main.instance.yaml \
+  -f lighting_and_steering/topology/android.instance.yaml \
+  -f lighting_and_steering/topology/can_over_udp.instance.yaml \
+  lighting_and_steering/build
+```
 
-### VHAL properties
+
+7. Start the topology docker compose up
+```
+docker compose -f lighting_and_steering/build/lighting-and-steering/docker-compose.yml --profile jupyter --profile ui up
+```
+
+### Android
+
+Make sure to only have **one** instance of android running.
+
+#### Emulator
+There is no way simple way to start android in `permissive` mode which is required for VHAL and custom properties. If you only need `emu` support and still like to launch from Android Studio, then make sure to change adb port. Located in Debugger options, use port 5038.
+
+> Hint: If you launch from command line, you can still connect your emulator.
+
+#### VHAL properties
 make sure to BOOT in permissive mode
 ```
 ~/Library/Android/sdk/emulator.backup/emulator @SmallAutoAPI33 -selinux permissive -no-snapshot
