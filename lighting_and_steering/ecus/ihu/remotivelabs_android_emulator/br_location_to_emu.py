@@ -19,6 +19,7 @@ class brokerToEmu:
             return s
 
         # Get emulator via adb only once
+        adb_dev.root()
         self.adb_dev = adb_dev
         # self.args_url, self.args_api_key, _cvd, self.signals = parsing_to_subscribe()
         # self.signal_name_latitude = self.signals[0][1]
@@ -49,7 +50,7 @@ class brokerToEmu:
         if lat is not None and lon is not None:
             self.lat = lat
             self.lon = lon
-            self.adb_dev.root()
+            # self.adb_dev.root()
             self.adb_dev.send_fix(str(self.lon), str(self.lat))
 
     def redirect_location_to_emulator(self, signals):
@@ -65,7 +66,7 @@ class brokerToEmu:
                 self.lon = signal.double
 
             if self.lat is not None and self.lon is not None:
-                self.adb_dev.root()
+                # self.adb_dev.root()
                 self.adb_dev.send_fix(str(self.lon), str(self.lat))
 
 
