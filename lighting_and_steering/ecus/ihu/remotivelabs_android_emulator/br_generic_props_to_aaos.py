@@ -108,7 +108,7 @@ class BrokerToAAOS:
         """Set a property in AAOS via VHAL"""
         try:
             self.vhal.set_property(property_id, area_id, value)
-            print(f"Property set: ID=0x{property_id:08x}, Area=0x{area_id:08x}, Value={value}")
+            # print(f"Property set: ID=0x{property_id:08x}, Area=0x{area_id:08x}, Value={value}")
         except Exception as e:
             print(f"Error setting property ID 0x{property_id:08x}: {e}")
             

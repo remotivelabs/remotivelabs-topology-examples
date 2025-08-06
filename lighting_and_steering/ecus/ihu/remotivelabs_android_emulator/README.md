@@ -136,7 +136,7 @@ brew install jq socat
 
 2. Only for MacOS users who need socketcan
 
-    ssh aleksandar@192.168.64.3 -L 50051:localhost:50051 -L 8080:1ocalhost:8080 -L 8081:localhost:8081 -L 8888:localhost:8888 -L 5001:localhost:5001 -L 5038:1ocalhost:5038 -R 5555:localhost:5555 -R 15554:localhost:5554
+    `ssh aleksandar@192.168.64.3 -L 50051:localhost:50051 -L 8080:1ocalhost:8080 -L 8081:localhost:8081 -L 8888:localhost:8888 -L 5001:localhost:5001 -L 5038:1ocalhost:5038 -R 5555:localhost:5555 -R 15554:localhost:5554`
 
 **If** step 2 was executed the following should be started in that ssh host
 
@@ -148,9 +148,7 @@ brew install jq socat
     
     2. (alternatively without ssh). `socat TCP-LISTEN:5554,fork,reuseaddr TCP:localhost:5554` (apt install socat, brew install socat)
 
-5. make sure to set ANDROID_EMULATOR_AUTH in instance file  correct ( cat ~/.emulator_console_auth_token)
-
-6. Generate topology
+5. Generate topology
 
 # Linux
 ```
@@ -175,7 +173,7 @@ remotive-topology generate \
 ```
 
 
-7. Start the topology docker compose up
+6. Start the topology docker compose up
 ```
 docker compose -f lighting_and_steering/build/lighting-and-steering/docker-compose.yml --profile jupyter --profile ui up
 ```

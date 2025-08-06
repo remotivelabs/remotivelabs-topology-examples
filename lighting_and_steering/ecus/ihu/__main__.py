@@ -42,6 +42,10 @@ class IHU:
                 self._location_can.create_input_handler(
                     [filters.FrameFilter("LocationFrame")],
                     self._location_listener,
+                ),
+                self._location_can.create_input_handler(
+                    [filters.FrameFilter("UISpeedFrame")],
+                    self._speed_listener,
                 )
             ],
         )
@@ -62,13 +66,27 @@ class IHU:
 
     async def on_indicator(self, event: SomeIPEvent) -> None:
         pass
+        # left = event.parameters.get("LeftTurnlight", 0)
+        # right = event.parameters.get("RightTurnlight", 0)
+
+        # if left:
+        #     # logger.info("Left turnlight activated", someip_event=event)
+        #     br_prop.set_property(289408008, 0, 2)
+        #     # handle left turnlight logic here
+        # elif right:
+        #     # logger.info("Right turnlight activated", someip_event=event)
+        #     br_prop.set_property(289408008, 0, 1)
+        #     # handle right turnlight logic here
+        # else:
+        #     br_prop.set_property(289408008, 0, 0)
+        #     # logger.info("No turnlight activated", someip_event=event)
+
+    async def _speed_listener(self, frame: Frame) -> None:
+        br_prop.set_property(291504647, 0, frame.signals["UISpeedFrame.uispeed"] / 3.6)  # Convert speed to m/s
+        # set speed PERF_VEHICLE_SPEED
 
     async def _location_listener(self, frame: Frame) -> None:
         br_emu.redirect_location_to_emulator_signals(frame.signals)
-        # set speed PERF_VEHICLE_SPEED
-        br_prop.set_property(291504647, 0, 6.7777777777777795)
-        # br_prop.redirect_signals_to_aaos(frame.signal)
-        # logger.info(f"Location: {frame.signals}")
 
 
 async def main(avp: BehavioralModelArgs, br_emu: brokerToEmu, br_prop: BrokerToAAOS):
@@ -82,8 +100,6 @@ if __name__ == "__main__":
     adb_device = adb.get_emulator_device()
     br_emu = brokerToEmu(adb_device)
     br_prop = BrokerToAAOS(adb_device)
-    # br_prop.set_property(291504647, 0, 6.7777777777777795)
-    # br_emu = None  # Replace with actual brokerToEmu instantiation if adb_device is needed
 
     args = BehavioralModelArgs.parse()
     configure_logging(args.loglevel)

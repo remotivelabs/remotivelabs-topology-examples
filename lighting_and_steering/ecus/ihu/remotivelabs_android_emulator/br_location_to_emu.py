@@ -29,7 +29,7 @@ class brokerToEmu:
         # self.session = get_emulator_socket()
 
     def redirect_location_to_emulator_signals(self, signals: dict[str, float]):
-        print("Received signals:", signals)
+        # print("Received signals:", signals)
         # Extract latitude and longitude from the signals dict
         lat = signals.get("LocationFrame.Latitude")
         lon = signals.get("LocationFrame.Longitude")
@@ -43,7 +43,7 @@ class brokerToEmu:
                 print(f"Unexpected emu socket response: {response}, command was: {geofix_command}")
 
     def redirect_location_to_emulator_signals(self, signals: dict[str, float]):
-        print("Received signals:", signals)
+        # print("Received signals:", signals)
         # Extract latitude and longitude from the signals dict
         lat = signals.get("LocationFrame.Latitude")
         lon = signals.get("LocationFrame.Longitude")
