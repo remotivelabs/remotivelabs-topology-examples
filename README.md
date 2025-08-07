@@ -1,4 +1,4 @@
-# RemotiveLabs Topology Examples
+# RemotiveLabs topology examples
 
 Easy to get going examples:
 
@@ -16,9 +16,9 @@ More detailed examples:
 - [RemotiveLabs RemotiveTopology framework documentation](https://docs.remotivelabs.com/apis/python/remotivelabs/topology)
 - [RemotiveLabs documentation home](https://docs.remotivelabs.com/)
 
-## RemotiveBroker License (prerequisite)
+## Prerequisites
 
-The examples assume that you have a [env file](https://docs.docker.com/compose/how-tos/environment-variables/set-environment-variables/#use-the-env_file-attribute) with a [RemotiveBroker](https://docs.remotivelabs.com/docs/remotive-broker) license in the root of this repository called `REMOTIVEBROKER_LICENSE`. Alternatively you can `export REMOTIVEBROKER_LICENSE` to a custom path. The env file should set the variable `LICENSE`:
-```bash
-LICENSE="<YOUR LICENSE>"
-```
+To run these examples, you'll need:
+- A valid RemotiveTopology subscription (free trial available)
+
+**New to RemotiveTopology?** Get started with our [installaion guide](https://docs.remotivelabs.com/docs/remotive-topology) to create your free trial subscription.

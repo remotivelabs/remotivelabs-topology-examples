@@ -1,8 +1,7 @@
-schema: remotive-topology-instance:0.7
+schema: remotive-topology-instance:0.8
 
 includes:
   - ./bcm.instance.yaml
-  - ./settings.instance.yaml
   - ./tester.instance.yaml
 
 platform:

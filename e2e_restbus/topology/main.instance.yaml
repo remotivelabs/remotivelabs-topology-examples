@@ -1,4 +1,4 @@
-schema: remotive-topology-instance:0.7
+schema: remotive-topology-instance:0.8
 name: e2e-restbus
 
 includes:
@@ -33,8 +33,3 @@ ecus:
             - ../ecus/ecu_b.py:/app/ecu_b.py
           working_dir: /app
           command: python -m ecu_b
-
-settings:
-  remotivebroker:
-    version: v1.10.3
-    license_file: ../../REMOTIVEBROKER_LICENSE

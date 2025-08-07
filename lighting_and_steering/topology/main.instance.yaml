@@ -1,4 +1,4 @@
-schema: remotive-topology-instance:0.7
+schema: remotive-topology-instance:0.8
 
 name: lighting-and-steering
 
@@ -63,8 +63,3 @@ ecus:
             - ../ecus/ihu:/app/ihu
           working_dir: /app
           command: python -m ihu
-
-settings:
-  remotivebroker:
-    version: v1.10.3
-    license_file: ../../REMOTIVEBROKER_LICENSE

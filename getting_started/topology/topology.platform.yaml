@@ -1,4 +1,4 @@
-schema: remotive-topology-platform:0.7
+schema: remotive-topology-platform:0.8
 channels:
   DriverCan0:
     type: can

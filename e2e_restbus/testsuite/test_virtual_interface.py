@@ -129,7 +129,7 @@ class SignalValueAccumulator:
         self._stream: AsyncIterator[list[Signal]] | None = None
 
     async def __aenter__(self) -> SignalValueAccumulator:
-        self._stream = await self._client.subscribe(*self.signals)
+        self._stream = await self._client.subscribe(*self.signals, initial_empty=True)
         return self
 
     async def __aexit__(self, exc_type, exc, tb) -> None:
