@@ -116,6 +116,9 @@ Protos for location can be found here: https://android.googlesource.com/device/g
 
 ## Prerequisites
 
+install 
+- RemotiveCLI https://docs.remotivelabs.com/docs/remotive-cli/installation
+- RemotieToplogy https://docs.remotivelabs.com/docs/remotive-topology/install
 ```
 # linux
 sudo apt install jq socat
@@ -128,10 +131,12 @@ brew install jq socat
 1.
     1. Start your android emulator
     ```
-    ~/Library/Android/sdk/emulator.backup/emulator @SmallAutoAPI33 -selinux permissive -no-snapshot
+    ~/Library/Android/sdk/emulator.backup/emulator @Tiramisu_API_33_automotive -selinux permissive -no-snapshot
     ```
+    > Android Automotive 13 "Tiramisu" with Google APIs ARM 64 v8a System Image, comes with VHAL. 
     
-    2. Install Maps or similar, `adb install path_to_apk`
+    2. Install Maps or similar, `adb install path_to_apk`. Eg https://www.apkmirror.com/apk/google-inc/google-maps-android-automotive/
+    this will start a ADB server make sure to remove it again `adb kill-server`
     
 
 2. Only for MacOS users who need socketcan
@@ -149,6 +154,8 @@ brew install jq socat
     2. (alternatively without ssh). `socat TCP-LISTEN:5554,fork,reuseaddr TCP:localhost:5554` (apt install socat, brew install socat)
 
 5. Generate topology
+
+Unless already signed in start by doing `remotive cloud auth login`
 
 # Linux
 ```
