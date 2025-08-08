@@ -38,6 +38,10 @@ BO_ 104 BrakeLightControl: 1 BCM
 BO_ 106 SteeringWheelInfo: 8 BCM
   SG_ SteeringWheelPosition : 0|14@1+ (0.1,-819.2) [-819.2|819.1] "deg"  ADAS
 
+BO_ 200 LocationFrame: 8 TCU
+ SG_ Longitude : 28|28@1- (1E-006,0) [-134.218|134.218] "Deg"  GWM
+ SG_ Latitude : 0|28@1- (1E-006,0) [-134.218|134.218] "Deg"  GWM
+
 VAL_ 100 LeftDaylightRunningLightRequest 0 "Off" 1 "On";
 VAL_ 100 RightDaylightRunningLightRequest 0 "Off" 1 "On";
 
@@ -55,6 +59,7 @@ VAL_ 104 RightBrakeLightRequest 0 "Off" 1 "On";
 
 BA_DEF_ BO_ "GenMsgCycleTime" FLOAT 0 10000;
 
+BA_ "GenMsgCycleTime" BO_ 200 200;
 BA_ "GenMsgCycleTime" BO_ 100 50;
 BA_ "GenMsgCycleTime" BO_ 101 50;
 BA_ "GenMsgCycleTime" BO_ 102 50;
