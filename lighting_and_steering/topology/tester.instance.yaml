@@ -17,6 +17,9 @@ containers:
       - RLCM-broker.com
       - gwm
       - ihu
+    environment:  
+      - CLOUD_URL=${CLOUD_URL}
+      - CLOUD_AUTH=${CLOUD_AUTH}
 
   behave:
     profiles: [behave]
