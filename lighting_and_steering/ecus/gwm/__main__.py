@@ -21,6 +21,7 @@ class GWM:
     ecu_name: str = "GWM"
     someip_ns: str = "GWM-SOMEIP"
     can_ns: str = "GWM-BodyCan0"
+    chassis_ns: str = "GWM-ChassisCan0"
 
     left_turn_light_request: str = "TurnLightControl.LeftTurnLightRequest"
     right_turn_light_request: str = "TurnLightControl.RightTurnLightRequest"
@@ -33,11 +34,15 @@ class GWM:
             broker_client=self._broker_client,
         )
         self.body_can_0 = CanNamespace(GWM.can_ns, broker_client=self._broker_client)
+        self.chassis_can_0 = CanNamespace(GWM.chassis_ns, broker_client=self._broker_client)
         self.bm = BehavioralModel(
             GWM.ecu_name,
             namespaces=[self.someip_bus, self.body_can_0],
             broker_client=self._broker_client,
-            input_handlers=[self.body_can_0.create_input_handler([filters.FrameFilter("TurnLightControl")], self.on_frame)],
+            input_handlers=[self.body_can_0.create_input_handler([filters.FrameFilter("TurnLightControl")], self.on_frame), 
+                            self.body_can_0.create_input_handler([filters.FrameFilter("LocationFrame")], self.on_location_frame),
+                            self.chassis_can_0.create_input_handler([filters.FrameFilter("UISpeedFrame")], self.on_speed_frame)],
+
         )
 
     async def __aenter__(self):
@@ -63,7 +68,11 @@ class GWM:
                 },
             )
         )
+    async def on_location_frame(self, frame: Frame) -> None:
+        pass
 
+    async def on_speed_frame(self, frame: Frame) -> None:
+        pass
 
 async def main(avp: BehavioralModelArgs):
     logger.info("Starting GWM ECU", args=avp)
