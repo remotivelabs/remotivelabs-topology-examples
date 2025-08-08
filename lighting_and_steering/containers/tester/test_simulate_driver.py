@@ -41,6 +41,7 @@ async def take_values(sub: AsyncIterator[list[Signal]], x: int = 1):
         result.update({s.name: s.value for s in signals})
     return result
 
+
 @pytest.mark.asyncio
 async def test_feed_from_cloud(broker_client: BrokerClient):
     cloud_url = os.environ.get("CLOUD_URL")
@@ -64,35 +65,26 @@ async def test_feed_from_cloud(broker_client: BrokerClient):
             async for frame in itr:
                 await broker_client.restbus.update_signals(
                     (
-                        "LocationECU-LocationCan0",
+                        "TCU-BodyCan0",
                         [
                             RestbusSignalConfig.set(name="LocationFrame.Latitude", value=frame.signals["ID04FGPSLatLong.GPSLatitude04F"]),
                             RestbusSignalConfig.set(name="LocationFrame.Longitude", value=frame.signals["ID04FGPSLatLong.GPSLongitude04F"]),
                         ],
                     )
                 )
-                # logger.info("Received location frame", frame=frame)
-                # await can.restbus.update_signals(
-                #     RestbusSignalConfig.set(name="LocationFrame.Latitude", value=frame.signals["ID04FGPSLatLong.GPSLatitude04F"]),
-                #     RestbusSignalConfig.set(name="LocationFrame.Longitude", value=frame.signals["ID04FGPSLatLong.GPSLongitude04F"]),
-                # )
 
         async def handle_speed():
             async for frame in speed_itr:
                 await broker_client.restbus.update_signals(
                     (
-                        "LocationECU-LocationCan0",
+                        "ABS_ECU-ChassisCan0",
                         [
                             RestbusSignalConfig.set(name="UISpeedFrame.uispeed", value=frame.signals["ID257DIspeed.DI_uiSpeed"]),
                         ],
                     )
                 )
-                # logger.info("Received speed frame", frame=frame)
-                # await can.restbus.update_signals(
-                #     RestbusSignalConfig.set(name="UISpeedFrame.uispeed", value=frame.signals["ID257DIspeed.DI_uiSpeed"]),
-                # )
         await asyncio.gather(handle_location(), handle_speed())
-        # await asyncio.Event().wait()
+        # run until adb returns correct location and speed?
 
 
 @pytest.mark.asyncio

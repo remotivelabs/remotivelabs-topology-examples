@@ -29,24 +29,24 @@ class IHU:
         self._broker_client = BrokerClient(url=avp.url, auth=avp.auth)
 
         self._some_ip_eth = SomeIPNamespace(IHU.someip_ns, client_id=3, broker_client=self._broker_client)
-        self._location_can = CanNamespace("IHU-LocationCan0", broker_client=self._broker_client)
+        # self._location_can = CanNamespace("IHU-LocationCan0", broker_client=self._broker_client)
         self.bm = BehavioralModel(
             IHU.ecu_name,
-            namespaces=[self._some_ip_eth, self._location_can],
+            namespaces=[self._some_ip_eth],
             broker_client=self._broker_client,
             input_handlers=[
                 self._some_ip_eth.create_input_handler(
                     [filters.SomeIPEventFilter(service_instance_name="TurnlightIndicator", event_name="TurnlightControlEvent")],
                     self.on_indicator,
                 ),
-                self._location_can.create_input_handler(
-                    [filters.FrameFilter("LocationFrame")],
-                    self._location_listener,
-                ),
-                self._location_can.create_input_handler(
-                    [filters.FrameFilter("UISpeedFrame")],
-                    self._speed_listener,
-                )
+                # self._location_can.create_input_handler(
+                #     [filters.FrameFilter("LocationFrame")],
+                #     self._location_listener,
+                # ),
+                # self._location_can.create_input_handler(
+                #     [filters.FrameFilter("UISpeedFrame")],
+                #     self._speed_listener,
+                # )
             ],
         )
         self.br_emu = br_emu
@@ -81,12 +81,12 @@ class IHU:
         #     br_prop.set_property(289408008, 0, 0)
         #     # logger.info("No turnlight activated", someip_event=event)
 
-    async def _speed_listener(self, frame: Frame) -> None:
-        br_prop.set_property(291504647, 0, frame.signals["UISpeedFrame.uispeed"] / 3.6)  # Convert speed to m/s
-        # set speed PERF_VEHICLE_SPEED
+    # async def _speed_listener(self, frame: Frame) -> None:
+    #     br_prop.set_property(291504647, 0, frame.signals["UISpeedFrame.uispeed"] / 3.6)  # Convert speed to m/s
+    #     # set speed PERF_VEHICLE_SPEED
 
-    async def _location_listener(self, frame: Frame) -> None:
-        br_emu.redirect_location_to_emulator_signals(frame.signals)
+    # async def _location_listener(self, frame: Frame) -> None:
+    #     br_emu.redirect_location_to_emulator_signals(frame.signals)
 
 
 async def main(avp: BehavioralModelArgs, br_emu: brokerToEmu, br_prop: BrokerToAAOS):

@@ -31,6 +31,14 @@ ecus:
     channels:
       BodyCan0:
 
+  TCU:
+    mock:
+      {}
+
+  ABS_ECU:
+    mock:
+      {}
+
   RLCM:
     channels:
       BodyCan0:
