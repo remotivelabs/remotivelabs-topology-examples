@@ -2,7 +2,7 @@ import os
 import asyncio
 import logging
 import structlog
-from remotivelabs.broker import BrokerClient, RestbusSignalConfig, FrameSubscription
+from remotivelabs.broker import BrokerClient
 from remotivelabs.topology.behavioral_model import BehavioralModel
 from remotivelabs.topology.cli.behavioral_model import BehavioralModelArgs
 from remotivelabs.topology.namespaces.can import CanNamespace, RestbusConfig
@@ -32,34 +32,43 @@ async def main(avp: BehavioralModelArgs):
                 ],
             )
             async with BehavioralModel(
-                "LocationECU",
+                "HazardLightControlUnit",
                 namespaces=[can],
                 broker_client=broker_client,
             ) as bm:
+                # Simulate pressing the hazard light button
+                await bm.run_forever()
+
+            # await broker_client.run_forever()
+            # async with BehavioralModel(
+            #     "LocationECU",
+            #     namespaces=[can],
+            #     broker_client=broker_client,
+            # ) as bm:
                 
-                chassis_bus = CanNamespace("ChassisBus", cloud_broker_client)
-                await chassis_bus.open()
-                itr = await chassis_bus.subscribe_frames(FrameSubscription("ID04FGPSLatLong"), on_change=False, decode_named_values=True)
+            #     chassis_bus = CanNamespace("ChassisBus", cloud_broker_client)
+            #     await chassis_bus.open()
+            #     itr = await chassis_bus.subscribe_frames(FrameSubscription("ID04FGPSLatLong"), on_change=False, decode_named_values=True)
 
-                vehicle_bus = CanNamespace("VehicleBus", cloud_broker_client)
-                await vehicle_bus.open()
-                speed_itr = await vehicle_bus.subscribe_frames(FrameSubscription("ID257DIspeed"), on_change=False, decode_named_values=True)
+            #     vehicle_bus = CanNamespace("VehicleBus", cloud_broker_client)
+            #     await vehicle_bus.open()
+            #     speed_itr = await vehicle_bus.subscribe_frames(FrameSubscription("ID257DIspeed"), on_change=False, decode_named_values=True)
 
-                async def handle_location():
-                    async for frame in itr:
-                        # logger.info("Received location frame", frame=frame)
-                        await can.restbus.update_signals(
-                            RestbusSignalConfig.set(name="LocationFrame.Latitude", value=frame.signals["ID04FGPSLatLong.GPSLatitude04F"]),
-                            RestbusSignalConfig.set(name="LocationFrame.Longitude", value=frame.signals["ID04FGPSLatLong.GPSLongitude04F"]),
-                        )
+            #     async def handle_location():
+            #         async for frame in itr:
+            #             # logger.info("Received location frame", frame=frame)
+            #             await can.restbus.update_signals(
+            #                 RestbusSignalConfig.set(name="LocationFrame.Latitude", value=frame.signals["ID04FGPSLatLong.GPSLatitude04F"]),
+            #                 RestbusSignalConfig.set(name="LocationFrame.Longitude", value=frame.signals["ID04FGPSLatLong.GPSLongitude04F"]),
+            #             )
 
-                async def handle_speed():
-                    async for frame in speed_itr:
-                        # logger.info("Received speed frame", frame=frame)
-                        await can.restbus.update_signals(
-                            RestbusSignalConfig.set(name="UISpeedFrame.uispeed", value=frame.signals["ID257DIspeed.DI_uiSpeed"]),
-                        )
-                await asyncio.gather(handle_location(), handle_speed(), bm.run_forever())
+            #     async def handle_speed():
+            #         async for frame in speed_itr:
+            #             # logger.info("Received speed frame", frame=frame)
+            #             await can.restbus.update_signals(
+            #                 RestbusSignalConfig.set(name="UISpeedFrame.uispeed", value=frame.signals["ID257DIspeed.DI_uiSpeed"]),
+            #             )
+            #     await asyncio.gather(handle_location(), handle_speed(), bm.run_forever())
 
 
 if __name__ == "__main__":

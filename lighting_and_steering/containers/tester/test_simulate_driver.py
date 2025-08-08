@@ -1,15 +1,19 @@
 from __future__ import annotations
-
+import os
 from functools import partial
 from typing import AsyncIterator
-
+import structlog
+import asyncio
 import pytest
 import pytest_asyncio
 from hamcrest import equal_to
-from remotivelabs.broker import BrokerClient, RestbusSignalConfig, Signal
+from remotivelabs.broker import BrokerClient, RestbusSignalConfig, Signal, FrameSubscription
+from remotivelabs.broker.auth import TokenAuth
 from remotivelabs.topology.control import ControlClient, ControlRequest
 from remotivelabs.topology.testing.retry import await_at_most
+from remotivelabs.topology.namespaces.can import CanNamespace
 
+logger = structlog.get_logger(__name__)
 
 @pytest_asyncio.fixture()
 async def broker_client(request: pytest.FixtureRequest) -> AsyncIterator[BrokerClient]:
@@ -36,6 +40,59 @@ async def take_values(sub: AsyncIterator[list[Signal]], x: int = 1):
         signals = await sub.__anext__()
         result.update({s.name: s.value for s in signals})
     return result
+
+@pytest.mark.asyncio
+async def test_feed_from_cloud(broker_client: BrokerClient):
+    cloud_url = os.environ.get("CLOUD_URL")
+    cloud_auth = os.environ.get("CLOUD_AUTH")
+    if not cloud_url:
+        raise RuntimeError("CLOUD_URL environment variable is not set or empty.")
+    if not cloud_auth:
+        raise RuntimeError("CLOUD_AUTH environment variable is not set or empty.")
+    
+    async with BrokerClient(url=cloud_url, auth=TokenAuth(cloud_auth)) as cloud_broker_client: 
+        
+        chassis_bus = CanNamespace("ChassisBus", cloud_broker_client)
+        await chassis_bus.open()
+        itr = await chassis_bus.subscribe_frames(FrameSubscription("ID04FGPSLatLong"), on_change=False, decode_named_values=True)
+
+        vehicle_bus = CanNamespace("VehicleBus", cloud_broker_client)
+        await vehicle_bus.open()
+        speed_itr = await vehicle_bus.subscribe_frames(FrameSubscription("ID257DIspeed"), on_change=False, decode_named_values=True)
+
+        async def handle_location():
+            async for frame in itr:
+                await broker_client.restbus.update_signals(
+                    (
+                        "LocationECU-LocationCan0",
+                        [
+                            RestbusSignalConfig.set(name="LocationFrame.Latitude", value=frame.signals["ID04FGPSLatLong.GPSLatitude04F"]),
+                            RestbusSignalConfig.set(name="LocationFrame.Longitude", value=frame.signals["ID04FGPSLatLong.GPSLongitude04F"]),
+                        ],
+                    )
+                )
+                # logger.info("Received location frame", frame=frame)
+                # await can.restbus.update_signals(
+                #     RestbusSignalConfig.set(name="LocationFrame.Latitude", value=frame.signals["ID04FGPSLatLong.GPSLatitude04F"]),
+                #     RestbusSignalConfig.set(name="LocationFrame.Longitude", value=frame.signals["ID04FGPSLatLong.GPSLongitude04F"]),
+                # )
+
+        async def handle_speed():
+            async for frame in speed_itr:
+                await broker_client.restbus.update_signals(
+                    (
+                        "LocationECU-LocationCan0",
+                        [
+                            RestbusSignalConfig.set(name="UISpeedFrame.uispeed", value=frame.signals["ID257DIspeed.DI_uiSpeed"]),
+                        ],
+                    )
+                )
+                # logger.info("Received speed frame", frame=frame)
+                # await can.restbus.update_signals(
+                #     RestbusSignalConfig.set(name="UISpeedFrame.uispeed", value=frame.signals["ID257DIspeed.DI_uiSpeed"]),
+                # )
+        await asyncio.gather(handle_location(), handle_speed())
+        # await asyncio.Event().wait()
 
 
 @pytest.mark.asyncio
