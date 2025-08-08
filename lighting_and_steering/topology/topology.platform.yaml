@@ -22,12 +22,20 @@ channels:
         consumed_service_instances:
           - TurnlightIndicator
 
-  LocationCan0:
+  ChassisCan0:
     type: can
-    database: ../databases/location_can.dbc
-    can_physical_channel_name: LocationCan0
+    database: ../databases/chassis_can.dbc
+    can_physical_channel_name: ChassisCan0
 
 ecus:
+  TCU:
+    channels:
+      BodyCan0:
+
+  ABS_ECU:
+    channels:
+      ChassisCan0:
+
   BCM:
     channels:
       DriverCan0:
@@ -52,6 +60,7 @@ ecus:
   GWM:
     channels:
       BodyCan0:
+      ChassisCan0:
       SOMEIP:
         config:
           type: ethernet
@@ -63,4 +72,3 @@ ecus:
         config:
           type: ethernet
           host: 172.31.0.12
-      LocationCan0:

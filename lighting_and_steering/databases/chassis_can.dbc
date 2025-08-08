@@ -29,17 +29,10 @@ NS_ :
     BU_BO_REL_
     SG_MUL_VAL_
 
-BU_: LocationECU
 
-BO_ 200 LocationFrame: 8 LocationECU
- SG_ Longitude : 28|28@1- (1E-006,0) [-134.218|134.218] "Deg"  Receiver
- SG_ Latitude : 0|28@1- (1E-006,0) [-134.218|134.218] "Deg"  Receiver
+BO_ 123 UISpeedFrame: 8   ABS_ECU
+ SG_ uispeed : 0|16@1+ (0.01,0) [0|250] "km/h" GWM  
 
 BA_DEF_ BO_ "GenMsgCycleTime" FLOAT 0 10000;
-
-BA_ "GenMsgCycleTime" BO_ 200 200;
-
-BO_ 123 UISpeedFrame: 8 LocationECU
- SG_ uispeed : 0|16@1+ (0.01,0) [0|250] "km/h" Vector__XXX  
 
 BA_ "GenMsgCycleTime" BO_ 123 200;
