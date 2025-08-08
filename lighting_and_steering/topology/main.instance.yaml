@@ -5,6 +5,7 @@ name: lighting-and-steering
 includes:
   - ./tester.instance.yaml
   - ./jupyter.instance.yaml
+  - ./cloudfeeder.instance.yaml
 
 platform:
   includes:
