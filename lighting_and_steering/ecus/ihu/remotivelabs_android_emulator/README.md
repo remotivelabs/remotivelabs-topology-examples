@@ -128,6 +128,13 @@ sudo apt install jq socat
 brew install jq socat
 ```
 
+A. Select you recording you like to use as input, navigare to it and extract the session id from the recording url https://console.cloud.remotivelabs.com/p/arm-demo/recordings/9459066702917749000?tab=playback
+Make sure the recording contains `ChassisBus` and `VehicleBus`
+eg `9459066702917749000` also take note of the project (in this case `arm-demo` which is the name which continas the "Recordings").
+
+
+
+
 1.
     1. Start your android emulator
     ```
@@ -176,7 +183,8 @@ remotive-topology generate \
 
 6. Start the topology docker compose up
 ```
-export CLOUD_URL=$(./run.sh)
+# check above on how to extract you session id.
+export CLOUD_URL=$(./run.sh arm-demo 9459066702917749000)
 CLOUD_AUTH=$(remotive cloud auth print-access-token) \
 ANDROID_EMULATOR_AUTH=$(cat ~/.emulator_console_auth_token) \
 docker compose -f lighting_and_steering/build/lighting-and-steering/docker-compose.yml --profile jupyter --profile ui up
