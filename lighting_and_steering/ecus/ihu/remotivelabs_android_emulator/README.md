@@ -112,7 +112,7 @@ The coordinates are sent using `rest` to the Cuttlefish virtual Android device, 
 
 Protos for location can be found here: https://android.googlesource.com/device/google/cuttlefish/+/refs/heads/master/host/commands/gnss_grpc_proxy/gnss_grpc_proxy.proto
 
-# Android ADB and EMULATOR - how to get going
+# Android ADB, Vehicle HAL (VHAL) and EMULATOR - how to get going
 
 ## Prerequisites
 
