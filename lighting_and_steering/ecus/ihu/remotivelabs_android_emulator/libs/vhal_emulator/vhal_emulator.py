@@ -140,7 +140,7 @@ class Vhal:
         """
             Connects to an Android Auto device running a Vehicle HAL with simulator.
         """
-        # Hard-coded socket port needs to match the one in DefaultVehicleHal
+        # Hard-coded socket needs to match the one in DefaultVehicleHal
         remotePortNumber = 33452
         extraArgs = '' if device is None else '-s %s' % device
         adbCmd = 'adb %s forward tcp:0 tcp:%d' % (extraArgs, remotePortNumber)
@@ -282,9 +282,19 @@ class Vhal:
         for cfg in msg.config:
             self._propToType[cfg.prop] = cfg.value_type
 
-        def rxThread(v):
-            while(1):
-                print("listening for messages...")
-                print(v.rx_msg(), flush=True)
-        rx = Thread(target=rxThread, args=(self,))
-        rx.start()
+        self.callback = None  # Add a callback attribute
+
+    def set_callback(self, callback):
+        """
+        Set a callback function to be triggered when a message is received.
+        """
+        self.callback = callback
+
+    def rxThread(self):
+        """
+        Thread that receives messages from the VHAL and triggers the callback.
+        """
+        while True:
+            msg = self.rx_msg()  # Blocking call to receive a message
+            if msg and self.callback:
+                self.callback(msg)  # Trigger the callback with the received message

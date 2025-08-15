@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import asyncio
 from dataclasses import dataclass
+from typing import Any
 
 import structlog
 from remotivelabs.broker import BrokerClient, Frame
@@ -25,8 +26,12 @@ class IHU:
     someip_ns: str = "IHU-SOMEIP"
     ecu_name: str = "IHU"
 
-    def __init__(self, avp: BehavioralModelArgs, br_emu: brokerToEmu, br_prop: BrokerToAAOS) -> None:
+    def __init__(self, avp: BehavioralModelArgs, br_emu: brokerToEmu) -> None:
+        # capture the running loop (must be created inside a running asyncio loop)
+        self._loop = asyncio.get_running_loop()
+
         self._broker_client = BrokerClient(url=avp.url, auth=avp.auth)
+        br_prop = BrokerToAAOS(adb_device, user_callback=self._vhal_callback)
 
         self._some_ip_eth = SomeIPNamespace(IHU.someip_ns, client_id=3, broker_client=self._broker_client)
         self.bm = BehavioralModel(
@@ -50,6 +55,33 @@ class IHU:
         )
         self.br_emu = br_emu
         self.br_prop = br_prop
+
+    # sync wrapper called from the BrokerToAAOS RX thread
+    def _vhal_callback(self, msg: dict[str, Any]) -> None:
+        fut = asyncio.run_coroutine_threadsafe(self.on_vhal_interaction(msg), self._loop)
+        # optionally log callback errors
+        def _done(f):
+            try:
+                f.result()
+            except Exception:
+                logger.exception("on_vhal_interaction failed")
+        fut.add_done_callback(_done)
+
+    async def on_vhal_interaction(self, msg: dict[str, Any]) -> None:
+        logger.info("Starting IHU ECU", msg=msg)
+        left = 1
+        right = 2
+        await self._some_ip_eth.notify(
+            SomeIPEvent(
+                name="CompartmentControl",
+                service_instance_name="HVACService",
+                parameters={
+                    "RightTemperature": right,
+                    "LeftTemperature": left,
+                },
+            )
+        )
+        logger.info("Starting IHU ECU done")
 
     async def __aenter__(self):
         await self._broker_client.connect()
@@ -95,18 +127,18 @@ class IHU:
         speed_mps = speed / 3.6
         self.br_prop.set_property(291504647, 0, speed_mps) 
 
-async def main(avp: BehavioralModelArgs, br_emu: brokerToEmu, br_prop: BrokerToAAOS):
+async def main(avp: BehavioralModelArgs, br_emu: brokerToEmu):
     logger.info("Starting IHU ECU", args=avp)
 
-    async with IHU(avp, br_emu, br_prop) as ihu:
+    async with IHU(avp, br_emu) as ihu:
         await ihu
 
 if __name__ == "__main__":
     # Instantiate brokerToEmu and start location updates
     adb_device = adb.get_emulator_device()
     br_emu = brokerToEmu(adb_device)
-    br_prop = BrokerToAAOS(adb_device)
+    # br_prop = BrokerToAAOS(adb_device)
 
     args = BehavioralModelArgs.parse()
     configure_logging(args.loglevel)
-    asyncio.run(main(args, br_emu, br_prop))
+    asyncio.run(main(args, br_emu))

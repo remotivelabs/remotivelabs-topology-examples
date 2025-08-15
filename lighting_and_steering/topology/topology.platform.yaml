@@ -20,11 +20,15 @@ channels:
           - TurnlightIndicator
           - LocationService
           - SpeedService
+        consumed_service_instances:
+          - HVACService
       udp/172.31.0.12:16000:
         consumed_service_instances:
           - TurnlightIndicator
           - LocationService
           - SpeedService
+        provided_service_instances:
+          - HVACService
 
   ChassisCan0:
     type: can
