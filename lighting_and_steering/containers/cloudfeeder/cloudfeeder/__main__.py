@@ -47,7 +47,7 @@ async def main(avp: BehavioralModelArgs):
 
             async def handle_speed():
                 async for frame in speed_itr:
-                    logger.info("received speed", frame=frame)
+                    # logger.info("received speed", frame=frame)
                     await broker_client.restbus.update_signals(
                         (
                             "ABS_ECU-ChassisCan0",

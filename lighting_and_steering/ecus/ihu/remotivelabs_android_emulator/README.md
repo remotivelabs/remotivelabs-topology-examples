@@ -168,14 +168,12 @@ Unless already signed in start by doing `remotive cloud auth login`
 ```
 remotive-topology generate \
   -f lighting_and_steering/topology/main.instance.yaml \
-  -f lighting_and_steering/topology/android.instance.yaml \
   lighting_and_steering/build
 ```
 # MacOS and Windows
 ```
 remotive-topology generate \
   -f lighting_and_steering/topology/main.instance.yaml \
-  -f lighting_and_steering/topology/android.instance.yaml \
   -f lighting_and_steering/topology/can_over_udp.instance.yaml \
   lighting_and_steering/build
 ```
@@ -187,7 +185,7 @@ remotive-topology generate \
 export CLOUD_URL=$(./run.sh arm-demo 9459066702917749000)
 CLOUD_AUTH=$(remotive cloud auth print-access-token) \
 ANDROID_EMULATOR_AUTH=$(cat ~/.emulator_console_auth_token) \
-docker compose -f lighting_and_steering/build/lighting-and-steering/docker-compose.yml --profile jupyter --profile ui up
+docker compose -f lighting_and_steering/build/lighting-and-steering/docker-compose.yml --profile jupyter --profile ui --profile cloudfeeder up
 ```
 > make sure that the `~/.emulator_console_auth_token` does exits, if you are in a VM you need to copy the file from the host where the emulator is running.
 

@@ -18,9 +18,11 @@ channels:
       udp/172.31.0.18:16000:
         provided_service_instances:
           - TurnlightIndicator
+          - LocationService
       udp/172.31.0.12:16000:
         consumed_service_instances:
           - TurnlightIndicator
+          - LocationService
 
   ChassisCan0:
     type: can

@@ -69,7 +69,16 @@ class GWM:
             )
         )
     async def on_location_frame(self, frame: Frame) -> None:
-        pass
+        await self.someip_bus.notify(
+            SomeIPEvent(
+                name="LocationEvent",
+                service_instance_name="LocationService",
+                parameters={
+                    "Longitude": frame.signals["LocationFrame.Longitude"],
+                    "Latitude": frame.signals["LocationFrame.Latitude"],
+                },
+            )
+        )
 
     async def on_speed_frame(self, frame: Frame) -> None:
         pass

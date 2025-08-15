@@ -39,6 +39,10 @@ class IHU:
                     [filters.SomeIPEventFilter(service_instance_name="TurnlightIndicator", event_name="TurnlightControlEvent")],
                     self.on_indicator,
                 ),
+                self._some_ip_eth.create_input_handler(
+                    [filters.SomeIPEventFilter(service_instance_name="LocationService", event_name="LocationEvent")],
+                    self.on_location,
+                ),
                 # self._location_can.create_input_handler(
                 #     [filters.FrameFilter("LocationFrame")],
                 #     self._location_listener,
@@ -63,6 +67,13 @@ class IHU:
 
     def __await__(self):
         return self.bm.run_forever().__await__()
+
+    async def on_location(self, event: SomeIPEvent) -> None:
+        signals = {
+            "LocationFrame.Longitude": float(event.parameters.get("Longitude", 0)),
+            "LocationFrame.Latitude": float(event.parameters.get("Latitude", 0)),
+        }
+        br_emu.redirect_location_to_emulator_signals(signals)
 
     async def on_indicator(self, event: SomeIPEvent) -> None:
         pass
