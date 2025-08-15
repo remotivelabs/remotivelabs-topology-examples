@@ -46,6 +46,7 @@ class BrokerToAAOS:
         """
         Callback triggered when a message is received from the VHAL.
         """
+        # print("Received message from VHAL", msg)
         # Process the message as needed
         # Example: Handle specific property updates
         # if msg.prop == 291504647:  # Example property ID for speed

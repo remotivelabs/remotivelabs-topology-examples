@@ -67,21 +67,40 @@ class IHU:
                 logger.exception("on_vhal_interaction failed")
         fut.add_done_callback(_done)
 
-    async def on_vhal_interaction(self, msg: dict[str, Any]) -> None:
-        logger.info("Starting IHU ECU", msg=msg)
-        left = 1
-        right = 2
+    async def on_vhal_interaction(self, msg) -> None:
+        # Get the 'value' field from the message (could be a repeated field)
+        val = getattr(msg, "value", None)
+        if val is None:
+            return
+
+        # If it's a repeated field, take the first element; otherwise use it directly
+        try:
+            v = val[0] if hasattr(val, "__len__") and not hasattr(val, "prop") else val
+        except Exception:
+            v = val
+
+        # Safely access the 'prop' field
+        prop = getattr(v, "prop", None) if not isinstance(v, dict) else v.get("prop")
+        if prop != 358614275:
+            return  # Not the property we care about, climate left control
+
+        # Get float_values (could also be a repeated field)
+        fv = getattr(v, "float_values", None) if not isinstance(v, dict) else v.get("float_values")
+        if fv is None:
+            return
+
+        # Extract the left temperature as a float
+        left = float(fv[0] if hasattr(fv, "__len__") else fv)
+
+        logger.info("Left temperature received", left=left)
+        right = 20  # Example static value for the right temperature
         await self._some_ip_eth.notify(
             SomeIPEvent(
                 name="CompartmentControl",
                 service_instance_name="HVACService",
-                parameters={
-                    "RightTemperature": right,
-                    "LeftTemperature": left,
-                },
+                parameters={"LeftTemperature": left, "RightTemperature": right},
             )
         )
-        logger.info("Starting IHU ECU done")
 
     async def __aenter__(self):
         await self._broker_client.connect()
