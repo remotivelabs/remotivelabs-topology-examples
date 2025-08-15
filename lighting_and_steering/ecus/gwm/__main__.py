@@ -39,10 +39,11 @@ class GWM:
             GWM.ecu_name,
             namespaces=[self.someip_bus, self.body_can_0],
             broker_client=self._broker_client,
-            input_handlers=[self.body_can_0.create_input_handler([filters.FrameFilter("TurnLightControl")], self.on_frame), 
-                            self.body_can_0.create_input_handler([filters.FrameFilter("LocationFrame")], self.on_location_frame),
-                            self.chassis_can_0.create_input_handler([filters.FrameFilter("UISpeedFrame")], self.on_speed_frame)],
-
+            input_handlers=[
+                self.body_can_0.create_input_handler([filters.FrameFilter("TurnLightControl")], self.on_frame),
+                self.body_can_0.create_input_handler([filters.FrameFilter("LocationFrame")], self.on_location_frame),
+                self.chassis_can_0.create_input_handler([filters.FrameFilter("UISpeedFrame")], self.on_speed_frame),
+            ],
         )
 
     async def __aenter__(self):
@@ -68,6 +69,7 @@ class GWM:
                 },
             )
         )
+
     async def on_location_frame(self, frame: Frame) -> None:
         await self.someip_bus.notify(
             SomeIPEvent(
@@ -81,7 +83,16 @@ class GWM:
         )
 
     async def on_speed_frame(self, frame: Frame) -> None:
-        pass
+        # Notify the SomeIPNamespace with the speed signal
+        await self.someip_bus.notify(
+            SomeIPEvent(
+                name="SpeedEvent",
+                service_instance_name="SpeedService",
+                parameters={
+                    "Speed": frame.signals["UISpeedFrame.uispeed"],
+                },
+            )
+        )
 
 async def main(avp: BehavioralModelArgs):
     logger.info("Starting GWM ECU", args=avp)
