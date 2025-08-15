@@ -62,6 +62,8 @@ import struct
 import subprocess
 from . import vhal_prop_consts_2_0 as vhal_props
 
+from threading import Thread
+
 # Generate the protobuf file from hardware/interfaces/automotive/vehicle/2.0/default/impl/vhal_v2_0
 # It is recommended to use the protoc provided in: prebuilts/tools/common/m2/repository/com/google/protobuf/protoc/3.0.0
 # or a later version, in order to provide Python 3 compatibility
@@ -168,6 +170,7 @@ class Vhal:
                     # Unpack the protobuf
                     msg = VehicleHalProto_pb2.EmulatorMessage()
                     msg.ParseFromString(b)
+                    print("Received message:", msg)
                     return msg
                 else:
                     print("Ignored message fragment")
@@ -278,3 +281,10 @@ class Vhal:
         # Parse the list of configs to generate a dictionary of prop_id to type
         for cfg in msg.config:
             self._propToType[cfg.prop] = cfg.value_type
+
+        def rxThread(v):
+            while(1):
+                print("listening for messages...")
+                print(v.rx_msg(), flush=True)
+        rx = Thread(target=rxThread, args=(self,))
+        rx.start()
