@@ -4,11 +4,11 @@ import asyncio
 from dataclasses import dataclass
 
 import structlog
-from remotivelabs.broker import BrokerClient, Frame
+from remotivelabs.broker import BrokerClient, Frame, RestbusSignalConfig
 from remotivelabs.topology.behavioral_model import BehavioralModel
 from remotivelabs.topology.cli.behavioral_model import BehavioralModelArgs
 from remotivelabs.topology.namespaces import filters
-from remotivelabs.topology.namespaces.can import CanNamespace
+from remotivelabs.topology.namespaces.can import CanNamespace, RestbusConfig
 from remotivelabs.topology.namespaces.some_ip import SomeIPEvent, SomeIPNamespace
 
 from .log import configure_logging
@@ -33,7 +33,7 @@ class GWM:
             client_id=99,
             broker_client=self._broker_client,
         )
-        self.body_can_0 = CanNamespace(GWM.can_ns, broker_client=self._broker_client)
+        self.body_can_0 = CanNamespace(GWM.can_ns, broker_client=self._broker_client, restbus_configs=[RestbusConfig([filters.SenderFilter(ecu_name=GWM.ecu_name)], delay_multiplier=avp.delay_multiplier)])
         self.chassis_can_0 = CanNamespace(GWM.chassis_ns, broker_client=self._broker_client)
         self.bm = BehavioralModel(
             GWM.ecu_name,
@@ -43,10 +43,10 @@ class GWM:
                 self.body_can_0.create_input_handler([filters.FrameFilter("TurnLightControl")], self.on_frame),
                 self.body_can_0.create_input_handler([filters.FrameFilter("LocationFrame")], self.on_location_frame),
                 self.chassis_can_0.create_input_handler([filters.FrameFilter("UISpeedFrame")], self.on_speed_frame),
-                # self.someip_bus.create_input_handler(
-                #     [filters.SomeIPEventFilter(service_instance_name="HVACService", event_name="CompartmentControl")],
-                #     self.on_hvac_control,
-                # ),
+                self.someip_bus.create_input_handler(
+                    [filters.SomeIPEventFilter(service_instance_name="HVACService", event_name="CompartmentControl")],
+                    self.on_hvac_control,
+                ),
             ],
         )
 
@@ -98,16 +98,11 @@ class GWM:
             )
         )
 
-    # async def on_hvac_control(self, event: SomeIPEvent) -> None:
-    #     signals = {
-    #         "LocationFrame.Longitude": float(event.parameters.get("Longitude", 0)),
-    #         "LocationFrame.Latitude": float(event.parameters.get("Latitude", 0)),
-    #     }
-    #     await self.body_can_0.restbus.update_signals(
-    #         RestbusSignalConfig.set(name=BCM.left_high_beam_signal, value=high_beams),
-    #         RestbusSignalConfig.set(name=BCM.right_high_beam_signal, value=high_beams),
-    #     )
-    #     br_emu.redirect_location_to_emulator_signals(signals)
+    async def on_hvac_control(self, event: SomeIPEvent) -> None:
+        await self.body_can_0.restbus.update_signals(
+            RestbusSignalConfig.set(name="HVACControl.LeftTemperature", value=float(event.parameters.get("LeftTemperature", 0))),
+            RestbusSignalConfig.set(name="HVACControl.RightTemperature", value=float(event.parameters.get("RightTemperature", 0))),
+        )
 
 async def main(avp: BehavioralModelArgs):
     logger.info("Starting GWM ECU", args=avp)
