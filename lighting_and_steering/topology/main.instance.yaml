@@ -81,4 +81,8 @@ ecus:
           extra_hosts:
             - "host.docker.internal:host-gateway"
 
+  HVAC:
+    channels:
+      BodyCan0:
+
 

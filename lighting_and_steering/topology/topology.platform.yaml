@@ -76,3 +76,7 @@ ecus:
         config:
           type: ethernet
           host: 172.31.0.12
+
+  HVAC:
+    channels:
+      BodyCan0:
