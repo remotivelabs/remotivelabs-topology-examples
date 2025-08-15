@@ -3,15 +3,17 @@ import argparse
 import json
 import os
 import sys
+import asyncio
 from .libs.adb import device as adb
 from .libs.vhal_emulator import vhal_emulator as vhal_emu
 from .libs.vhal_emulator.vhal_prop_consts_2_0 import vhal_props, vhal_vehicle_area, vhal_types
 # from .libs.remotive.subscribe import subscribe, get_proper_signal_value
 from inspect import getmembers
+from threading import Thread
 
 
 class BrokerToAAOS:
-    def __init__(self, adb_dev):
+    def __init__(self, adb_dev, user_callback=None):
         # Get the emulator device via adb only once
         self.adb_dev = adb_dev
         # self.vhal = vhal_emu.Vhal()
@@ -23,6 +25,38 @@ class BrokerToAAOS:
         self.lat = None
         self.lon = None
         self.location_signals = None  # Will store (namespace, signal) tuples for location
+
+        self.vhal.set_callback(self.on_vhal_message)  # Set the callback
+        self.start_rx_thread()  # Start the RX thread
+
+        # Set custom user callback if provided
+        if user_callback is not None:
+            self.user_callback = user_callback
+        else:
+            self.user_callback = lambda msg: None  # Default to no-op
+
+    def start_rx_thread(self):
+        """
+        Start the RX thread to listen for messages from the VHAL.
+        """
+        rx_thread = Thread(target=self.vhal.rxThread, daemon=True)
+        rx_thread.start()
+
+    def on_vhal_message(self, msg):
+        """
+        Callback triggered when a message is received from the VHAL.
+        """
+        # print("Received message from VHAL", msg)
+        # Process the message as needed
+        # Example: Handle specific property updates
+        # if msg.prop == 291504647:  # Example property ID for speed
+        #     print("Speed property updated", msg.value)
+        # elif msg.prop == 289408008:  # Example property ID for turnlight
+        #     print("Turnlight property updated", msg.value)
+
+        # Call the user-defined callback function
+        if self.user_callback != None:
+            self.user_callback(msg)
 
     def add_signal_mapping(self, signal_name, property_id, area_id=vhal_vehicle_area.GLOBAL, value_type=None, namespace=None):
         """Add a mapping from signal name to VHAL property ID"""
@@ -336,8 +370,7 @@ def main():
         adb_device = adb.get_emulator_device()
         print(f"Connected to emulator device")
     except Exception as e:
-        print(f"Error connecting to emulator: {e}")
-        return
+        raise RuntimeError(f"Error connecting to emulator: {e}")
     
     # Create broker to AAOS bridge
     broker_aaos = BrokerToAAOS(adb_device)

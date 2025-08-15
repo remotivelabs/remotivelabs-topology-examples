@@ -42,6 +42,10 @@ BO_ 200 LocationFrame: 8 TCU
  SG_ Longitude : 28|28@1- (1E-006,0) [-134.218|134.218] "Deg"  GWM
  SG_ Latitude : 0|28@1- (1E-006,0) [-134.218|134.218] "Deg"  GWM
 
+BO_ 300 HVACControl: 8 GWM
+ SG_ LeftTemperature : 0|16@1+ (0.1,0) [16|30] "°C" HVAC
+ SG_ RightTemperature : 16|16@1+ (0.1,0) [16|30] "°C" HVAC
+
 VAL_ 100 LeftDaylightRunningLightRequest 0 "Off" 1 "On";
 VAL_ 100 RightDaylightRunningLightRequest 0 "Off" 1 "On";
 
@@ -66,3 +70,4 @@ BA_ "GenMsgCycleTime" BO_ 102 50;
 BA_ "GenMsgCycleTime" BO_ 103 50;
 BA_ "GenMsgCycleTime" BO_ 104 50;
 BA_ "GenMsgCycleTime" BO_ 106 50;
+BA_ "GenMsgCycleTime" BO_ 300 500;

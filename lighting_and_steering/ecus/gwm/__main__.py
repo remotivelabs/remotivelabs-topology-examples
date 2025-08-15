@@ -43,6 +43,10 @@ class GWM:
                 self.body_can_0.create_input_handler([filters.FrameFilter("TurnLightControl")], self.on_frame),
                 self.body_can_0.create_input_handler([filters.FrameFilter("LocationFrame")], self.on_location_frame),
                 self.chassis_can_0.create_input_handler([filters.FrameFilter("UISpeedFrame")], self.on_speed_frame),
+                # self.someip_bus.create_input_handler(
+                #     [filters.SomeIPEventFilter(service_instance_name="HVACService", event_name="CompartmentControl")],
+                #     self.on_hvac_control,
+                # ),
             ],
         )
 
@@ -93,6 +97,17 @@ class GWM:
                 },
             )
         )
+
+    # async def on_hvac_control(self, event: SomeIPEvent) -> None:
+    #     signals = {
+    #         "LocationFrame.Longitude": float(event.parameters.get("Longitude", 0)),
+    #         "LocationFrame.Latitude": float(event.parameters.get("Latitude", 0)),
+    #     }
+    #     await self.body_can_0.restbus.update_signals(
+    #         RestbusSignalConfig.set(name=BCM.left_high_beam_signal, value=high_beams),
+    #         RestbusSignalConfig.set(name=BCM.right_high_beam_signal, value=high_beams),
+    #     )
+    #     br_emu.redirect_location_to_emulator_signals(signals)
 
 async def main(avp: BehavioralModelArgs):
     logger.info("Starting GWM ECU", args=avp)
