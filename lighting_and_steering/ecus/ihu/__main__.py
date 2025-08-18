@@ -17,6 +17,7 @@ from .log import configure_logging
 from .remotivelabs_android_emulator.br_location_to_emu import brokerToEmu
 from .remotivelabs_android_emulator.br_generic_props_to_aaos import BrokerToAAOS
 from .remotivelabs_android_emulator.libs.adb import device as adb
+from .remotivelabs_android_emulator.libs.vhal_emulator.vhal_prop_consts_2_0 import vhal_props
 
 logger = structlog.get_logger(__name__)
 
@@ -68,39 +69,33 @@ class IHU:
         fut.add_done_callback(_done)
 
     async def on_vhal_interaction(self, msg) -> None:
-        # Get the 'value' field from the message (could be a repeated field)
-        val = getattr(msg, "value", None)
-        if val is None:
+        # Extract the first value from the 'value' field if it exists
+        value = next(iter(getattr(msg, "value", [])), None)
+        if not value or getattr(value, "prop", None) != vhal_props.HVAC_TEMPERATURE_SET:
+            return  # Exit if no value or the property ID doesn't match
+
+        # Extract the temperature and area_id
+        area_id = getattr(value, "area_id", None)
+        temperature = next(iter(getattr(value, "float_values", [])), None)
+        if temperature is None:
             return
 
-        # If it's a repeated field, take the first element; otherwise use it directly
-        try:
-            v = val[0] if hasattr(val, "__len__") and not hasattr(val, "prop") else val
-        except Exception:
-            v = val
-
-        # Safely access the 'prop' field
-        prop = getattr(v, "prop", None) if not isinstance(v, dict) else v.get("prop")
-        if prop != 358614275:
-            return  # Not the property we care about, climate left control
-
-        # Get float_values (could also be a repeated field)
-        fv = getattr(v, "float_values", None) if not isinstance(v, dict) else v.get("float_values")
-        if fv is None:
-            return
-
-        # Extract the left temperature as a float
-        left = float(fv[0] if hasattr(fv, "__len__") else fv)
-
-        logger.info("Left temperature received", left=left)
-        right = 20  # Example static value for the right temperature
-        await self._some_ip_eth.notify(
-            SomeIPEvent(
-                name="CompartmentControl",
-                service_instance_name="HVACService",
-                parameters={"LeftTemperature": left, "RightTemperature": right},
+        if area_id == 49:  # Left temperature (ROW_1_LEFT | ROW_2_LEFT | ROW_2_CENTER)
+            await self._some_ip_eth.notify(
+                SomeIPEvent(
+                    name="CompartmentControl",
+                    service_instance_name="HVACService",
+                    parameters={"LeftTemperature": temperature},
+                )
             )
-        )
+        # elif area_id == 68:  # Right temperature (ROW_1_RIGHT | ROW_2_RIGHT)
+        #     await self._some_ip_eth.notify(
+        #         SomeIPEvent(
+        #             name="CompartmentControl",
+        #             service_instance_name="HVACService",
+        #             parameters={"RightTemperature": temperature},
+        #         )
+        #     )
 
     async def __aenter__(self):
         await self._broker_client.connect()
@@ -144,7 +139,7 @@ class IHU:
         """
         speed = float(event.parameters.get("Speed", 0))  # Extract speed from the event
         speed_mps = speed / 3.6
-        self.br_prop.set_property(291504647, 0, speed_mps) 
+        self.br_prop.set_property(vhal_props.PERF_VEHICLE_SPEED, 0, speed_mps) 
 
 async def main(avp: BehavioralModelArgs, br_emu: brokerToEmu):
     logger.info("Starting IHU ECU", args=avp)
