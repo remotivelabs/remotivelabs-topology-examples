@@ -21,4 +21,4 @@ More detailed examples:
 To run these examples, you'll need:
 - A valid RemotiveTopology subscription (free trial available)
 
-**New to RemotiveTopology?** Get started with our [installaion guide](https://docs.remotivelabs.com/docs/remotive-topology) to create your free trial subscription.
+**New to RemotiveTopology?** Get started with our [installation guide](https://docs.remotivelabs.com/docs/remotive-topology) to create your free trial subscription.
