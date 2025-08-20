@@ -116,9 +116,10 @@ Protos for location can be found here: https://android.googlesource.com/device/g
 
 ## Prerequisites
 
-install 
-- RemotiveCLI https://docs.remotivelabs.com/docs/remotive-cli/installation
-- RemotieToplogy https://docs.remotivelabs.com/docs/remotive-topology/install
+### Install 
+- `Android Studio` and create a AVD, make sure it a `userdebug` build which can be started in `permissive` mode. In this demo the AVD is based on `Android Automotive 13 "Tiramisu" with Google APIs ARM 64 v8a System Image`, which comes with `VHAL`. Install a maps apk, eg https://www.apkmirror.com/apk/google-inc/google-maps-android-automotive/.
+- `RemotiveCLI` https://docs.remotivelabs.com/docs/remotive-cli/installation
+- `RemotieToplogy` https://docs.remotivelabs.com/docs/remotive-topology/install
 ```
 # linux
 sudo apt install jq socat
@@ -130,69 +131,96 @@ brew install jq socat
 
 A. Select you recording you like to use as input, navigare to it and extract the session id from the recording url https://console.cloud.remotivelabs.com/p/arm-demo/recordings/9459066702917749000?tab=playback
 Make sure the recording contains `ChassisBus` and `VehicleBus`
-eg `9459066702917749000` also take note of the project (in this case `arm-demo` which is the name which continas the "Recordings").
+eg `9459066702917749000` also take note of the project (in this case `arm-demo` which is the name which contains "Recordings").
 
 
+## Linux with socketcan, MacOS and Windows without socketcan
 
-
-1.
-    1. Start your android emulator
+1. In terminal A: 
     ```
-    ~/Library/Android/sdk/emulator.backup/emulator @Tiramisu_API_33_automotive -selinux permissive -no-snapshot
+    adb kill-server
+    adb -a -P 5038 nodaemon server start
     ```
-    > Android Automotive 13 "Tiramisu" with Google APIs ARM 64 v8a System Image, comes with VHAL. 
-    
-    2. Install Maps or similar, `adb install path_to_apk`. Eg https://www.apkmirror.com/apk/google-inc/google-maps-android-automotive/
-    this will start a ADB server make sure to remove it again `adb kill-server`
-    
-
-2. Only for MacOS users who need socketcan
-
-    `ssh aleksandar@192.168.64.3 -L 50051:localhost:50051 -L 8080:localhost:8080 -L 8081:localhost:8081 -L 8888:localhost:8888 -L 5001:localhost:5001 -R 5555:localhost:5555 -R 15554:localhost:5554`
-
-**If** step 2 was executed the following should be started in that ssh host
-
-3. start `adb -a -P 5038 nodaemon server start`  
-
-4. 
-    1. set up port redirection (adb only accepts connections from localhost)
-(with ssh). `socat TCP-LISTEN:6000,fork,reuseaddr TCP:localhost:15554` (apt install socat)
-    
-    2. (alternatively without ssh). `socat TCP-LISTEN:6000,fork,reuseaddr TCP:localhost:5554` (apt install socat, brew install socat)
-
-5. Generate topology
-
-Unless already signed in start by doing `remotive cloud auth login`
-
-# Linux
-```
-remotive-topology generate \
-  -f lighting_and_steering/topology/main.instance.yaml \
-  lighting_and_steering/build
-```
-# MacOS and Windows
-```
-remotive-topology generate \
-  -f lighting_and_steering/topology/main.instance.yaml \
-  -f lighting_and_steering/topology/can_over_udp.instance.yaml \
-  lighting_and_steering/build
-```
+2. In terminal B:
+    ```
+    socat TCP-LISTEN:6000,fork,reuseaddr TCP:localhost:5554
+    ```
+3. In terminal C:
+    Start your android emulator
+    ```
+    ANDROID_ADB_SERVER_PORT=5038 ~/Library/Android/sdk/emulator.backup/emulator @Tiramisu_API_33_automotive -selinux permissive -no-snapshot
+    ```
+4. In terminal D:    
+    - Linux: Generate the topology (with socketcan)
+        ```
+        remotive-topology generate \
+        -f lighting_and_steering/topology/main.instance.yaml \
+        lighting_and_steering/build
+        ```
+    - MacOS and Windows: Generate the topology (without socketcan)
+        ```
+        remotive-topology generate \
+        -f lighting_and_steering/topology/main.instance.yaml \
+        -f lighting_and_steering/topology/can_over_udp.instance.yaml \
+        lighting_and_steering/build
+        ```
+5. Start the cloud playback, and start the topology
+    Unless already signed in start by doing `remotive cloud auth login`
+    ```
+    # check above on how to extract you session id.
+    export CLOUD_URL=$(./run.sh arm-demo 9459066702917749000)
+    CLOUD_AUTH=$(remotive cloud auth print-access-token) \
+    ANDROID_EMULATOR_AUTH=$(cat ~/.emulator_console_auth_token) \
+    docker compose -f lighting_and_steering/build/lighting-and-steering/docker-compose.yml --profile jupyter --profile ui --profile cloudfeeder up    
+    ```
+5. Navigation starts now, observe speed and location.
 
 
-6. Start the topology docker compose up
-```
-# check above on how to extract you session id.
-export CLOUD_URL=$(./run.sh arm-demo 9459066702917749000)
-CLOUD_AUTH=$(remotive cloud auth print-access-token) \
-ANDROID_EMULATOR_AUTH=$(cat ~/.emulator_console_auth_token) \
-docker compose -f lighting_and_steering/build/lighting-and-steering/docker-compose.yml --profile jupyter --profile ui --profile cloudfeeder up
-```
-> make sure that the `~/.emulator_console_auth_token` does exits, if you are in a VM you need to copy the file from the host where the emulator is running.
+
+## Windows and MacOS combined with a (virtual) linux, which enables `socketcan`
+
+1. connect to your `linux`
+    ```
+    ssh aleksandar@192.168.64.3 -L 50051:localhost:50051 -L 8080:localhost:8080 -L 8081:localhost:8081 -L 8888:localhost:8888 -L 5001:localhost:5001 -R 5555:localhost:5555 -R 15554:localhost:5554
+    ```
+    make sure that the `~/.emulator_console_auth_token` does exits, if you are in a VM you need to copy the file from the host where the emulator is running.
+
+1. In terminal A on `linux`: 
+    ```
+    adb kill-server
+    adb -a -P 5038 nodaemon server start
+    ```
+2. In terminal B on `linux`:
+    ```
+    socat TCP-LISTEN:6000,fork,reuseaddr TCP:localhost:15554
+    ```
+3. In terminal on `host`:
+    Start your android emulator
+    ```
+    ANDROID_ADB_SERVER_PORT=5038 ~/Library/Android/sdk/emulator.backup/emulator @Tiramisu_API_33_automotive -selinux permissive -no-snapshot
+    ```
+4. In terminal C on `linux`:    
+    - Linux: Generate the topology (with socketcan)
+        ```
+        remotive-topology generate \
+        -f lighting_and_steering/topology/main.instance.yaml \
+        lighting_and_steering/build
+        ```
+5. Start the cloud playback, and start the topology
+    Unless already signed in start by doing `remotive cloud auth login`
+    ```
+    # check above on how to extract you session id.
+    export CLOUD_URL=$(./run.sh arm-demo 9459066702917749000)
+    CLOUD_AUTH=$(remotive cloud auth print-access-token) \
+    ANDROID_EMULATOR_AUTH=$(cat ~/.emulator_console_auth_token) \
+    docker compose -f lighting_and_steering/build/lighting-and-steering/docker-compose.yml --profile jupyter --profile ui --profile cloudfeeder up    
+    ```
+5. Navigation starts now, observe speed and location.
 
 
-### Android
+# Troubleshooting and hints
 
-Make sure to only have **one** instance of android running.
+- Make sure that the adb server is running before the emulator is started
 
 #### Emulator
 There is no way simple way to start android in `permissive` mode which is required for VHAL and custom properties. If you only need `emu` support and still like to launch from Android Studio, then make sure to change adb port. Located in Debugger options, use port 5038.
@@ -200,9 +228,9 @@ There is no way simple way to start android in `permissive` mode which is requir
 > Hint: If you launch from command line, you can still connect your emulator.
 
 #### VHAL properties
-make sure to BOOT in permissive mode
+make sure to **BOOT** in permissive mode
 ```
-~/Library/Android/sdk/emulator.backup/emulator @SmallAutoAPI33 -selinux permissive -no-snapshot
+ ANDROID_ADB_SERVER_PORT=5038 ~/Library/Android/sdk/emulator.backup/emulator @SmallAutoAPI33 -selinux permissive -no-snapshot
 ```
 check vhal
 ```
