@@ -156,9 +156,9 @@ eg `9459066702917749000` also take note of the project (in this case `arm-demo` 
 
 4. 
     1. set up port redirection (adb only accepts connections from localhost)
-(with ssh). `socat TCP-LISTEN:5554,fork,reuseaddr TCP:localhost:15554` (apt install socat)
+(with ssh). `socat TCP-LISTEN:6000,fork,reuseaddr TCP:localhost:15554` (apt install socat)
     
-    2. (alternatively without ssh). `socat TCP-LISTEN:5554,fork,reuseaddr TCP:localhost:5554` (apt install socat, brew install socat)
+    2. (alternatively without ssh). `socat TCP-LISTEN:6000,fork,reuseaddr TCP:localhost:5554` (apt install socat, brew install socat)
 
 5. Generate topology
 
