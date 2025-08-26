@@ -6,7 +6,7 @@
 
 This demo is built of top of lighting and steering and show bidirectional communication with Android.
 
-- IHU connected over SOME/IP runnind Android with live location source
+- IHU connected over SOME/IP running Android with live location source
 
 Notice while the example is showing ECUs possible present in a real vehicle, the signals and implementations are simplified to make the example easy to understand. The goal is not intended to be fully realistic.
 
