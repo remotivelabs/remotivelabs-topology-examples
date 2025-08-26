@@ -1,0 +1,88 @@
+schema: remotive-topology-instance:0.7
+
+name: lighting-and-steering
+
+includes:
+  - ./tester.instance.yaml
+  - ./jupyter.instance.yaml
+  - ./cloudfeeder.instance.yaml
+
+platform:
+  includes:
+    - ./topology.platform.yaml
+
+ecus:
+  BCM:
+    models:
+      bcm:
+        type: container
+        container:
+          build:
+            dockerfile: ../Dockerfile
+          volumes:
+            - ../ecus/bcm:/app/bcm
+          working_dir: /app
+          command: python -m bcm
+
+  DIM:
+    channels:
+      BodyCan0:
+
+  FLCM:
+    channels:
+      BodyCan0:
+
+  TCU:
+    mock:
+      {}
+
+  ABS_ECU:
+    mock:
+      {}
+
+  RLCM:
+    channels:
+      BodyCan0:
+
+  SCCM:
+    mock:
+      channels:
+        DriverCan0:
+
+  GWM:
+    models:
+      gwm:
+        type: container
+        container:
+          build:
+            dockerfile: ../Dockerfile
+          volumes:
+            - ../ecus/gwm:/app/gwm
+          working_dir: /app
+          command: python -m gwm
+
+  IHU:
+    models:
+      ihu:
+        type: container
+        container:
+          build:
+            context: ../
+            dockerfile: ../ecus/ihu/Dockerfile.ihu
+          volumes:
+            - ../ecus/ihu:/app/ihu
+          working_dir: /app
+          command: python -m ihu
+          environment:
+            - ANDROID_ADB_SERVER_PORT=5038
+            - ANDROID_ADB_SERVER_ADDRESS=host.docker.internal
+            - ANDROID_EMULATOR_AUTH=${ANDROID_EMULATOR_AUTH}
+            - PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
+          extra_hosts:
+            - "host.docker.internal:host-gateway"
+
+  HVAC:
+    channels:
+      BodyCan0:
+
+

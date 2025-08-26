@@ -1,0 +1,11 @@
+FROM python:3.13-slim
+
+# Install project dependencies for bcm, gwm and ihu
+# Note that pip/setuptools requires the project files (ecus) to be present in the build directory, but we volume mount the later
+COPY pyproject.toml README.md LICENSE .
+COPY ecus/ ./ecus/
+RUN pip install .
+RUN apt update && apt install -y android-tools-adb socat
+
+# prepare the environment variable for the Android emulator authentication and ADB connection
+ENTRYPOINT ["/bin/sh", "-c", "echo \"$ANDROID_EMULATOR_AUTH\" > ~/.emulator_console_auth_token && socat TCP-LISTEN:5554,fork,reuseaddr TCP:host.docker.internal:6000 & exec \"$@\"", "--"]

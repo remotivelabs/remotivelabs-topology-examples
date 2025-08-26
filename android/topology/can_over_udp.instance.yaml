@@ -1,0 +1,5 @@
+schema: remotive-topology-instance:0.7
+
+settings:
+  can:
+    default_driver: udp

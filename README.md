@@ -10,6 +10,7 @@ More detailed examples:
 - [E2E RestBus](./e2e_restbus/README.md)
 - [Jupyter examples](./jupyter_demo/README.md)
 - [SOME/IP](./some_ip/README.md)
+- [Android](./android/README.md)
 
 ## Documentation
 

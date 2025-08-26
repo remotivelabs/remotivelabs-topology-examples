@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fx:FIBEX xmlns:fx="http://www.asam.net/xml/fbx">
+    <fx:PROJECT>
+        <ho:SHORT-NAME>ihu</ho:SHORT-NAME>
+    </fx:PROJECT>
+    <fx:ELEMENTS>
+        <fx:PACKAGES>
+            <fx:PACKAGE ID="/SOMEIP">
+                <ho:SHORT-NAME>SOMEIP</ho:SHORT-NAME>
+            </fx:PACKAGE>
+            <fx:PACKAGE ID="/SOMEIP/IHU">
+                <ho:SHORT-NAME>IHU</ho:SHORT-NAME>
+                <fx:PACKAGE-REF ID-REF="/SOMEIP"/>
+            </fx:PACKAGE>
+        </fx:PACKAGES>
+        <fx:SERVICE-INTERFACES>
+            <fx:SERVICE-INTERFACE ID="/SOMEIP/IHU/ServiceInterface_TurnlightIndicator">
+                <ho:SHORT-NAME>TurnlightIndicator</ho:SHORT-NAME>
+                <fx:SERVICE-IDENTIFIER>100</fx:SERVICE-IDENTIFIER>
+                <fx:PACKAGE-REF ID-REF="/SOMEIP/IHU"/>
+                <service:API-VERSION>
+                    <service:MAJOR>0</service:MAJOR>
+                    <service:MINOR>1</service:MINOR>
+                </service:API-VERSION>
+                <service:EVENTS>
+                    <service:EVENT ID="/SOMEIP/IHU/ServiceInterface_TurnlightIndicator/Method_TurnlightControlEvent">
+                        <ho:SHORT-NAME>TurnlightControlEvent</ho:SHORT-NAME>
+                        <service:METHOD-IDENTIFIER>1001</service:METHOD-IDENTIFIER>
+                        <service:CALL-SEMANTIC>FIRE_AND_FORGET</service:CALL-SEMANTIC>
+                        <service:INPUT-PARAMETERS>
+                            <service:INPUT-PARAMETER ID="/SOMEIP/IHU/ServiceInterface_TurnlightIndicator/Method_TurnlightControlEvent/in/Parameter_LeftTurnlight">
+                                <ho:SHORT-NAME>LeftTurnlight</ho:SHORT-NAME>
+                                <!-- TODO: BOOL!!! -->
+                                <fx:DATATYPE-REF ID-REF="/CommonDatatype_UINT8"/>
+                                <fx:UTILIZATION>
+                                    <fx:IS-HIGH-LOW-BYTE-ORDER>true</fx:IS-HIGH-LOW-BYTE-ORDER>
+                                </fx:UTILIZATION>
+                                <service:POSITION>0</service:POSITION>
+                            </service:INPUT-PARAMETER>
+                            <service:INPUT-PARAMETER ID="/SOMEIP/IHU/ServiceInterface_TurnlightIndicator/Method_TurnlightControlEvent/in/Parameter_RightTurnlight">
+                                <ho:SHORT-NAME>RightTurnlight</ho:SHORT-NAME>
+                                <!-- TODO: BOOL!!! -->
+                                <fx:DATATYPE-REF ID-REF="/CommonDatatype_UINT8"/>
+                                <fx:UTILIZATION>
+                                    <fx:IS-HIGH-LOW-BYTE-ORDER>true</fx:IS-HIGH-LOW-BYTE-ORDER>
+                                </fx:UTILIZATION>
+                                <service:POSITION>1</service:POSITION>
+                            </service:INPUT-PARAMETER>
+                        </service:INPUT-PARAMETERS>
+                    </service:EVENT>
+                </service:EVENTS>
+                <service:EVENT-GROUPS>
+                    <service:EVENT-GROUP
+                        ID="/SOMEIP/IHU/Eventgroup1">
+                        <ho:SHORT-NAME>EventGroup1</ho:SHORT-NAME>
+                        <fx:SERVICE-IDENTIFIER>321</fx:SERVICE-IDENTIFIER>
+                        <service:EVENT-REFS>
+                            <service:EVENT-REF
+                                ID-REF="/SOMEIP/IHU/ServiceInterface_TurnlightIndicator/Method_TurnlightControlEvent" />
+                        </service:EVENT-REFS>
+                    </service:EVENT-GROUP>
+                </service:EVENT-GROUPS>
+            </fx:SERVICE-INTERFACE>
+            <fx:SERVICE-INTERFACE ID="/SOMEIP/IHU/ServiceInterface_LocationService">
+                <ho:SHORT-NAME>LocationService</ho:SHORT-NAME>
+                <fx:SERVICE-IDENTIFIER>101</fx:SERVICE-IDENTIFIER>
+                <fx:PACKAGE-REF ID-REF="/SOMEIP/IHU"/>
+                <service:API-VERSION>
+                    <service:MAJOR>0</service:MAJOR>
+                    <service:MINOR>1</service:MINOR>
+                </service:API-VERSION>
+                <service:EVENTS>
+                    <service:EVENT ID="/SOMEIP/IHU/ServiceInterface_LocationService/Method_LocationEvent">
+                        <ho:SHORT-NAME>LocationEvent</ho:SHORT-NAME>
+                        <service:METHOD-IDENTIFIER>1001</service:METHOD-IDENTIFIER>
+                        <service:CALL-SEMANTIC>FIRE_AND_FORGET</service:CALL-SEMANTIC>
+                        <service:INPUT-PARAMETERS>
+                            <service:INPUT-PARAMETER ID="/SOMEIP/IHU/ServiceInterface_LocationService/Method_LocationEvent/in/Parameter_Longitude">
+                                <ho:SHORT-NAME>Longitude</ho:SHORT-NAME>
+                                <!-- TODO: BOOL!!! -->
+                                <fx:DATATYPE-REF ID-REF="/CommonDatatype_FLOAT32"/>
+                                <fx:UTILIZATION>
+                                    <fx:IS-HIGH-LOW-BYTE-ORDER>true</fx:IS-HIGH-LOW-BYTE-ORDER>
+                                </fx:UTILIZATION>
+                                <service:POSITION>0</service:POSITION>
+                            </service:INPUT-PARAMETER>
+                            <service:INPUT-PARAMETER ID="/SOMEIP/IHU/ServiceInterface_LocationService/Method_LocationEvent/in/Parameter_Latitude">
+                                <ho:SHORT-NAME>Latitude</ho:SHORT-NAME>
+                                <!-- TODO: BOOL!!! -->
+                                <fx:DATATYPE-REF ID-REF="/CommonDatatype_FLOAT32"/>
+                                <fx:UTILIZATION>
+                                    <fx:IS-HIGH-LOW-BYTE-ORDER>true</fx:IS-HIGH-LOW-BYTE-ORDER>
+                                </fx:UTILIZATION>
+                                <service:POSITION>1</service:POSITION>
+                            </service:INPUT-PARAMETER>
+                        </service:INPUT-PARAMETERS>
+                    </service:EVENT>
+                </service:EVENTS>
+                <service:EVENT-GROUPS>
+                    <service:EVENT-GROUP
+                        ID="/SOMEIP/IHU/Eventgroup2">
+                        <ho:SHORT-NAME>EventGroup2</ho:SHORT-NAME>
+                        <fx:SERVICE-IDENTIFIER>322</fx:SERVICE-IDENTIFIER>
+                        <service:EVENT-REFS>
+                            <service:EVENT-REF
+                                ID-REF="/SOMEIP/IHU/ServiceInterface_LocationService/Method_LocationEvent" />
+                        </service:EVENT-REFS>
+                    </service:EVENT-GROUP>
+                </service:EVENT-GROUPS>
+            </fx:SERVICE-INTERFACE>
+            <fx:SERVICE-INTERFACE ID="/SOMEIP/IHU/ServiceInterface_SpeedService">
+                <ho:SHORT-NAME>SpeedService</ho:SHORT-NAME>
+                <fx:SERVICE-IDENTIFIER>102</fx:SERVICE-IDENTIFIER>
+                <fx:PACKAGE-REF ID-REF="/SOMEIP/IHU"/>
+                <service:API-VERSION>
+                    <service:MAJOR>0</service:MAJOR>
+                    <service:MINOR>1</service:MINOR>
+                </service:API-VERSION>
+                <service:EVENTS>
+                    <service:EVENT ID="/SOMEIP/IHU/ServiceInterface_SpeedService/Method_SpeedEvent">
+                        <ho:SHORT-NAME>SpeedEvent</ho:SHORT-NAME>
+                        <service:METHOD-IDENTIFIER>1002</service:METHOD-IDENTIFIER>
+                        <service:CALL-SEMANTIC>FIRE_AND_FORGET</service:CALL-SEMANTIC>
+                        <service:INPUT-PARAMETERS>
+                            <service:INPUT-PARAMETER ID="/SOMEIP/IHU/ServiceInterface_SpeedService/Method_SpeedEvent/in/Parameter_Speed">
+                                <ho:SHORT-NAME>Speed</ho:SHORT-NAME>
+                                <fx:DATATYPE-REF ID-REF="/CommonDatatype_FLOAT32"/>
+                                <fx:UTILIZATION>
+                                    <fx:IS-HIGH-LOW-BYTE-ORDER>true</fx:IS-HIGH-LOW-BYTE-ORDER>
+                                </fx:UTILIZATION>
+                                <service:POSITION>0</service:POSITION>
+                            </service:INPUT-PARAMETER>
+                        </service:INPUT-PARAMETERS>
+                    </service:EVENT>
+                </service:EVENTS>
+                <service:EVENT-GROUPS>
+                    <service:EVENT-GROUP ID="/SOMEIP/IHU/Eventgroup3">
+                        <ho:SHORT-NAME>EventGroup3</ho:SHORT-NAME>
+                        <fx:SERVICE-IDENTIFIER>323</fx:SERVICE-IDENTIFIER>
+                        <service:EVENT-REFS>
+                            <service:EVENT-REF ID-REF="/SOMEIP/IHU/ServiceInterface_SpeedService/Method_SpeedEvent"/>
+                        </service:EVENT-REFS>
+                    </service:EVENT-GROUP>
+                </service:EVENT-GROUPS>
+            </fx:SERVICE-INTERFACE>
+            <fx:SERVICE-INTERFACE ID="/SOMEIP/IHU/ServiceInterface_HVACService">
+                <ho:SHORT-NAME>HVACService</ho:SHORT-NAME>
+                <fx:SERVICE-IDENTIFIER>103</fx:SERVICE-IDENTIFIER>
+                <fx:PACKAGE-REF ID-REF="/SOMEIP/IHU"/>
+                <service:API-VERSION>
+                    <service:MAJOR>0</service:MAJOR>
+                    <service:MINOR>1</service:MINOR>
+                </service:API-VERSION>
+                <service:EVENTS>
+                    <service:EVENT ID="/SOMEIP/IHU/ServiceInterface_HVACService/Method_CompartmentControl">
+                        <ho:SHORT-NAME>CompartmentControl</ho:SHORT-NAME>
+                        <service:METHOD-IDENTIFIER>1003</service:METHOD-IDENTIFIER>
+                        <service:CALL-SEMANTIC>FIRE_AND_FORGET</service:CALL-SEMANTIC>
+                        <service:INPUT-PARAMETERS>
+                            <service:INPUT-PARAMETER ID="/SOMEIP/IHU/ServiceInterface_HVACService/Method_CompartmentControl/in/Parameter_RightTemperature">
+                                <ho:SHORT-NAME>RightTemperature</ho:SHORT-NAME>
+                                <fx:DATATYPE-REF ID-REF="/CommonDatatype_FLOAT32"/>
+                                <fx:UTILIZATION>
+                                    <fx:IS-HIGH-LOW-BYTE-ORDER>true</fx:IS-HIGH-LOW-BYTE-ORDER>
+                                </fx:UTILIZATION>
+                                <service:POSITION>0</service:POSITION>
+                            </service:INPUT-PARAMETER>
+                            <service:INPUT-PARAMETER ID="/SOMEIP/IHU/ServiceInterface_HVACService/Method_CompartmentControl/in/Parameter_LeftTemperature">
+                                <ho:SHORT-NAME>LeftTemperature</ho:SHORT-NAME>
+                                <fx:DATATYPE-REF ID-REF="/CommonDatatype_FLOAT32"/>
+                                <fx:UTILIZATION>
+                                    <fx:IS-HIGH-LOW-BYTE-ORDER>true</fx:IS-HIGH-LOW-BYTE-ORDER>
+                                </fx:UTILIZATION>
+                                <service:POSITION>1</service:POSITION>
+                            </service:INPUT-PARAMETER>
+                        </service:INPUT-PARAMETERS>
+                    </service:EVENT>
+                </service:EVENTS>
+                <service:EVENT-GROUPS>
+                    <service:EVENT-GROUP ID="/SOMEIP/IHU/Eventgroup4">
+                        <ho:SHORT-NAME>EventGroup4</ho:SHORT-NAME>
+                        <fx:SERVICE-IDENTIFIER>324</fx:SERVICE-IDENTIFIER>
+                        <service:EVENT-REFS>
+                            <service:EVENT-REF ID-REF="/SOMEIP/IHU/ServiceInterface_HVACService/Method_CompartmentControl"/>
+                        </service:EVENT-REFS>
+                    </service:EVENT-GROUP>
+                </service:EVENT-GROUPS>
+            </fx:SERVICE-INTERFACE>
+        </fx:SERVICE-INTERFACES>
+        <fx:DATATYPES>
+            <fx:DATATYPE xsi:type="fx:COMMON-DATATYPE-TYPE" ID="/CommonDatatype_BOOL">
+                <ho:SHORT-NAME>BOOL</ho:SHORT-NAME>
+            </fx:DATATYPE>
+            <fx:DATATYPE xsi:type="fx:COMMON-DATATYPE-TYPE" ID="/CommonDatatype_UINT8">
+                <ho:SHORT-NAME>UINT8</ho:SHORT-NAME>
+            </fx:DATATYPE>
+            <fx:DATATYPE xsi:type="fx:COMMON-DATATYPE-TYPE" ID="/CommonDatatype_UINT16">
+                <ho:SHORT-NAME>UINT16</ho:SHORT-NAME>
+            </fx:DATATYPE>
+            <fx:DATATYPE xsi:type="fx:COMMON-DATATYPE-TYPE" ID="/CommonDatatype_UINT32">
+                <ho:SHORT-NAME>UINT32</ho:SHORT-NAME>
+            </fx:DATATYPE>
+            <fx:DATATYPE xsi:type="fx:COMMON-DATATYPE-TYPE" ID="/CommonDatatype_INT8">
+                <ho:SHORT-NAME>INT8</ho:SHORT-NAME>
+            </fx:DATATYPE>
+            <fx:DATATYPE xsi:type="fx:COMMON-DATATYPE-TYPE" ID="/CommonDatatype_INT16">
+                <ho:SHORT-NAME>INT16</ho:SHORT-NAME>
+            </fx:DATATYPE>
+            <fx:DATATYPE xsi:type="fx:COMMON-DATATYPE-TYPE" ID="/CommonDatatype_INT32">
+                <ho:SHORT-NAME>INT32</ho:SHORT-NAME>
+            </fx:DATATYPE>
+            <fx:DATATYPE xsi:type="fx:COMMON-DATATYPE-TYPE" ID="/CommonDatatype_FLOAT32">
+                <ho:SHORT-NAME>FLOAT32</ho:SHORT-NAME>
+            </fx:DATATYPE>
+        </fx:DATATYPES>
+    </fx:ELEMENTS>
+</fx:FIBEX>

@@ -1,0 +1,18 @@
+schema: remotive-topology-instance:0.7
+
+containers:
+  cloudfeeder:
+    profiles: [cloudfeeder]
+    build:
+      dockerfile: ../Dockerfile
+    volumes:
+      - ../containers/cloudfeeder:/app
+    working_dir: /app
+    command: python -m cloudfeeder --url http://topology-broker.com:50051
+    depends_on:
+      - topology-broker.com
+      - abs_ecu-mock
+      - tcu-mock
+    environment:  
+      - CLOUD_URL=${CLOUD_URL}
+      - CLOUD_AUTH=${CLOUD_AUTH}
