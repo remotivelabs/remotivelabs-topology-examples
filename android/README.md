@@ -146,7 +146,7 @@ config:
 | GWM  | Gateway Module                 | Routes communication between different vehicle networks |
 | IHU  | Infotainment Head Unit         | Manages infotainment and user interface systems         |
 | HVAC | Heating, Ventilation, and Air Conditioning | Recieves temperture control from Anroid infotainment.   |
-| ABS_ECU | Anti-lock Braking System Electronic Control Unit        | Provides GNSS location                                   |
+| ABS | Anti-lock Braking System        | Provides speed                                   |
 | TCU | Telematics Control Unit       | Provides GNSS location                                   |
 
 ---
