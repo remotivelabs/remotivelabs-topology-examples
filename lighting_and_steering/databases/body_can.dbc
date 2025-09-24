@@ -14,6 +14,10 @@ BU_:
     FLCM
     RLCM
     GWM
+    PAM
+
+BA_DEF_ BO_ "GenMsgCycleTime" FLOAT 0 10000;
+BA_DEF_ SG_ "GenSigStartValue" FLOAT 0 0;
 
 BO_ 100 DaylightRunningLightControl: 1 BCM
   SG_ LeftDaylightRunningLightRequest : 0|1@1+ (1,0) [0|1] ""  DIM, FLCM, RLCM
@@ -36,7 +40,13 @@ BO_ 104 BrakeLightControl: 1 BCM
   SG_ RightBrakeLightRequest : 1|1@1+ (1,0) [0|1] ""  DIM, RLCM, GWM
 
 BO_ 106 SteeringWheelInfo: 8 BCM
-  SG_ SteeringWheelPosition : 0|14@1+ (0.1,-819.2) [-819.2|819.1] "deg"  ADAS
+  SG_ SteeringWheelPosition : 0|14@1+ (0.1,-819.2) [-819.2|819.1] "deg"  DIM, GWM
+
+BO_ 107 AcceleratorPedalInfo: 8 BCM
+  SG_ AcceleratorPedalPosition : 0|8@1+ (1,0) [0|255] ""  DIM, GWM
+
+BO_ 108 ProximityInfo: 2 PAM
+  SG_ ProximityDistance : 0|8@1+ (0.02,0) [0|5.10] "m"  DIM, GWM
 
 VAL_ 100 LeftDaylightRunningLightRequest 0 "Off" 1 "On";
 VAL_ 100 RightDaylightRunningLightRequest 0 "Off" 1 "On";
@@ -53,7 +63,8 @@ VAL_ 103 RightTurnLightRequest 0 "Off" 1 "On";
 VAL_ 104 LeftBrakeLightRequest 0 "Off" 1 "On";
 VAL_ 104 RightBrakeLightRequest 0 "Off" 1 "On";
 
-BA_DEF_ BO_ "GenMsgCycleTime" FLOAT 0 10000;
+VAL_ 108 ProximityDistance 255 "NoObject";
+BA_ "GenSigStartValue" SG_ 108 ProximityDistance 255;
 
 BA_ "GenMsgCycleTime" BO_ 100 50;
 BA_ "GenMsgCycleTime" BO_ 101 50;
@@ -61,3 +72,5 @@ BA_ "GenMsgCycleTime" BO_ 102 50;
 BA_ "GenMsgCycleTime" BO_ 103 50;
 BA_ "GenMsgCycleTime" BO_ 104 50;
 BA_ "GenMsgCycleTime" BO_ 106 50;
+BA_ "GenMsgCycleTime" BO_ 107 50;
+BA_ "GenMsgCycleTime" BO_ 108 50;

@@ -1,4 +1,4 @@
-schema: remotive-topology-platform:0.8
+schema: remotive-topology-platform:0.12
 
 channels:
   Can0:

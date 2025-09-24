@@ -1,4 +1,4 @@
-schema: remotive-topology-platform:0.8
+schema: remotive-topology-platform:0.12
 
 channels:
   ETH:
@@ -6,13 +6,24 @@ channels:
     database: ../db/someip.fibex.xml
     subnet: 10.0.2.0/24
     endpoints:
-      udp/10.0.2.15:30509:
-        provided_service_instances:
-          - MyTestService
-      udp/10.0.2.12:2001:
-        consumed_service_instances:
-          - MyTestService
-
+      host_a:
+        host: 10.0.2.15
+        sockets:
+          someip_provider:
+            type: udp
+            port: 30509
+            provided_service_instances:
+            - MyTestService
+            - MyOtherTestService
+      host_b:
+        host: 10.0.2.12
+        sockets:
+          someip_consumer:
+            type: udp
+            port: 2001
+            consumed_service_instances:
+              - MyTestService
+              - MyOtherTestService
 
 ecus:
   ecu_a:
@@ -20,11 +31,13 @@ ecus:
       ETH:
         config:
           type: ethernet
-          host: 10.0.2.15
+          provided_endpoints:
+            - host_a
 
   ecu_b:
     channels:
       ETH:
         config:
           type: ethernet
-          host: 10.0.2.12
+          provided_endpoints:
+            - host_b

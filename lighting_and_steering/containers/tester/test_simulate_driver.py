@@ -66,6 +66,12 @@ async def test_turn_left(broker_client: BrokerClient):
         equal_to({"TurnLightControl.LeftTurnLightRequest": 1, "TurnLightControl.RightTurnLightRequest": 0}),
     )
 
+    sub = await broker_client.subscribe(("RL-RearLightLIN", ["DEVMLIN01Fr01.ReqRight", "DEVMLIN01Fr01.ReqLeft"]))
+    await await_at_most(seconds=2).until(
+        partial(take_values, sub),
+        equal_to({"DEVMLIN01Fr01.ReqRight": 0, "DEVMLIN01Fr01.ReqLeft": 1}),
+    )
+
 
 @pytest.mark.asyncio
 async def test_turn_right(broker_client: BrokerClient):
@@ -96,6 +102,12 @@ async def test_turn_right(broker_client: BrokerClient):
         equal_to({"TurnLightControl.LeftTurnLightRequest": 0, "TurnLightControl.RightTurnLightRequest": 1}),
     )
 
+    sub = await broker_client.subscribe(("RL-RearLightLIN", ["DEVMLIN01Fr01.ReqRight", "DEVMLIN01Fr01.ReqLeft"]))
+    await await_at_most(seconds=2).until(
+        partial(take_values, sub),
+        equal_to({"DEVMLIN01Fr01.ReqRight": 1, "DEVMLIN01Fr01.ReqLeft": 0}),
+    )
+
 
 @pytest.mark.asyncio
 async def test_hazard(broker_client: BrokerClient):
@@ -116,6 +128,12 @@ async def test_hazard(broker_client: BrokerClient):
         equal_to({"TurnLightControl.LeftTurnLightRequest": 1, "TurnLightControl.RightTurnLightRequest": 1}),
     )
 
+    sub_lin = await broker_client.subscribe(("RL-RearLightLIN", ["DEVMLIN01Fr01.ReqRight", "DEVMLIN01Fr01.ReqLeft"]))
+    await await_at_most(seconds=2).until(
+        partial(take_values, sub_lin),
+        equal_to({"DEVMLIN01Fr01.ReqRight": 1, "DEVMLIN01Fr01.ReqLeft": 1}),
+    )
+
     await broker_client.restbus.update_signals(
         (
             "SCCM-DriverCan0",
@@ -127,6 +145,11 @@ async def test_hazard(broker_client: BrokerClient):
     await await_at_most(seconds=2).until(
         partial(take_values, sub),
         equal_to({"TurnLightControl.LeftTurnLightRequest": 1, "TurnLightControl.RightTurnLightRequest": 1}),
+    )
+
+    await await_at_most(seconds=2).until(
+        partial(take_values, sub_lin),
+        equal_to({"DEVMLIN01Fr01.ReqRight": 1, "DEVMLIN01Fr01.ReqLeft": 1}),
     )
 
 

@@ -28,6 +28,9 @@ BO_ 103 LightStalk: 1 SCCM
 BO_ 104 BrakePedalPositionSensor: 8 SCCM
  SG_ BrakePedalPosition : 0|8@1+ (1,0) [0|255] ""  BCM
 
+BO_ 105 AcceleratorPedalPositionSensor: 8 SCCM
+ SG_ AcceleratorPedalPosition : 0|8@1+ (1,0) [0|255] ""  BCM
+
 VAL_ 100 HazardLightButton 0 "Off" 1 "On";
 VAL_ 101 TurnSignal 0 "Off" 1 "Left" 2 "Right";
 VAL_ 103 LightMode 0 "Off" 1 "DaylightRunningLight" 2 "LowBeam";
@@ -40,3 +43,4 @@ BA_ "GenMsgCycleTime" BO_ 101 50;
 BA_ "GenMsgCycleTime" BO_ 102 50;
 BA_ "GenMsgCycleTime" BO_ 103 50;
 BA_ "GenMsgCycleTime" BO_ 104 50;
+BA_ "GenMsgCycleTime" BO_ 105 50;

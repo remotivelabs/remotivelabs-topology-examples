@@ -53,7 +53,7 @@ RemotiveTopology now understands that there exists 4 other ECUs `DIM`, `FLCM`, `
 Since the DBC files doesn't include information about what the CAN channels are called you need to add additional information using a RemotiveTopology platform.yaml file:
 
 ```yaml
-schema: remotive-topology-platform:0.8
+schema: remotive-topology-platform:0.12
 channels:
   DriverCan0:
     type: can
@@ -135,7 +135,7 @@ While being a simplified example, the structure is common to most kinds of behav
 In RemotiveTopology you create a topology by combining one or more instance.yaml files. Each file can contain one or more ECUs or other settings. In this case you need to instantiate the Behavioral Model for the `BCM` ECU:
 
 ```yaml
-schema: remotive-topology-instance:0.8
+schema: remotive-topology-instance:0.12
 
 ecus:
   BCM:
@@ -251,7 +251,7 @@ platform:
         DriverCan0:
       source:
         - <path>/getting_started/databases/driver_can.dbc
-schema: remotive-topology-instance:0.8
+schema: remotive-topology-instance:0.12
 settings:
   topology_broker:
     channels: {}
@@ -270,7 +270,7 @@ A minimal test case that checks that the lights turn on when pressing the hazard
 These tests are added in the topology with an instance file like:
 
 ```yaml
-schema: remotive-topology-instance:0.8
+schema: remotive-topology-instance:0.12
 
 containers:
   tester:
@@ -310,7 +310,7 @@ DockerCAN is needed to connect to physical hardware and to use standard CAN tool
 To make this example run on all platforms use CAN over UDP. This is configured by adding the following instance.yaml:
 
 ```yaml
-schema: remotive-topology-instance:0.8
+schema: remotive-topology-instance:0.12
 
 settings:
   can:
@@ -322,7 +322,7 @@ settings:
 Tests need to be configured in what environment they should run. This is done using yet another instance.yaml:
 
 ```yaml
-schema: remotive-topology-instance:0.8
+schema: remotive-topology-instance:0.12
 
 includes:
   - ./bcm.instance.yaml

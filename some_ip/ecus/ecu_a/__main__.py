@@ -16,31 +16,31 @@ async def publisher(some_ip_eth: SomeIPNamespace, publish_interval: float = 0.1)
     while True:
         await some_ip_eth.notify(SomeIPEvent(name="ByteEncodedMessages", service_instance_name="MyTestService", raw=os.urandom(12)))
         logging.debug("sent event 'ByteEncodedMessages'")
+        await some_ip_eth.notify(
+            SomeIPEvent(name="OtherByteEncodedMessages", service_instance_name="MyOtherTestService", raw=os.urandom(12))
+        )
+        logging.debug("sent event 'OtherByteEncodedMessages'")
         await asyncio.sleep(publish_interval)
 
 
-async def __echo_primitives(req: SomeIPRequest) -> SomeIPResponse:
+async def _echo_primitives(req: SomeIPRequest) -> SomeIPResponse:
     logging.debug("Got request %s", req)
-    return SomeIPResponse(
-        parameters=req.parameters,
-    )
+    return SomeIPResponse(parameters=req.parameters)
 
 
-async def __request_with_no_parameters(req: SomeIPRequest) -> SomeIPResponse:
+async def _request_with_no_parameters(req: SomeIPRequest) -> SomeIPResponse:
     logging.debug("Got request %s", req)
     return SomeIPResponse()
 
 
-async def __echo_raw(req: SomeIPRequest) -> SomeIPResponse:
+async def _echo_raw(req: SomeIPRequest) -> SomeIPResponse:
     logging.info("Got request %s", req)
     return SomeIPResponse(raw=req.raw)
 
 
-async def __request_that_returns_error(req: SomeIPRequest) -> SomeIPError:
+async def _request_that_returns_error(req: SomeIPRequest) -> SomeIPError:
     logging.info("Got request %s", req)
-    return SomeIPError(
-        return_code=ReturnCode.E_NOT_OK.name,
-    )
+    return SomeIPError(return_code=ReturnCode.E_NOT_OK.name)
 
 
 async def main(avp: BehavioralModelArgs):
@@ -58,7 +58,7 @@ async def main(avp: BehavioralModelArgs):
                             method_name="echoPrimitives",
                         )
                     ],
-                    __echo_primitives,
+                    _echo_primitives,
                 ),
                 some_ip_eth.create_input_handler(
                     [
@@ -67,7 +67,7 @@ async def main(avp: BehavioralModelArgs):
                             method_name="requestWithNoParams",
                         )
                     ],
-                    __request_with_no_parameters,
+                    _request_with_no_parameters,
                 ),
                 some_ip_eth.create_input_handler(
                     [
@@ -76,7 +76,7 @@ async def main(avp: BehavioralModelArgs):
                             method_name="echoRaw",
                         )
                     ],
-                    __echo_raw,
+                    _echo_raw,
                 ),
                 some_ip_eth.create_input_handler(
                     [
@@ -85,7 +85,7 @@ async def main(avp: BehavioralModelArgs):
                             method_name="requestThatReturnsError",
                         )
                     ],
-                    __request_that_returns_error,
+                    _request_that_returns_error,
                 ),
             ],
         ) as bm:

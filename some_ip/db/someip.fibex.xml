@@ -212,6 +212,34 @@
                     </service:EVENT-GROUP>
                 </service:EVENT-GROUPS>
             </fx:SERVICE-INTERFACE>
+            <fx:SERVICE-INTERFACE ID="/SOMEIP/ECU/ServiceInterface_OtherTestService">
+                <ho:SHORT-NAME>MyOtherTestService</ho:SHORT-NAME>
+                <fx:SERVICE-IDENTIFIER>584</fx:SERVICE-IDENTIFIER>
+                <fx:PACKAGE-REF ID-REF="/SOMEIP/ECU" />
+                <service:API-VERSION>
+                    <service:MAJOR>0</service:MAJOR>
+                    <service:MINOR>1</service:MINOR>
+                </service:API-VERSION>
+                <service:EVENTS>
+                    <service:EVENT
+                        ID="/SOMEIP/ECU/ServiceInterface_OtherTestService/Method_OtherByteEncodedMessages">
+                        <ho:SHORT-NAME>OtherByteEncodedMessages</ho:SHORT-NAME>
+                        <service:METHOD-IDENTIFIER>34681</service:METHOD-IDENTIFIER>
+                        <service:CALL-SEMANTIC>FIRE_AND_FORGET</service:CALL-SEMANTIC>
+                    </service:EVENT>
+                </service:EVENTS>
+                <service:EVENT-GROUPS>
+                    <service:EVENT-GROUP
+                        ID="/SOMEIP/ECU/OtherEventGroup">
+                        <ho:SHORT-NAME>OtherEventGroup</ho:SHORT-NAME>
+                        <fx:SERVICE-IDENTIFIER>17510</fx:SERVICE-IDENTIFIER>
+                        <service:EVENT-REFS>
+                            <service:EVENT-REF
+                                ID-REF="/SOMEIP/ECU/ServiceInterface_OtherTestService/Method_OtherByteEncodedMessages" />
+                        </service:EVENT-REFS>
+                    </service:EVENT-GROUP>
+                </service:EVENT-GROUPS>
+            </fx:SERVICE-INTERFACE>
         </fx:SERVICE-INTERFACES>
         <fx:DATATYPES>
             <fx:DATATYPE xsi:type="fx:COMMON-DATATYPE-TYPE" ID="/CommonDatatype_BOOL">

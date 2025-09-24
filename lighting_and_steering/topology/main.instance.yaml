@@ -1,4 +1,4 @@
-schema: remotive-topology-instance:0.8
+schema: remotive-topology-instance:0.12
 
 name: lighting-and-steering
 
@@ -10,7 +10,23 @@ platform:
   includes:
     - ./topology.platform.yaml
 
+channels:
+  RearLightLIN:
+    type: lin
+    config:
+      type: remotivelabs_lin
+      device_identifier: 6
+      server_port: 2014 # port forward from host
+      target_host: 192.168.20.100
+      target_port: 2013
+      auto_config_boot_server: 4001 # port forward
+
 ecus:
+  SCCM:
+    mock:
+      channels:
+        DriverCan0:
+
   BCM:
     models:
       bcm:
@@ -34,11 +50,31 @@ ecus:
   RLCM:
     channels:
       BodyCan0:
+      RearLightLIN:
+        config:
+          type: lin
+          schedule_autostart: true
+          schedule_table_name: DEVMLIN01Schedule01
 
-  SCCM:
+    models:
+      rlcm:
+        type: container
+        container:
+          build:
+            dockerfile: ../Dockerfile
+          volumes:
+            - ../ecus/rlcm:/app/rlcm
+          working_dir: /app
+          command: python -m rlcm
+
+  RL:
+    channels:
+      RearLightLIN:
+
+  PAM:
     mock:
       channels:
-        DriverCan0:
+        BodyCan0:
 
   GWM:
     models:

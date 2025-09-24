@@ -5,7 +5,7 @@ from enum import Enum
 from typing import cast
 
 import structlog
-from remotivelabs.broker import BrokerClient, Frame, RestbusSignalConfig
+from remotivelabs.broker import BrokerClient, Frame
 from remotivelabs.topology.behavioral_model import BehavioralModel, RebootRequest
 from remotivelabs.topology.cli.behavioral_model import BehavioralModelArgs
 from remotivelabs.topology.control import (
@@ -64,6 +64,7 @@ class BCM:
     hazard_button_frame: str = "HazardLightButton"
     light_stalk_frame: str = "LightStalk"
     brake_pedal_position_frame: str = "BrakePedalPositionSensor"
+    accelerator_pedal_position_frame: str = "AcceleratorPedalPositionSensor"
     steering_angle_frame: str = "SteeringAngle"
 
     # Signals on target namespace (BodyCan) we want to send. Must match values in the signal database
@@ -78,6 +79,7 @@ class BCM:
     left_high_beam_signal: str = "HighBeamLightControl.LeftHighBeamLightRequest"
     right_high_beam_signal: str = "HighBeamLightControl.RightHighBeamLightRequest"
     steering_wheel_position_signal: str = "SteeringWheelInfo.SteeringWheelPosition"
+    accelerator_pedal_position_signal: str = "AcceleratorPedalInfo.AcceleratorPedalPosition"
 
     def __init__(self, avp: BehavioralModelArgs) -> None:
         self._broker_client = BrokerClient(url=avp.url, auth=avp.auth)
@@ -99,6 +101,7 @@ class BCM:
                 self.driver_can_0.create_input_handler([filters.FrameFilter(BCM.light_stalk_frame)], self.on_light_mode),
                 self.driver_can_0.create_input_handler([filters.FrameFilter(BCM.light_stalk_frame)], self.on_high_beam),
                 self.driver_can_0.create_input_handler([filters.FrameFilter(BCM.brake_pedal_position_frame)], self.on_brake),
+                self.driver_can_0.create_input_handler([filters.FrameFilter(BCM.accelerator_pedal_position_frame)], self.on_accelerator),
                 self.driver_can_0.create_input_handler([filters.FrameFilter(BCM.steering_angle_frame)], self.on_steering_angle),
             ],
             control_handlers=[
@@ -153,8 +156,8 @@ class BCM:
         high_beams = 1 if signal > 0 else 0
         logger.debug("Setting high beams", high_beams=high_beams)
         await self.body_can_0.restbus.update_signals(
-            RestbusSignalConfig.set(name=BCM.left_high_beam_signal, value=high_beams),
-            RestbusSignalConfig.set(name=BCM.right_high_beam_signal, value=high_beams),
+            (BCM.left_high_beam_signal, high_beams),
+            (BCM.right_high_beam_signal, high_beams),
         )
 
     async def on_turn_stalk(self, frame: Frame) -> None:
@@ -211,8 +214,16 @@ class BCM:
         brake_light = 1 if signal > 0 else 0
         logger.debug("Setting brake lights", brake_light=brake_light)
         await self.body_can_0.restbus.update_signals(
-            RestbusSignalConfig.set(name=BCM.left_brake_light_signal, value=brake_light),
-            RestbusSignalConfig.set(name=BCM.right_brake_light_signal, value=brake_light),
+            (BCM.left_brake_light_signal, brake_light),
+            (BCM.right_brake_light_signal, brake_light),
+        )
+
+    async def on_accelerator(self, frame: Frame) -> None:
+        """Handle accelerator pedal position change (simple remap to accelerator pedal position signal)"""
+        accelerator_position = cast(int, frame.signals["AcceleratorPedalPositionSensor.AcceleratorPedalPosition"])
+        logger.debug("Setting accelerator pedal position", accelerator_position=accelerator_position)
+        await self.body_can_0.restbus.update_signals(
+            (BCM.accelerator_pedal_position_signal, accelerator_position),
         )
 
     async def on_steering_angle(self, frame: Frame) -> None:
@@ -220,7 +231,7 @@ class BCM:
         steering_angle = frame.signals["SteeringAngle.SteeringAngle"]
         logger.debug("Setting steering wheel position", steering_angle=steering_angle)
         await self.body_can_0.restbus.update_signals(
-            RestbusSignalConfig.set(name=BCM.steering_wheel_position_signal, value=steering_angle),
+            (BCM.steering_wheel_position_signal, steering_angle),
         )
 
     async def _set_lights(self, state: str) -> None:
@@ -229,10 +240,10 @@ class BCM:
 
         logger.debug("Setting lights", state=state, beam_config=beam_config)
         await self.body_can_0.restbus.update_signals(
-            RestbusSignalConfig.set(name=BCM.left_daylight_running_light_signal, value=beam_config["daylight_running_lights"]),
-            RestbusSignalConfig.set(name=BCM.right_daylight_running_light_signal, value=beam_config["daylight_running_lights"]),
-            RestbusSignalConfig.set(name=BCM.left_low_beam_signal, value=beam_config["low_beams"]),
-            RestbusSignalConfig.set(name=BCM.right_low_beam_signal, value=beam_config["low_beams"]),
+            (BCM.left_daylight_running_light_signal, beam_config["daylight_running_lights"]),
+            (BCM.right_daylight_running_light_signal, beam_config["daylight_running_lights"]),
+            (BCM.left_low_beam_signal, beam_config["low_beams"]),
+            (BCM.right_low_beam_signal, beam_config["low_beams"]),
         )
 
     async def _set_turn_lights(self, state: str) -> None:
@@ -241,8 +252,8 @@ class BCM:
 
         logger.debug("Setting turn signals", state=state, signal_config=signal_config)
         await self.body_can_0.restbus.update_signals(
-            RestbusSignalConfig.set(name=BCM.left_turn_light_signal, value=signal_config["left"]),
-            RestbusSignalConfig.set(name=BCM.right_turn_light_signal, value=signal_config["right"]),
+            (BCM.left_turn_light_signal, signal_config["left"]),
+            (BCM.right_turn_light_signal, signal_config["right"]),
         )
 
 

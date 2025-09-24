@@ -1,4 +1,4 @@
-schema: remotive-topology-platform:0.8
+schema: remotive-topology-platform:0.12
 channels:
   DriverCan0:
     database: ../databases/driver_can.dbc
@@ -15,14 +15,31 @@ channels:
     type: ethernet
     subnet: 172.31.0.0/24
     endpoints:
-      udp/172.31.0.18:16000:
-        provided_service_instances:
-          - TurnlightIndicator
-      udp/172.31.0.12:16000:
-        consumed_service_instances:
-          - TurnlightIndicator
+      host_gwm:
+        host: 172.31.0.18
+        sockets:
+          gwm_someip:
+            type: udp
+            port: 16000
+            provided_service_instances:
+              - TurnlightIndicator
+      host_ihu:
+        host: 172.31.0.12
+        sockets:
+          ihu_someip:
+            type: udp
+            port: 16000
+            consumed_service_instances:
+              - TurnlightIndicator
+  RearLightLIN:
+    database: ../databases/rearlight.ldf
+    type: lin
 
 ecus:
+  SCCM:
+    channels:
+      DriverCan0:
+
   BCM:
     channels:
       DriverCan0:
@@ -39,10 +56,11 @@ ecus:
   RLCM:
     channels:
       BodyCan0:
+      RearLightLIN:
 
-  SCCM:
+  PAM:
     channels:
-      DriverCan0:
+      BodyCan0:
 
   GWM:
     channels:
@@ -50,11 +68,13 @@ ecus:
       SOMEIP:
         config:
           type: ethernet
-          host: 172.31.0.18
+          provided_endpoints:
+            - host_gwm
 
   IHU:
     channels:
       SOMEIP:
         config:
           type: ethernet
-          host: 172.31.0.12
+          provided_endpoints:
+            - host_ihu

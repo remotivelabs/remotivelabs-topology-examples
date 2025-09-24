@@ -11,7 +11,11 @@ from remotivelabs.topology.namespaces import filters
 from remotivelabs.topology.namespaces.some_ip import SomeIPError, SomeIPEvent, SomeIPNamespace, SomeIPRequestReturn, SomeIPResponse
 
 
-async def __on_event(event: SomeIPEvent) -> None:
+async def _on_event(event: SomeIPEvent) -> None:
+    logging.debug("Got event with id %s, params=%s payload=%s", event.name, str(len(event.parameters)), event.raw)
+
+
+async def _on_other_event(event: SomeIPEvent) -> None:
     logging.debug("Got event with id %s, params=%s payload=%s", event.name, str(len(event.parameters)), event.raw)
 
 
@@ -58,8 +62,17 @@ async def main(avp: BehavioralModelArgs):
                             event_name="ByteEncodedMessages",
                         )
                     ],
-                    __on_event,
-                )
+                    _on_event,
+                ),
+                some_ip_eth.create_input_handler(
+                    [
+                        filters.SomeIPEventFilter(
+                            service_instance_name="MyOtherTestService",
+                            event_name="OtherByteEncodedMessages",
+                        )
+                    ],
+                    _on_other_event,
+                ),
             ],
         ) as bm:
             publish_task = asyncio.create_task(requester(some_ip_eth))

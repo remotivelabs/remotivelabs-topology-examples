@@ -2,7 +2,7 @@ import asyncio
 import logging
 from dataclasses import dataclass
 
-from remotivelabs.broker import BrokerClient, Frame, RestbusSignalConfig
+from remotivelabs.broker import BrokerClient, Frame
 from remotivelabs.topology.behavioral_model import BehavioralModel
 from remotivelabs.topology.cli.behavioral_model import BehavioralModelArgs
 from remotivelabs.topology.namespaces import filters
@@ -26,8 +26,8 @@ class BCM:
         # This simulates hazard lights by activating both sides simultaneously.
         # Note: This example keeps the lights ON/OFF, not blinking.
         await self.body_can_0.restbus.update_signals(
-            RestbusSignalConfig.set("TurnLightControl.RightTurnLightRequest", value=hazard_signal),
-            RestbusSignalConfig.set("TurnLightControl.LeftTurnLightRequest", value=hazard_signal),
+            ("TurnLightControl.RightTurnLightRequest", hazard_signal),
+            ("TurnLightControl.LeftTurnLightRequest", hazard_signal),
         )
 
 

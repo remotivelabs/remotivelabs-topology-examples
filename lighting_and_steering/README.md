@@ -52,6 +52,11 @@ config:
         class RemotiveBroker_RLCM
     }
 
+    namespace RL {
+        class ECU_Mock_RL
+        class RemotiveBroker_RL
+    }
+
     namespace GWM {
         class Behavioral_Model_GWM
         class RemotiveBroker_GWM
@@ -86,6 +91,8 @@ config:
     RemotiveBroker_GWM -- BodyCan0
     RemotiveBroker_GWM -- SOMEIP
     RemotiveBroker_IHU -- SOMEIP
+    RemotiveBroker_RLCM -- RearLightLIN
+    RemotiveBroker_RL -- RearLightLIN
 
     ECU_Mock_SCCM -- RemotiveBroker_SCCM
     Behavioral_Model_BCM -- RemotiveBroker_BCM
@@ -94,6 +101,8 @@ config:
     ECU_Mock_RLCM -- RemotiveBroker_RLCM
     Behavioral_Model_GWM -- RemotiveBroker_GWM
     ECU_Mock_IHU -- RemotiveBroker_IHU
+    ECU_Mock_IHU -- RemotiveBroker_IHU 
+    ECU_Mock_RL -- RemotiveBroker_RL
 
     TestSuite ..> TopologyBroker
     Jupyter ..> TopologyBroker

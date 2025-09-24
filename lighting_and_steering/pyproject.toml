@@ -23,7 +23,7 @@ dependencies = [
 
 [tool.setuptools.packages.find]
 where = ["ecus/"]
-include = ["bcm*", "gwm*", "ihu*"]
+include = ["bcm*", "gwm*", "ihu*", "rlcm*"]
 namespaces = false
 
 [tool.pytest.ini_options]

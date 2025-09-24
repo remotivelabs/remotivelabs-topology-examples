@@ -1,4 +1,4 @@
-schema: remotive-topology-instance:0.8
+schema: remotive-topology-instance:0.12
 
 containers:
   jupyter:

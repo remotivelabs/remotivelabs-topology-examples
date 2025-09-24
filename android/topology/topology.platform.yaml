@@ -1,4 +1,4 @@
-schema: remotive-topology-platform:0.7
+schema: remotive-topology-platform:0.12
 channels:
   DriverCan0:
     database: ../databases/driver_can.dbc
@@ -15,20 +15,30 @@ channels:
     type: ethernet
     subnet: 172.31.0.0/24
     endpoints:
-      udp/172.31.0.18:16000:
-        provided_service_instances:
-          - TurnlightIndicator
-          - LocationService
-          - SpeedService
-        consumed_service_instances:
-          - HVACService
-      udp/172.31.0.12:16000:
-        consumed_service_instances:
-          - TurnlightIndicator
-          - LocationService
-          - SpeedService
-        provided_service_instances:
-          - HVACService
+      host_gwm:
+        host: 172.31.0.18
+        sockets:
+          gwm_someip:
+            type: udp
+            port: 16000
+            provided_service_instances:
+              - TurnlightIndicator
+              - LocationService
+              - SpeedService
+            consumed_service_instances:
+              - HVACService
+      host_ihu:
+        host: 172.31.0.12
+        sockets:
+          ihu_someip:
+            type: udp
+            port: 16000
+            consumed_service_instances:
+              - TurnlightIndicator
+              - LocationService
+              - SpeedService
+            provided_service_instances:
+              - HVACService
 
   ChassisCan0:
     type: can
@@ -72,14 +82,16 @@ ecus:
       SOMEIP:
         config:
           type: ethernet
-          host: 172.31.0.18
+          provided_endpoints:
+            - host_gwm
 
   IHU:
     channels:
       SOMEIP:
         config:
           type: ethernet
-          host: 172.31.0.12
+          provided_endpoints:
+            - host_ihu
 
   HVAC:
     channels:

@@ -26,13 +26,24 @@ async def some_ip_eth(request: pytest.FixtureRequest):
 
 
 @pytest.mark.asyncio
-async def test_retrieve_latest_bytes(some_ip_eth: SomeIPNamespace):
+async def test_subscribe_to_multiple_services(some_ip_eth: SomeIPNamespace) -> None:
+    # given
+    expected_services = {"MyTestService", "MyOtherTestService"}
+    received_from_services: set[str] = set()
+
+    # when
     stream = await some_ip_eth.subscribe(
         ("ByteEncodedMessages", "MyTestService"),
+        ("OtherByteEncodedMessages", "MyOtherTestService"),
     )
+
+    # then
     async for event in stream:
-        assert isinstance(event.raw, bytes)
-        break
+        received_from_services.add(event.service_instance_name)
+        if expected_services == received_from_services:
+            break
+
+    assert expected_services == received_from_services, f"Expected {expected_services}, got {received_from_services}"
 
 
 def compare_param_dict(dict1: dict[str, int | float | bytes | str], dict2: dict[str, int | float | bytes | str]) -> None:

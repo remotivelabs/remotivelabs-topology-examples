@@ -1,4 +1,4 @@
-schema: remotive-topology-instance:0.8
+schema: remotive-topology-instance:0.12
 
 containers:
   tester:
@@ -17,6 +17,7 @@ containers:
       - RLCM-broker.com
       - gwm
       - ihu
+      - RL-broker.com
 
   behave:
     profiles: [behave]
@@ -34,3 +35,4 @@ containers:
       - RLCM-broker.com
       - gwm
       - ihu
+      - RL-broker.com
