@@ -51,7 +51,6 @@ class RLCM:
         return self.bm.run_forever().__await__()
 
     async def on_turn_req_frame(self, frame: Frame) -> None:
-        logger.debug("Received frame", frame=frame)
         await self.lin_bus.publish(
             WriteSignal(
                 name="DEVMLIN01Fr01.ReqLeft",
