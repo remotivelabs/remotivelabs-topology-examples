@@ -50,7 +50,7 @@ ecus:
     channels:
       BodyCan0:
 
-  ABS_ECU:
+  ABS:
     channels:
       ChassisCan0:
 

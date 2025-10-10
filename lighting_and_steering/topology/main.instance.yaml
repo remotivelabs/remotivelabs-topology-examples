@@ -23,9 +23,7 @@ channels:
 
 ecus:
   SCCM:
-    mock:
-      channels:
-        DriverCan0:
+    mock: {}
 
   BCM:
     models:
@@ -39,13 +37,9 @@ ecus:
           working_dir: /app
           command: python -m bcm
 
-  DIM:
-    channels:
-      BodyCan0:
+  DIM: {}
 
-  FLCM:
-    channels:
-      BodyCan0:
+  FLCM: {}
 
   RLCM:
     channels:
@@ -67,14 +61,10 @@ ecus:
           working_dir: /app
           command: python -m rlcm
 
-  RL:
-    channels:
-      RearLightLIN:
+  RL: {}
 
   PAM:
-    mock:
-      channels:
-        BodyCan0:
+    mock: {}
 
   GWM:
     models:

@@ -12,31 +12,48 @@ BU_:
     SCCM
     BCM
 
+BA_DEF_ BO_ "GenMsgCycleTime" FLOAT 0 10000;
+BA_DEF_ SG_ "GenSigStartValue" FLOAT 0 0;
+
 BO_ 100 HazardLightButton: 1 SCCM
- SG_ HazardLightButton : 0|1@1+ (1,0) [0|1] ""  BCM
+  SG_ HazardLightButton : 0|1@1+ (1,0) [0|1] ""  BCM
 
 BO_ 101 TurnStalk: 1 SCCM
- SG_ TurnSignal : 0|2@1+ (1,0) [0|2] ""  BCM
+  SG_ TurnSignal : 0|2@1+ (1,0) [0|2] ""  BCM
 
 BO_ 102 SteeringAngle: 8 SCCM
- SG_ SteeringAngle : 0|14@1+ (0.1,-819.2) [-819.2|819.1] "deg"  BCM
+  SG_ SteeringAngle : 0|14@1+ (0.1,-819.2) [-819.2|819.1] "deg"  BCM
 
 BO_ 103 LightStalk: 1 SCCM
- SG_ LightMode : 0|2@1+ (1,0) [0|2] ""  BCM
- SG_ HighBeam : 2|1@1+ (1,0) [0|1] ""  BCM
+  SG_ LightMode : 0|2@1+ (1,0) [0|2] ""  BCM
+  SG_ HighBeam : 2|1@1+ (1,0) [0|1] ""  BCM
 
 BO_ 104 BrakePedalPositionSensor: 8 SCCM
- SG_ BrakePedalPosition : 0|8@1+ (1,0) [0|255] ""  BCM
+  SG_ BrakePedalPosition : 0|8@1+ (1,0) [0|255] ""  BCM
 
 BO_ 105 AcceleratorPedalPositionSensor: 8 SCCM
- SG_ AcceleratorPedalPosition : 0|8@1+ (1,0) [0|255] ""  BCM
+  SG_ AcceleratorPedalPosition : 0|8@1+ (1,0) [0|255] ""  BCM
+
+BO_ 106 GearShiftPaddles: 1 SCCM
+  SG_ GearShiftUp   : 0|1@1+ (1,0) [0|1] "" BCM
+  SG_ GearShiftDown : 1|1@1+ (1,0) [0|1] "" BCM
 
 VAL_ 100 HazardLightButton 0 "Off" 1 "On";
 VAL_ 101 TurnSignal 0 "Off" 1 "Left" 2 "Right";
 VAL_ 103 LightMode 0 "Off" 1 "DaylightRunningLight" 2 "LowBeam";
 VAL_ 103 HighBeam 0 "Off" 1 "On";
+VAL_ 106 GearShiftUp   0 "Released" 1 "Pressed";
+VAL_ 106 GearShiftDown 0 "Released" 1 "Pressed";
 
-BA_DEF_ BO_ "GenMsgCycleTime" FLOAT 0 10000;
+BA_ "GenSigStartValue" SG_ 100 HazardLightButton 0;
+BA_ "GenSigStartValue" SG_ 101 TurnSignal 0;
+BA_ "GenSigStartValue" SG_ 102 SteeringAngle 8192;
+BA_ "GenSigStartValue" SG_ 103 HighBeam 0;
+BA_ "GenSigStartValue" SG_ 103 LightMode 0;
+BA_ "GenSigStartValue" SG_ 104 BrakePedalPosition 0;
+BA_ "GenSigStartValue" SG_ 105 AcceleratorPedalPosition 0;
+BA_ "GenSigStartValue" SG_ 106 GearShiftUp 0;
+BA_ "GenSigStartValue" SG_ 106 GearShiftDown 0;
 
 BA_ "GenMsgCycleTime" BO_ 100 50;
 BA_ "GenMsgCycleTime" BO_ 101 50;
@@ -44,3 +61,4 @@ BA_ "GenMsgCycleTime" BO_ 102 50;
 BA_ "GenMsgCycleTime" BO_ 103 50;
 BA_ "GenMsgCycleTime" BO_ 104 50;
 BA_ "GenMsgCycleTime" BO_ 105 50;
+BA_ "GenMsgCycleTime" BO_ 106 50;

@@ -17,6 +17,7 @@ from remotivelabs.topology.namespaces.can import CanNamespace, RestbusConfig
 
 from .log import configure_logging
 from .state_machines.beams import BeamsStateMachine, LightModePosition
+from .state_machines.gears import GearPositionChange, GearsStateMachine
 from .state_machines.turn_signals import TurnSignalsStateMachine, TurnStalkPosition
 
 logger = structlog.get_logger(__name__)
@@ -37,6 +38,11 @@ TURN_SIGNAL_OUTPUT_PER_STATE = {
     "hazard_on": {"left": 1, "right": 1},
     "hazard_off": {"left": 0, "right": 0},
     "off": {"left": 0, "right": 0},
+}
+
+GEARS_OUTPUT_PER_STATE = {
+    "reverse": 0,
+    "drive": 1,
 }
 
 
@@ -65,6 +71,7 @@ class BCM:
     light_stalk_frame: str = "LightStalk"
     brake_pedal_position_frame: str = "BrakePedalPositionSensor"
     accelerator_pedal_position_frame: str = "AcceleratorPedalPositionSensor"
+    gear_shift_paddles_frame: str = "GearShiftPaddles"
     steering_angle_frame: str = "SteeringAngle"
 
     # Signals on target namespace (BodyCan) we want to send. Must match values in the signal database
@@ -80,6 +87,7 @@ class BCM:
     right_high_beam_signal: str = "HighBeamLightControl.RightHighBeamLightRequest"
     steering_wheel_position_signal: str = "SteeringWheelInfo.SteeringWheelPosition"
     accelerator_pedal_position_signal: str = "AcceleratorPedalInfo.AcceleratorPedalPosition"
+    gear_position_signal: str = "GearInfo.GearLeverPosition"
 
     def __init__(self, avp: BehavioralModelArgs) -> None:
         self._broker_client = BrokerClient(url=avp.url, auth=avp.auth)
@@ -102,6 +110,8 @@ class BCM:
                 self.driver_can_0.create_input_handler([filters.FrameFilter(BCM.light_stalk_frame)], self.on_high_beam),
                 self.driver_can_0.create_input_handler([filters.FrameFilter(BCM.brake_pedal_position_frame)], self.on_brake),
                 self.driver_can_0.create_input_handler([filters.FrameFilter(BCM.accelerator_pedal_position_frame)], self.on_accelerator),
+                self.driver_can_0.create_input_handler([filters.FrameFilter(BCM.gear_shift_paddles_frame)], self.on_gear_up),
+                self.driver_can_0.create_input_handler([filters.FrameFilter(BCM.gear_shift_paddles_frame)], self.on_gear_down),
                 self.driver_can_0.create_input_handler([filters.FrameFilter(BCM.steering_angle_frame)], self.on_steering_angle),
             ],
             control_handlers=[
@@ -111,10 +121,8 @@ class BCM:
             ],
         )
         self.beams_machine = BeamsStateMachine()
-        self.beams_output_for_state = BEAMS_OUTPUT_FOR_STATE
-
         self.turn_signals_machine = TurnSignalsStateMachine(callback=self._on_toggle_turn_signals)
-        self.turn_signal_output_per_state = TURN_SIGNAL_OUTPUT_PER_STATE
+        self.gears_machine = GearsStateMachine()
 
     async def __aenter__(self):
         await self._broker_client.connect()
@@ -226,6 +234,22 @@ class BCM:
             (BCM.accelerator_pedal_position_signal, accelerator_position),
         )
 
+    async def on_gear_up(self, frame: Frame) -> None:
+        """Handle gear shift paddles position change (simple remap to gear shift paddles position signal)"""
+        gear_up = cast(int, frame.signals["GearShiftPaddles.GearShiftUp"])
+        logger.debug("Gear up", gear_up=gear_up)
+        if gear_up:
+            new_state = self.gears_machine.change_gear_position(GearPositionChange.Up)
+            await self._set_gear(state=new_state)
+
+    async def on_gear_down(self, frame: Frame) -> None:
+        """Handle gear shift paddles position change (simple remap to gear shift paddles position signal)"""
+        gear_down = cast(int, frame.signals["GearShiftPaddles.GearShiftDown"])
+        logger.debug("Gear down", gear_down=gear_down)
+        if gear_down:
+            new_state = self.gears_machine.change_gear_position(GearPositionChange.Down)
+            await self._set_gear(state=new_state)
+
     async def on_steering_angle(self, frame: Frame) -> None:
         """Handle steering angle change (simple remap to steering wheel position signal)"""
         steering_angle = frame.signals["SteeringAngle.SteeringAngle"]
@@ -235,8 +259,8 @@ class BCM:
         )
 
     async def _set_lights(self, state: str) -> None:
-        default_config = self.beams_output_for_state["off"]
-        beam_config = self.beams_output_for_state.get(state, default_config)
+        default_config = BEAMS_OUTPUT_FOR_STATE["off"]
+        beam_config = BEAMS_OUTPUT_FOR_STATE.get(state, default_config)
 
         logger.debug("Setting lights", state=state, beam_config=beam_config)
         await self.body_can_0.restbus.update_signals(
@@ -247,13 +271,22 @@ class BCM:
         )
 
     async def _set_turn_lights(self, state: str) -> None:
-        default_config = self.turn_signal_output_per_state["off"]
-        signal_config = self.turn_signal_output_per_state.get(state, default_config)
+        default_config = TURN_SIGNAL_OUTPUT_PER_STATE["off"]
+        signal_config = TURN_SIGNAL_OUTPUT_PER_STATE.get(state, default_config)
 
         logger.debug("Setting turn signals", state=state, signal_config=signal_config)
         await self.body_can_0.restbus.update_signals(
             (BCM.left_turn_light_signal, signal_config["left"]),
             (BCM.right_turn_light_signal, signal_config["right"]),
+        )
+
+    async def _set_gear(self, state: str) -> None:
+        default_config = GEARS_OUTPUT_PER_STATE["drive"]
+        signal = GEARS_OUTPUT_PER_STATE.get(state, default_config)
+
+        logger.debug("Setting gear position", gear_position=state, signal=signal)
+        await self.body_can_0.restbus.update_signals(
+            (BCM.gear_position_signal, signal),
         )
 
 

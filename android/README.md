@@ -1,12 +1,12 @@
 # Android example
 
-> This demo is still being improved, please reach out if you have issues or questions. mailto:support@remotivelabs.com, alternatively book a slot via: https://www.remotivelabs.com/contact
+> This demo is still being improved, please reach out if you have issues or questions. mailto:support@remotivelabs.com, alternatively book a slot via: <https://www.remotivelabs.com/contact>
 
 ![Example](docs/RemotiveToplogy_ans_AAOS.gif)
 
-This demo is built of top of lighting and steering and show bidirectional communication with Android.
+This demo is built of top of lighting and steering and show bidirectional communication with Android. The goal is for you to be be able to follow a recorded drive through Android and observe the location and speed. You can also adjust the temperature in the Android UI and see that the signals are passed back into the topology.
 
-- IHU connected over SOME/IP runnind Android with live location source
+- IHU connected over SOME/IP running Android with live location source
 
 Notice while the example is showing ECUs possible present in a real vehicle, the signals and implementations are simplified to make the example easy to understand. The goal is not intended to be fully realistic.
 
@@ -54,12 +54,12 @@ config:
         class RemotiveBroker_GWM
     }
 
-    namespace ABS_ECU {
-        class ECU_Mock_ABS_ECU
-        class RemotiveBroker_ABS_ECU
+    namespace ABS {
+        class ECU_Mock_ABS
+        class RemotiveBroker_ABS
     }
 
-    class ChassisCan {
+    class ChassisCan0 {
         <<CAN bus>>
     }
 
@@ -88,6 +88,7 @@ config:
 
     class TopologyBroker
 
+    class Android_Emulator
     class TestSuite
     class Jupyter
     class Webapp
@@ -103,7 +104,7 @@ config:
     RemotiveBroker_GWM -- ChassisCan0
     RemotiveBroker_GWM -- SOMEIP
     RemotiveBroker_IHU -- SOMEIP
-    RemotiveBroker_ABS_ECU -- ChassisCan0
+    RemotiveBroker_ABS -- ChassisCan0
     RemotiveBroker_TCU -- BodyCan0
     RemotiveBroker_HVAC -- BodyCan0
 
@@ -114,9 +115,11 @@ config:
     ECU_Mock_RLCM -- RemotiveBroker_RLCM
     Behavioral_Model_GWM -- RemotiveBroker_GWM
     ECU_Mock_IHU -- RemotiveBroker_IHU
-    ECU_Mock_ABS_ECU -- RemotiveBroker_ABS_ECU
+    ECU_Mock_ABS -- RemotiveBroker_ABS
     ECU_Mock_TCU -- RemotiveBroker_TCU
     ECU_Mock_HVAC -- RemotiveBroker_HVAC
+
+    Android_Emulator -- ECU_Mock_IHU
 
     TestSuite ..> TopologyBroker
     Jupyter ..> TopologyBroker
@@ -130,7 +133,7 @@ config:
     TopologyBroker .. RemotiveBroker_RLCM
     TopologyBroker .. RemotiveBroker_GWM
     TopologyBroker .. RemotiveBroker_IHU
-    TopologyBroker .. RemotiveBroker_ABS_ECU
+    TopologyBroker .. RemotiveBroker_ABS
     TopologyBroker .. RemotiveBroker_TCU
     TopologyBroker .. RemotiveBroker_HVAC
     
@@ -145,7 +148,7 @@ config:
 | RLCM | Rear Light Control Module      | Controls rear lighting system                           |
 | GWM  | Gateway Module                 | Routes communication between different vehicle networks |
 | IHU  | Infotainment Head Unit         | Manages infotainment and user interface systems         |
-| HVAC | Heating, Ventilation, and Air Conditioning | Recieves temperture control from Anroid infotainment.   |
+| HVAC | Heating, Ventilation, and Air Conditioning | Recieves temperture control from Android infotainment.   |
 | ABS | Anti-lock Braking System        | Provides speed                                   |
 | TCU | Telematics Control Unit       | Provides GNSS location                                   |
 
@@ -153,151 +156,55 @@ config:
 
 ## Host setup
 
+You will need the following tools
+
+- `RemotiveCLI` <https://docs.remotivelabs.com/docs/remotive-cli/installation>
+- `RemotieToplogy` <https://docs.remotivelabs.com/docs/remotive-topology/install>
+- (Optional) `dockercan` <https://releases.remotivelabs.com/#docker_can/>
+- (Optional) `socat` [See Emulator on host](#emulator-on-host)
+- (Optional) `Android-Studio` [See Emulator on host](#emulator-on-host)
+
 On Linux, this example requires that you run `dockercan` service on your machine to enable CAN networks in Docker, install the latest version from [here](https://releases.remotivelabs.com/#docker_can/) or read about how to do this over udp in the [documentation](https://docs.remotivelabs.com/docs/remotive-topology/getting-started#can).
+
+Select you recording you like to use as input, navigate to it and extract the session id from the recording url <https://console.cloud.remotivelabs.com/p/my-demo/recordings/9459066702917749000?tab=playback>
+Make sure the recording contains `ChassisBus` and `VehicleBus`
+e.g. `9459066702917749000` also take note of the project (in this case `my-demo` which is the name which contains "Recordings").
 
 ## Android ADB, Vehicle HAL (VHAL) and EMULATOR - how to get going
 
-### Install 
-- `Android Studio` and create a AVD, make sure it a `userdebug` build which can be started in `permissive` mode. In this demo the AVD is based on `Android Automotive 13 "Tiramisu" with Google APIs ARM 64 v8a System Image`, which comes with `VHAL`. Install a maps apk, eg https://www.apkmirror.com/apk/google-inc/google-maps-android-automotive/.
-- `RemotiveCLI` https://docs.remotivelabs.com/docs/remotive-cli/installation
-- `RemotieToplogy` https://docs.remotivelabs.com/docs/remotive-topology/install
-```
-# linux
-sudo apt install jq socat
-```
-```
-# MacOS
-brew install jq socat
-```
+The example can be run either using an Android emulator running on the host machine or one running within the docker environment. The easiest way to get started is by running the emulator within docker as it requires far less setup. For running the emulator on the host the instructions will differ based on your platform.
 
-Select you recording you like to use as input, navigate to it and extract the session id from the recording url https://console.cloud.remotivelabs.com/p/my-demo/recordings/9459066702917749000?tab=playback
-Make sure the recording contains `ChassisBus` and `VehicleBus`
-eg `9459066702917749000` also take note of the project (in this case `my-demo` which is the name which contains "Recordings").
+> :warning: When running the emulator within Docker it requires hardware virtualisation using KVM to achieve any reasonable performance. This means that running the example in this configuration is limited to Linux only using x86_64 architecture.
 
+### Emulator within Docker
 
-## Linux with socketcan, MacOS and Windows without socketcan
+To run the Google Maps application in the Android emulator it first needs to be installed. This is done during topology startup but it requires the APK to be provided during build. Download the APK, e.g. from <https://www.apkmirror.com/apk/google-inc/google-maps-android-automotive/>, and place it in the `android/containers/android_emulator/` folder.
 
-1. In terminal A: 
-    ```
-    adb kill-server
-    adb -a -P 5038 nodaemon server start
-    ```
-2. In terminal B:
-    ```
-    socat TCP-LISTEN:6000,fork,reuseaddr TCP:localhost:5554
-    ```
-3. In terminal C:
-    Start your android emulator
-    ```
-    ANDROID_ADB_SERVER_PORT=5038 ~/Library/Android/sdk/emulator.backup/emulator @Tiramisu_API_33_automotive -selinux permissive -no-snapshot
-    ```
-4. In terminal D:    
-    - Linux: Generate the topology (with socketcan), from the root of this repository.
-        ```
-        remotive-topology generate \
-        -f android/topology/main.instance.yaml \
-        android/build -n android
-        ```
-    - MacOS and Windows: Generate the topology (without socketcan), from the root of this repository.
-        ```
-        remotive-topology generate \
-        -f android/topology/main.instance.yaml \
-        -f android/topology/can_over_udp.instance.yaml \
-        android/build -n android
-        ```
-5. Start the cloud playback, and start the topology, from the root of this repository.
-    Unless already signed in start by doing `remotive cloud auth login`
-    ```
-    # check above on how to extract you session id.
-    export CLOUD_URL=$(./android/run.sh my-demo 9459066702917749000)
-    CLOUD_AUTH=$(remotive cloud auth print-access-token) \
-    ANDROID_EMULATOR_AUTH=$(cat ~/.emulator_console_auth_token) \
-    docker compose -f android/build/android/docker-compose.yml --profile jupyter --profile ui --profile cloudfeeder up    
-    ```
-5. Navigation starts now, observe speed and location.
+Generate the topology
 
-
-
-## Windows and MacOS combined with a (virtual) linux, which enables `socketcan`
-
-1. connect to your `linux`
-    ```
-    ssh user@192.168.64.3 -L 50051:localhost:50051 -L 8080:localhost:8080 -L 8081:localhost:8081 -L 8888:localhost:8888 -L 5001:localhost:5001 -R 5555:localhost:5555 -R 15554:localhost:5554
-    ```
-    make sure that the `~/.emulator_console_auth_token` does exits, if you are in a VM you need to copy the file from the host where the emulator is running.
-
-1. In terminal A on `linux`: 
-    ```
-    adb kill-server
-    adb -a -P 5038 nodaemon server start
-    ```
-2. In terminal B on `linux`:
-    ```
-    socat TCP-LISTEN:6000,fork,reuseaddr TCP:localhost:15554
-    ```
-3. In terminal on `host`:
-    Start your android emulator
-    ```
-    ANDROID_ADB_SERVER_PORT=5038 ~/Library/Android/sdk/emulator.backup/emulator @Tiramisu_API_33_automotive -selinux permissive -no-snapshot
-    ```
-4. In terminal C on `linux`:    
-    - Linux: Generate the topology (with socketcan), from the root of this repository.
-        ```
-        remotive-topology generate \
-        -f android/topology/main.instance.yaml \
-        android/build -n android
-        ```
-5. Start the cloud playback, and start the topology, from the root of this repository.
-    Unless already signed in start by doing `remotive cloud auth login`
-    ```
-    # check above on how to extract you session id.
-    export CLOUD_URL=$(./android/run.sh my-demo 9459066702917749000)
-    CLOUD_AUTH=$(remotive cloud auth print-access-token) \
-    ANDROID_EMULATOR_AUTH=$(cat ~/.emulator_console_auth_token) \
-    docker compose -f android/build/android/docker-compose.yml --profile jupyter --profile ui --profile cloudfeeder up    
-    ```
-5. Navigation starts now, observe speed and location.
-
-# Hints
-
-- `adb` commands can be run as normal, however `-P 5038` needs to be appended, such as `adb -P 5038 logcat`, alternatively `ANDROID_ADB_SERVER_PORT=5038 adb logcat`
-- `run.sh` scripts (above) returns and logs your cloud broker. When you seek you Android location will be updated acordingly.
-- wireshark and edgeshark is very useful in this setup https://docs.remotivelabs.com/docs/remotive-topology/tools/wireshark
-
-
-# Troubleshooting
-
-- Make sure that the adb server is running before the emulator is started
-- Make sure there is only one one adb server
-- Make sure there is only one emulator runnning
-- Make sure that Android studio is not running. Read more in Emulator section.
-- If the stream stops it probably reached end of drive. Check **Hints** above.
-
-#### Emulator
-There is no way simple way to start android in `permissive` mode which is required for VHAL and custom properties. If you only need `emu` support and still like to launch from Android Studio, then make sure to change adb port. Located in Debugger options, use port 5038.
-
-> Hint: If you launch from command line, you can still connect your emulator.
-
-#### VHAL properties
-make sure to **BOOT** in permissive mode
-```
- ANDROID_ADB_SERVER_PORT=5038 ~/Library/Android/sdk/emulator.backup/emulator @SmallAutoAPI33 -selinux permissive -no-snapshot
-```
-check vhal
-```
-adb shell setenforce 0
-adb shell getenforce
-# Should return: Permissive
-adb logcat | grep "Vehicle"
-adb shell lsof -iTCP -sTCP:LISTEN 
-# make sure you see port 33452 or 9342 (this project is set prebuilt fgr 33452) 
+  ```
+  remotive-topology generate \
+  -f android/topology/main.instance.yaml \
+  -f android/topology/ihu_with_emulator_in_compose.instance.yaml \
+  android/build -n android
 ```
 
+Start the cloud playback, and start the topology, from the root of this repository. Unless already signed in start by doing `remotive cloud auth login`
 
-### Useful resources
-- https://developer.android.com/tools/adb
-- https://twosixtech.com/blog/integrating-docker-and-adb/?utm_source=chatgpt.com
-- https://stackoverflow.com/questions/46898322/emulator-5554-unauthorized-for-adb-devices
+```
+# check above on how to extract you session id.
+export CLOUD_URL=$(./android/run.sh my-demo 9459066702917749000)
+CLOUD_AUTH=$(remotive cloud auth print-access-token) \
+docker compose -f android/build/android/docker-compose.yml --profile jupyter --profile ui --profile cloudfeeder up
+```
+
+You should then be able to reach the emulator by going to <http://localhost:8085/vnc.html> and connecting. The first time it starts you will have to configure some settings and permission for the maps application.
+
+You can also visit the RemotiveBroker Webapp at <http://localhost:8080> to observe the temperature signals being send back from the Android Emulator.
+
+### Emulator on host
+
+If you are not running on Linux or want more control of what to run within the emulator you can also use this example together with a local emulator, see [Emulator on host](EMULATOR_ON_HOST.md)
 
 ## Configuration
 
@@ -305,20 +212,23 @@ All configuration is done using RemotiveTopology instance files:
 
 > :link: [Main instance](topology/main.instance.yaml)<br>
 > :link: [Windows/MacOS configuration](topology/can_over_udp.instance.yaml)
+> :link: [IHU with containerized emulator](topology/ihu_with_emulator_in_compose.instance.yaml)
+> :link: [IHU with host emulator](topology/ihu_with_emulator_on_host.instance.yaml)
 
-Notice how the main instance includes other instance configuration files and also the platform configuration. RemotiveTopology is based around a modular approach to describe both platforms and different ways to instantiate them. For example in this example you can see how Jupyter notebook is defined in a [reusable instanstance file](topology/jupyter.instance.yaml).
+Notice how the main instance includes other instance configuration files and also the platform configuration. RemotiveTopology is based around a modular approach to describe both platforms and different ways to instantiate them. For example in this example you can see how Jupyter notebook is defined in a [reusable instance file](topology/jupyter.instance.yaml).
 
 ### ECU implementations (Behavioral models)
 
-The `BCM` and `GWM` ECUs are behavioral models, which means that they contain custom logic. The source code for there ECUs can be found in:
+The `BCM`, `GWM` and `IHU` ECUs are behavioral models, which means that they contain custom logic. The source code for there ECUs can be found in:
 
-> :link: [ecus/bcm](ecus/bcm)<br>
-> :link: [ecus/gwm](ecus/gwm)
+> :link: [ecus/bcm](ecus/bcm)  
+> :link: [ecus/gwm](ecus/gwm)  
+> :link: [ecus/ihu](ecus/ihu)  
 
 To showcase ECU extracts, the `GWM` ECU is configured with its own `interfaces.json` and databases:
 
-> :link: [ecus/gwm/configuration/interfaces.json](ecus/gwm/configuration/interfaces.json)<br>
-> :link: [ecus/gwm/configuration/dbs/gwm_body_can.dbc](ecus/gwm/configuration/dbs/gwm_body_can.dbc)
+> :link: [ecus/gwm/configuration/interfaces.json](ecus/gwm/configuration/interfaces.json)  
+> :link: [ecus/gwm/configuration/dbs/gwm_body_can.dbc](ecus/gwm/configuration/dbs/gwm_body_can.dbc)  
 
 ### Docker compose file
 

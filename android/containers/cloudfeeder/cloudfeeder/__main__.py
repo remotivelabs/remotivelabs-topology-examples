@@ -53,7 +53,7 @@ async def main(avp: BehavioralModelArgs):
                     # logger.info("received speed", frame=frame)
                     await broker_client.restbus.update_signals(
                         (
-                            "ABS_ECU-ChassisCan0",
+                            "ABS-ChassisCan0",
                             [
                                 RestbusSignalConfig.set(name="UISpeedFrame.uispeed", value=frame.signals["ID257DIspeed.DI_uiSpeed"]),
                             ],

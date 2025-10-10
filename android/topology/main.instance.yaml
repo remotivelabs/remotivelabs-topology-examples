@@ -36,7 +36,7 @@ ecus:
     mock:
       {}
 
-  ABS_ECU:
+  ABS:
     mock:
       {}
 
@@ -60,26 +60,6 @@ ecus:
             - ../ecus/gwm:/app/gwm
           working_dir: /app
           command: python -m gwm
-
-  IHU:
-    models:
-      ihu:
-        type: container
-        container:
-          build:
-            context: ../
-            dockerfile: ../ecus/ihu/Dockerfile.ihu
-          volumes:
-            - ../ecus/ihu:/app/ihu
-          working_dir: /app
-          command: python -m ihu
-          environment:
-            - ANDROID_ADB_SERVER_PORT=5038
-            - ANDROID_ADB_SERVER_ADDRESS=host.docker.internal
-            - ANDROID_EMULATOR_AUTH=${ANDROID_EMULATOR_AUTH}
-            - PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
-          extra_hosts:
-            - "host.docker.internal:host-gateway"
 
   HVAC:
     channels:

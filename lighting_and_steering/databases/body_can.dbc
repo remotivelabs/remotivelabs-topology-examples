@@ -45,26 +45,43 @@ BO_ 106 SteeringWheelInfo: 8 BCM
 BO_ 107 AcceleratorPedalInfo: 8 BCM
   SG_ AcceleratorPedalPosition : 0|8@1+ (1,0) [0|255] ""  DIM, GWM
 
-BO_ 108 ProximityInfo: 2 PAM
+BO_ 108 GearInfo: 1 BCM
+  SG_ GearLeverPosition : 0|1@1+ (1,0) [0|1] "" DIM, GWM
+
+BO_ 109 ProximityInfo: 2 PAM
   SG_ ProximityDistance : 0|8@1+ (0.02,0) [0|5.10] "m"  DIM, GWM
+
+BO_ 110 VehicleSpeed: 2 BCM
+  SG_ VehicleSpeed : 0|16@1+ (0.01,0) [0|100] "m/s"  DIM, GWM
 
 VAL_ 100 LeftDaylightRunningLightRequest 0 "Off" 1 "On";
 VAL_ 100 RightDaylightRunningLightRequest 0 "Off" 1 "On";
-
 VAL_ 101 LeftLowBeamLightRequest 0 "Off" 1 "On";
 VAL_ 101 RightLowBeamLightRequest 0 "Off" 1 "On";
-
 VAL_ 102 LeftHighBeamLightRequest 0 "Off" 1 "On";
 VAL_ 102 RightHighBeamLightRequest 0 "Off" 1 "On";
-
 VAL_ 103 LeftTurnLightRequest 0 "Off" 1 "On";
 VAL_ 103 RightTurnLightRequest 0 "Off" 1 "On";
-
 VAL_ 104 LeftBrakeLightRequest 0 "Off" 1 "On";
 VAL_ 104 RightBrakeLightRequest 0 "Off" 1 "On";
+VAL_ 108 GearLeverPosition 0 "Reverse" 1 "Drive";
+VAL_ 109 ProximityDistance 255 "NoObject";
 
-VAL_ 108 ProximityDistance 255 "NoObject";
-BA_ "GenSigStartValue" SG_ 108 ProximityDistance 255;
+BA_ "GenSigStartValue" SG_ 100 LeftDaylightRunningLightRequest 0;
+BA_ "GenSigStartValue" SG_ 100 RightDaylightRunningLightRequest 0;
+BA_ "GenSigStartValue" SG_ 101 LeftLowBeamLightRequest 0;
+BA_ "GenSigStartValue" SG_ 101 RightLowBeamLightRequest 0;
+BA_ "GenSigStartValue" SG_ 102 LeftHighBeamLightRequest 0;
+BA_ "GenSigStartValue" SG_ 102 RightHighBeamLightRequest 0;
+BA_ "GenSigStartValue" SG_ 103 LeftTurnLightRequest 0;
+BA_ "GenSigStartValue" SG_ 103 RightTurnLightRequest 0;
+BA_ "GenSigStartValue" SG_ 104 LeftBrakeLightRequest 0;
+BA_ "GenSigStartValue" SG_ 104 RightBrakeLightRequest 0;
+BA_ "GenSigStartValue" SG_ 106 SteeringWheelPosition 0;
+BA_ "GenSigStartValue" SG_ 107 AcceleratorPedalPosition 0;
+BA_ "GenSigStartValue" SG_ 108 GearLeverPosition 1;
+BA_ "GenSigStartValue" SG_ 109 ProximityDistance 255;
+BA_ "GenSigStartValue" SG_ 110 VehicleSpeed 0;
 
 BA_ "GenMsgCycleTime" BO_ 100 50;
 BA_ "GenMsgCycleTime" BO_ 101 50;
@@ -74,3 +91,5 @@ BA_ "GenMsgCycleTime" BO_ 104 50;
 BA_ "GenMsgCycleTime" BO_ 106 50;
 BA_ "GenMsgCycleTime" BO_ 107 50;
 BA_ "GenMsgCycleTime" BO_ 108 50;
+BA_ "GenMsgCycleTime" BO_ 109 50;
+BA_ "GenMsgCycleTime" BO_ 110 50;

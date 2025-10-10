@@ -1,0 +1,24 @@
+schema: remotive-topology-instance:0.12
+
+ecus:
+  IHU:
+    models:
+      ihu:
+        type: container
+        container:
+          build:
+            context: ../
+            dockerfile: ../ecus/ihu/Dockerfile.ihu
+          volumes:
+            - ../ecus/ihu:/app/ihu
+          working_dir: /app
+          command: python -m ihu
+          environment:
+            - ANDROID_ADB_SERVER_PORT=5038
+            - ANDROID_ADB_SERVER_ADDRESS=host.docker.internal
+            - ANDROID_EMULATOR_ADDRESS=host.docker.internal
+            - ANDROID_EMULATOR_AUTH=${ANDROID_EMULATOR_AUTH:-}
+            - ANDROID_EMULATOR_NAME=${ANDROID_EMULATOR_NAME:-}
+            - PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
+          extra_hosts:
+            - "host.docker.internal:host-gateway"
