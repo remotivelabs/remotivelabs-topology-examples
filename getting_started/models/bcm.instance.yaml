@@ -1,0 +1,11 @@
+schema: remotive-topology-instance:0.12
+
+ecus:
+  BCM:
+    models:
+      bcm:
+        type: container
+        container:
+          build:
+            dockerfile: ../Dockerfile
+          command: python -m bcm

@@ -1,0 +1,10 @@
+schema: remotive-topology-instance:0.12
+
+name: getting-started
+platform:
+  includes:
+    - ../platform/topology.platform.yaml
+
+includes:
+  - ../models/bcm.instance.yaml
+  - ../tests/tester.instance.yaml

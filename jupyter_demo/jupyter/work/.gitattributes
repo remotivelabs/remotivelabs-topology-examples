@@ -1,3 +1,0 @@
-#sudo apt install jupyter-nbconvert
-#git config filter.strip-notebook-output.clean 'jupyter-nbconvert --clear-output --to=notebook --stdin --stdout --log-level=ERROR'
-*.ipynb filter=strip-notebook-output

@@ -1,0 +1,40 @@
+schema: remotive-topology-instance:0.12
+
+containers:
+  tester:
+    profiles: [tester]
+    build:
+      target: tester
+      dockerfile: ../Dockerfile
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: "pytest --broker_url=http://topology-broker.com:50051 -s -vv"
+    depends_on:
+      - sccm-mock
+      - bcm
+      - DIM-broker.com
+      - FLCM-broker.com
+      - RLCM-broker.com
+      - gwm
+      - ihu
+      - RL-broker.com
+
+  behave:
+    profiles: [behave]
+    build:
+      target: tester
+      dockerfile: ../Dockerfile
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: "behave --define broker_url=http://topology-broker.com:50051"
+    depends_on:
+      - sccm-mock
+      - bcm
+      - DIM-broker.com
+      - FLCM-broker.com
+      - RLCM-broker.com
+      - gwm
+      - ihu
+      - RL-broker.com

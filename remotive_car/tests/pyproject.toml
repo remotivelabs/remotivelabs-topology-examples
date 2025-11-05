@@ -1,41 +1,31 @@
 [project]
-name = "remotivelabs-topology-getting-started-example"
-description = "RemotiveTopology Getting Started example"
+name = "remotivelabs-topology-remotive-car-integration-test-example"
+description = "RemotiveTopology Remotive Car integration test example"
 version = "1.0.0"
-readme = "README.md"
-license-files = ["LICENSE"]
 
 requires-python = ">=3.10,<4.0"
 
 dependencies = [
   "pytest==8.4.2",
   "pytest-asyncio==1.0.0",
-  "pytest-timeout==2.4.0",
+  "gherkin-official >=30.0.4",
+  "behave >=1.2.6",
+  "remotivelabs-broker~=0.9.1",
   "remotivelabs-topology~=0.9.4",
 ]
 
 [dependency-groups]
-dev = [
-  "poethepoet>=0.18.0",
-  "ruff>=0.11.10",
-  "mypy>=1.14.1",
-  "pytest>=8.4.2",
-  "pytest-asyncio>=1.0.0",
-]
-
-[tool.uv.build-backend]
-module-root = "models"
-module-name = "bcm"
+dev = ["poethepoet>=0.18.0", "ruff>=0.11.10", "mypy>=1.14.1"]
 
 [tool.poe.tasks]
 format = [{ cmd = "ruff format ." }, { cmd = "ruff check --fix ." }]
 ruff = [{ cmd = "ruff check ." }, { cmd = "ruff format --check --diff ." }]
-mypy = [{ cmd = "mypy ." }]
+mypy = [{ cmd = "mypy . --pretty" }]
 lint = ["ruff", "mypy"]
-test = "echo no tests found..."
+test = { cmd = "echo no test in project, to run integration test, run `uv run pytest` or `uv run behave`" }
 
 [tool.ruff]
-extend = "../ruff.toml"
+extend = "../../ruff.toml"
 
 [tool.mypy]
 python_version = "3.10"
@@ -45,10 +35,16 @@ warn_return_any = true
 warn_unused_ignores = true
 hide_error_codes = false
 
+[tool.behave]
+paths = ["behave/features"]
+lang = "en"
+
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "function"
+testpaths = ["pytest"]
+cache_dir = "/tmp/.pytest_cache"
 
-[build-system]
-requires = ["uv_build>=0.9.0,<0.10.0"]
-build-backend = "uv_build"
+[[tool.mypy.overrides]]
+module = ["behave.*"]
+ignore_missing_imports = true

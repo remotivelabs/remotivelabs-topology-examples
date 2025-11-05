@@ -24,7 +24,7 @@ To achieve this:
 
 ## Describe the platform
 
-The first steps when describing the platform is collecting all the information you already have. This can include signaldatabases such as DBC or complete ARXML files. In this example a DBC file is used as it's fairly easy to understand.
+The first steps when describing the platform is collecting all the information you already have. This can include signal databases such as DBC or complete ARXML files. In this example a DBC file is used as it's fairly easy to understand.
 
 Here is an extract from `driver_can.dbc`:
 
@@ -50,19 +50,19 @@ BO_ 103 TurnLightControl: 1 BCM
 
 RemotiveTopology now understands that there exists 4 other ECUs `DIM`, `FLCM`, `RLCM`, `GWM` that also communicate with `BCM`.
 
-Since the DBC files doesn't include information about what the CAN channels are called you need to add additional information using a RemotiveTopology platform.yaml file:
+Since the DBC files doesn't include information about what the CAN channels are called you need to add additional information using a RemotiveTopology [platform.yaml](platform/topology.platform.yaml) file:
 
 ```yaml
 schema: remotive-topology-platform:0.12
 channels:
   DriverCan0:
     type: can
-    database: ../databases/driver_can.dbc
+    database: ./databases/driver_can.dbc
     can_physical_channel_name: DriverCan0
 
   BodyCan0:
     type: can
-    database: ../databases/body_can.dbc
+    database: ./databases/body_can.dbc
     can_physical_channel_name: BodyCan0
 ```
 
@@ -83,43 +83,46 @@ config:
 ---
     classDiagram
 
-    class SCCM {
-    }
-
     class BCM {
-    }
-
-    class DriverCan0 {
-        <<CAN bus>>
     }
 
     class DIM {
     }
+
     class FLCM {
     }
+
+    class GWM {
+    }
+
     class RLCM {
     }
-    class GWM {
+
+    class SCCM {
     }
 
     class BodyCan0 {
         <<CAN bus>>
     }
 
-    SCCM -- DriverCan0
-    BCM -- DriverCan0
+    class DriverCan0 {
+        <<CAN bus>>
+    }
+
     BCM -- BodyCan0
+    BCM -- DriverCan0
     DIM -- BodyCan0
     FLCM -- BodyCan0
-    RLCM -- BodyCan0
     GWM -- BodyCan0
+    RLCM -- BodyCan0
+    SCCM -- DriverCan0
 ```
 
 This is all the information you need for the platform!
 
 ## A Behavioral model for the `BCM`
 
-The next step is to create a Behavioral Model, which can be found [here](./ecus/bcm/__main__.py).
+The next step is to create a Behavioral Model, which can be found [here](./models/bcm/__main__.py).
 
 While being a simplified example, the structure is common to most kinds of behavioral models. This tutorial goes through everything in more detail, but note a few things:
 
@@ -145,9 +148,6 @@ ecus:
         container:
           build:
             dockerfile: ../Dockerfile
-          volumes:
-            - ../ecus/bcm:/app/bcm
-          working_dir: /app
           command: python -m bcm
 ```
 
@@ -158,39 +158,31 @@ This tells RemotiveTopology the following:
 Try viewing the resulting topology:
 
 ```sh
-$ remotive-topology show topology --resolve getting_started/topology/main.instance.yaml
+$ remotive-topology show topology --resolve getting_started/instances/main.instance.yaml
 ```
 
 This shows:
 
 ```yaml
 ---
+schema: remotive-topology-instance:0.12
+name: getting-started
+includes:
+  - <path>/getting_started/models/bcm.instance.yaml
+  - <path>/getting_started/tests/tester.instance.yaml
 channels:
   BodyCan0:
+    type: can
     driver:
+      type: dockercan
       device_name: bodycan0
       peer: bodycan0
-      type: dockercan
-    type: can
   DriverCan0:
+    type: can
     driver:
+      type: dockercan
       device_name: drivercan0
       peer: drivercan0
-      type: dockercan
-    type: can
-containers:
-  tester:
-    build:
-      dockerfile: <path>/getting_started/Dockerfile
-    command: pytest --broker_url=http://topology-broker.com:50051 -s -vv
-    control_network: true
-    depends_on:
-      - FLCM-broker.com
-    profiles:
-      - tester
-    volumes:
-      - <path>/getting_started/tests:/app
-    working_dir: /app
 ecus:
   BCM:
     channels:
@@ -198,15 +190,12 @@ ecus:
       DriverCan0:
     models:
       bcm:
+        type: container
         container:
           build:
             dockerfile: <path>/getting_started/Dockerfile
           command: python -m bcm
           control_network: true
-          volumes:
-            - <path>/getting_started/ecus/bcm:/app/bcm
-          working_dir: /app
-        type: container
   FLCM:
     channels:
       BodyCan0:
@@ -215,49 +204,59 @@ ecus:
       DriverCan0:
     mock:
       channels: {}
-includes:
-  - <path>/getting_started/topology/bcm.instance.yaml
-  - <path>/getting_started/topology/settings.instance.yaml
-  - <path>/getting_started/topology/tester.instance.yaml
-platform:
-  channels:
-    BodyCan0:
-      can_physical_channel_name: BodyCan0
-      database: <path>/getting_started/databases/body_can.dbc
-      source:
-        - <path>/getting_started/topology/topology.platform.yaml
-      type: can
-    DriverCan0:
-      can_physical_channel_name: DriverCan0
-      database: <path>/getting_started/databases/driver_can.dbc
-      source:
-        - <path>/getting_started/topology/topology.platform.yaml
-      type: can
-  ecus:
-    BCM:
-      channels:
-        BodyCan0:
-        DriverCan0:
-      source:
-        - <path>/getting_started/databases/body_can.dbc
-        - <path>/getting_started/databases/driver_can.dbc
-    FLCM:
-      channels:
-        BodyCan0:
-      source:
-        - <path>/getting_started/databases/body_can.dbc
-    SCCM:
-      channels:
-        DriverCan0:
-      source:
-        - <path>/getting_started/databases/driver_can.dbc
-schema: remotive-topology-instance:0.12
+containers:
+  tester:
+    profiles:
+      - tester
+    build:
+      dockerfile: <path>/getting_started/Dockerfile
+    volumes:
+      - <path>/getting_started/tests:/app
+    working_dir: /app
+    depends_on:
+      - FLCM-broker.com
+    command: pytest --broker_url=http://topology-broker.com:50051 -s -vv
+    control_network: true
 settings:
+  remotivebroker:
+    start_timeout: 60
   topology_broker:
     channels: {}
   ui:
     port: 8080
     profile: ui
+platform:
+  channels:
+    BodyCan0:
+      type: can
+      source:
+        - <path>/getting_started/platform/topology.platform.yaml
+      database: <path>/getting_started/platform/databases/body_can.dbc
+      can_physical_channel_name: BodyCan0
+    DriverCan0:
+      type: can
+      source:
+        - <path>/getting_started/platform/topology.platform.yaml
+      database: <path>/getting_started/platform/databases/driver_can.dbc
+      can_physical_channel_name: DriverCan0
+  ecus:
+    BCM:
+      source:
+        - <path>/getting_started/platform/databases/body_can.dbc
+        - <path>/getting_started/platform/databases/driver_can.dbc
+      channels:
+        BodyCan0:
+        DriverCan0:
+    FLCM:
+      source:
+        - <path>/getting_started/platform/databases/body_can.dbc
+      channels:
+        BodyCan0:
+    SCCM:
+      source:
+        - <path>/getting_started/platform/databases/driver_can.dbc
+      channels:
+        DriverCan0:
 ```
 
 Notice:
@@ -278,7 +277,7 @@ containers:
     build:
       dockerfile: ../Dockerfile
     volumes:
-      - ../tests:/app
+      - .:/app
     working_dir: /app
     command: "pytest --broker_url=http://topology-broker.com:50051 -s -vv"
     depends_on:
@@ -324,13 +323,14 @@ Tests need to be configured in what environment they should run. This is done us
 ```yaml
 schema: remotive-topology-instance:0.12
 
-includes:
-  - ./bcm.instance.yaml
-  - ./tester.instance.yaml
-
+name: getting-started
 platform:
   includes:
-    - ./topology.platform.yaml
+    - ../platform/topology.platform.yaml
+
+includes:
+  - ../models/bcm.instance.yaml
+  - ../tests/tester.instance.yaml
 ```
 
 This tells RemotiveTopology:
@@ -346,9 +346,9 @@ Notice:
 To run the topology generate the runtime environment:
 
 ```sh
-$ remotive-topology generate -f getting_started/topology/main.instance.yaml -f getting_started/topology/can_over_udp.instance.yaml --name getting_started build
+$ remotive-topology generate -f getting_started/instances/main.instance.yaml -f getting_started/instances/can_over_udp.instance.yaml --name getting_started build
 Generated topology at: build/getting_started
-$ docker compose -f build/getting_started/docker-compose.yml --profile tester up --abort-on-container-exit
+$ docker compose -f build/getting_started/docker-compose.yml --profile tester up --abort-on-container-exit --build
 ```
 
 You can run the tests several times. Once you are done, you should clean up the docker resources:

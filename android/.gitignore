@@ -1,4 +1,0 @@
-ecus/**/configuration/dbs/**/*
-!ecus/gwm/configuration/dbs/gwm_*
-
-master/configuration/dbs/**/*

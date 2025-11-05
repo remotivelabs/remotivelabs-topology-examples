@@ -1,0 +1,7 @@
+schema: remotive-topology-instance:0.12
+
+includes:
+  - ./bcm/python.instance.yaml
+  - ./gwm/python.instance.yaml
+  - ./ihu/python.instance.yaml
+  - ./rlcm/python.instance.yaml

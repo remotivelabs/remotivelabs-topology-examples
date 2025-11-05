@@ -1,0 +1,13 @@
+schema: remotive-topology-instance:0.12
+
+containers:
+  android_emulator:
+    build:
+      dockerfile: ./android_emulator/Dockerfile
+    working_dir: /app
+    ports:
+      - "8085:8080"
+    devices:
+      - /dev/kvm
+    environment:
+      - ANDROID_EMULATOR_AUTH=${ANDROID_EMULATOR_AUTH:-}

@@ -1,0 +1,18 @@
+schema: remotive-topology-instance:0.12
+
+platform:
+  includes:
+    - ../../platform/remotive-car.platform.yaml
+
+ecus:
+  BCM:
+    models:
+      bcm:
+        type: container
+        container:
+          build:
+            args:
+              - MODEL_PATH=bcm/python
+            target: model
+            dockerfile: ../../Dockerfile
+          command: python -m bcm
