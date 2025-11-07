@@ -1,4 +1,4 @@
-schema: remotive-topology-platform:0.12
+schema: remotive-topology-platform:0.13
 channels:
   DriverCan0:
     database: ./databases/driver_can.dbc

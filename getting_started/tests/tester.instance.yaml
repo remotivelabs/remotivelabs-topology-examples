@@ -1,4 +1,4 @@
-schema: remotive-topology-instance:0.12
+schema: remotive-topology-instance:0.13
 
 containers:
   tester:
