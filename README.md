@@ -1,12 +1,19 @@
-# RemotiveLabs topology examples
+# RemotiveLabs Topology Examples
+This repository contains example topologies showcasing how to set up and run RemotiveLabs tools.
+It includes minimal examples for getting started quickly, as well as more advanced configurations demonstrating complex setups.
 
-Easy to get going example:
+## Quick Start
+Get up and running with a minimal example:
 
-- [Getting started](./getting_started/README.md)
+- [Getting Started](./getting_started/README.md)
 
-More detailed example:
+## Detailed Example
+Explore a more comprehensive setup:
 
-- [RemotiveCar - larger example](./remotive_car/README.md)
+- [RemotiveCar - Larger Example](./remotive_car/README.md)
+- [RemotiveCar - Android](./remotive_car/instances/android/README.md)
+
+![RemotiveCar Android Example](./remotive_car/instances/android/docs/RemotiveTopology_ans_AAOS.gif)
 
 ## Documentation
 
