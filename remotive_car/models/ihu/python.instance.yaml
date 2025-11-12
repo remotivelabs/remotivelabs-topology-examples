@@ -16,3 +16,5 @@ ecus:
             target: model
             dockerfile: ../../Dockerfile
           command: python -m ihu
+          environment:
+            - PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python

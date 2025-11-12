@@ -1,6 +1,5 @@
 # Simple Ubuntu-based noVNC + x11vnc desktop
-FROM openjdk:25-jdk-slim
-
+FROM eclipse-temurin:25_36-jdk
 
 ARG TARGETPLATFORM
 RUN [ "${TARGETPLATFORM}" = "linux/amd64" ] || \

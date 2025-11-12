@@ -38,12 +38,14 @@ The [instances](instances) directory contains different deployment configuration
 
 These instances serve as the input sources from which the final system setup is generated. They are commonly called `main.instance.yaml`.
 
-The example contains two main instance
+The example contains three main instances
 > :link: [RemotiveCar Hello World instance](instances/hello_world/README.md)<br>
 > :link: [Instance with android emulator](instances/android/README.md)<br>
-
+> :link: [Instance with physical steering wheel](instances/steering_wheel/README.md)<br>
 
 The hello world instance is the most suitable starting point and the instance with android emulator shows how to integrate a topology with the android emulator.
+There is also an instance that integrates with a physical steering wheel, replacing the `SCCM` mock with a behavioral model.
+Note that running the steering wheel example requires hardware.
 
 ### Models (ECU implementation)
 The [models](models) directory contains multiple implementations of ECUs. The most simple instance of these ECUs is [python_models.instance.yaml](models/python_models.instance.yaml) where each ECU uses a simple `BehavioralModel`.
@@ -200,3 +202,4 @@ Example usage is shown in [instances/hello_world/README.md](instances/hello_worl
 Start an instance of the platform using RemotiveTopology. Here is a list of available instances
 > :link: [Simple interactive instance](instances/hello_world/README.md)<br>
 > :link: [Instance with android emulator](instances/android/README.md)<br>
+> :link: [Instance with physical steering wheel](instances/steering_wheel/README.md)<br>

@@ -12,6 +12,7 @@ Explore a more comprehensive setup:
 
 - [RemotiveCar - Larger Example](./remotive_car/README.md)
 - [RemotiveCar - Android](./remotive_car/instances/android/README.md)
+- [RemotiveCar - Steering wheel](./remotive_car/instances/steering_wheel/README.md)
 
 ![RemotiveCar Android Example](./remotive_car/instances/android/docs/RemotiveTopology_ans_AAOS.gif)
 

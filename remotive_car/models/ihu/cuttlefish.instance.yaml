@@ -1,0 +1,19 @@
+schema: remotive-topology-instance:0.12
+
+ecus:
+  IHU:
+    models:
+      ihu:
+        type: container
+        container:
+          build:
+            args:
+              - MODEL_PATH=ihu/python
+            target: model
+            dockerfile: ../../Dockerfile
+          command: python -m ihu
+          environment:
+            - VIRTUAL_DEVICE_TYPE=cuttlefish
+            - CUTTLEFISH_GNSS_URL=https://cuttlefish:1443/devices/cvd-1
+            - CUTTLEFISH_VHAL_URL=cuttlefish:9300
+            - PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python

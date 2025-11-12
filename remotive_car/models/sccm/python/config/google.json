@@ -1,0 +1,58 @@
+{
+  "name": "Google LLC Stadia Controller rev. A",
+  "broker": {
+    "url": "http://sccm-broker:50051"
+  },
+  "devices": {
+    "Google LLC Stadia Controller rev. A": {
+      "button_mappings": [
+        {
+          "description": "Brake pedal",
+          "type": "axis",
+          "source_name": "ABS_BRAKE",
+          "source_type": 3,
+          "source_code": 10,
+          "target_name": "SCCM",
+          "target_signal": "BrakePedalPositionSensor.BrakePedalPosition",
+          "gradient": 1.0,
+          "intercept": 0
+        },
+        {
+          "description": "Left turn signal",
+          "type": "button",
+          "source_name": "BTN_X",
+          "source_type": 1,
+          "source_code": 307,
+          "target_name": "SCCM",
+          "target_signal": "TurnStalk.TurnSignal",
+          "mapping": {
+            "0": 0,
+            "1": 1
+          }
+        },
+        {
+          "description": "Right turn signal",
+          "type": "button",
+          "source_name": "BTN_B",
+          "source_type": 1,
+          "source_code": 305,
+          "target_name": "SCCM",
+          "target_signal": "TurnStalk.TurnSignal",
+          "mapping": {
+            "0": 0,
+            "1": 2
+          }
+        },
+        {
+          "description": "Hazard button",
+          "type": "button",
+          "source_name": "BTN_MODE",
+          "source_type": 1,
+          "source_code": 316,
+          "target_name": "SCCM",
+          "target_signal": "HazardLightButton.HazardLightButton"
+        }
+      ]
+    }
+  }
+}

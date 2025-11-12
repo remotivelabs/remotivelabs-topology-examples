@@ -1,0 +1,17 @@
+schema: remotive-topology-instance:0.12
+
+includes:
+  - ../../models/ihu/cuttlefish.instance.yaml
+  - ../../tests/pytest/android/cuttlefish.instance.yaml
+
+containers:
+  cuttlefish:
+    image: remotivelabs/remotivelabs-cuttlefish
+    environment:
+      - CUTTLEFISH_MEMORY_MB=2048
+    ports:
+      - "1443:1443"
+      - "6520:6520"
+    volumes:
+      - ./cuttlefish/apks:/root/apks
+

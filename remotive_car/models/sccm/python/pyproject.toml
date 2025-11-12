@@ -1,0 +1,62 @@
+[project]
+name = "remotivelabs-topology-remotive-car-sccm-behavioral-model-example"
+description = "RemotiveTopology Remotive Car SCCM Behavioral Model using physical steering wheel simulating vehicle driver inputs"
+version = "1.0.0"
+
+requires-python = ">=3.10,<4.0"
+
+dependencies = [
+  "structlog >=25.1.0",
+  "typing-extensions~=4.13",
+  "evdev >=1.7.1 ; sys_platform == 'linux'",
+  "typer >=0.14.0",
+  "pydantic >=2.10.4",
+  "aiostream >=0.6.4",
+  "pyyaml >=6.0.2",
+  "remotivelabs-topology~=0.10.0",
+]
+
+[dependency-groups]
+dev = [
+  "poethepoet>=0.34.0",
+  "ruff>=0.11.10",
+  "mypy>=1.14.1",
+  "pytest>=8.4.2",
+  "pytest-asyncio>=1.0.0",
+]
+
+[tool.uv.build-backend]
+module-root = ""
+module-name = "sccm"
+
+[tool.poe.tasks]
+format = [{ cmd = "ruff format ." }, { cmd = "ruff check --fix ." }]
+ruff = [{ cmd = "ruff check ." }, { cmd = "ruff format --check --diff ." }]
+mypy = [{ cmd = "mypy -p sccm" }]
+lint = ["ruff", "mypy"]
+test = { cmd = "pytest" }
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+consider_namespace_packages = true
+testpaths = ["tests"]
+
+[tool.ruff]
+extend = "../../../../ruff.toml"
+
+[tool.mypy]
+python_version = "3.10"
+disallow_untyped_calls = false
+check_untyped_defs = true
+warn_return_any = true
+warn_unused_ignores = true
+hide_error_codes = false
+
+[[tool.mypy.overrides]]
+module = "evdev.*"
+ignore_missing_imports = true
+
+[build-system]
+requires = ["uv_build>=0.9.0,<0.10.0"]
+build-backend = "uv_build"

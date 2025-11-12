@@ -1,0 +1,20 @@
+schema: remotive-topology-instance:0.13
+
+platform:
+  includes:
+    - ../../platform/remotive-car.platform.yaml
+
+ecus:
+  SCCM:
+    models:
+      sccm:
+        type: container
+        container:
+          build:
+            args:
+              - MODEL_PATH=sccm/python
+            target: model
+            dockerfile: ../../Dockerfile
+          devices:
+            - /dev/input
+          command: python -m sccm -c config/moza.json

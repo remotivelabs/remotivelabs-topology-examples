@@ -7,12 +7,12 @@ requires-python = ">=3.10,<4.0"
 
 dependencies = [
   "structlog==25.4.0",
-  "remotivelabs-broker~=0.9.1",
-  "remotivelabs-topology~=0.9.4",
+  "remotivelabs-topology~=0.10.0",
+  "requests==2.32.5",
 ]
 
 [dependency-groups]
-dev = ["poethepoet>=0.18.0", "ruff>=0.11.10", "mypy>=1.14.1"]
+dev = ["poethepoet>=0.34.0", "ruff>=0.11.10", "mypy>=1.14.1", "types-requests"]
 
 [tool.uv.build-backend]
 module-root = ""
@@ -27,7 +27,7 @@ test = { cmd = "echo no test in project" }
 
 [tool.ruff]
 extend = "../../../../ruff.toml"
-exclude = ["ihu/android/libs/vhal"]
+exclude = ["ihu/libs/emulator/vhal", "ihu/libs/cuttlefish/vhal"]
 
 [tool.mypy]
 python_version = "3.10"
@@ -36,7 +36,7 @@ check_untyped_defs = true
 warn_return_any = true
 warn_unused_ignores = true
 hide_error_codes = false
-exclude = "^ihu/android/libs/vhal(/.*)?$"
+exclude = ["^ihu/libs/emulator/vhal(/.*)?$", "^ihu/libs/cuttlefish/vhal(/.*)?$"]
 
 [build-system]
 requires = ["uv_build>=0.9.0,<0.10.0"]

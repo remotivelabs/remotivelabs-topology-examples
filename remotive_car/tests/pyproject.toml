@@ -10,12 +10,12 @@ dependencies = [
   "pytest-asyncio==1.0.0",
   "gherkin-official >=30.0.4",
   "behave >=1.2.6",
-  "remotivelabs-broker~=0.9.1",
-  "remotivelabs-topology~=0.9.4",
+  "remotivelabs-topology~=0.10.0",
+  "adb-shell==0.4.4",
 ]
 
 [dependency-groups]
-dev = ["poethepoet>=0.18.0", "ruff>=0.11.10", "mypy>=1.14.1"]
+dev = ["poethepoet>=0.34.0", "ruff>=0.11.10", "mypy>=1.14.1"]
 
 [tool.poe.tasks]
 format = [{ cmd = "ruff format ." }, { cmd = "ruff check --fix ." }]
@@ -44,7 +44,13 @@ asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "function"
 testpaths = ["pytest"]
 cache_dir = "/tmp/.pytest_cache"
+addopts = "-m 'not android'"
+markers = ["android: marks tests that require an android device"]
 
 [[tool.mypy.overrides]]
 module = ["behave.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["adb_shell.*"]
 ignore_missing_imports = true

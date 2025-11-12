@@ -25,9 +25,9 @@ FROM base AS tester
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1
 
+COPY tests/pyproject.toml .
 RUN --mount=type=cache,target=/root/.cache/uv \
     --mount=type=bind,source=tests/uv.lock,target=uv.lock \
-    --mount=type=bind,source=tests/pyproject.toml,target=pyproject.toml \
     uv sync --locked --no-dev
 ENV PATH="/.venv/bin:$PATH"
 
@@ -66,4 +66,3 @@ ENTRYPOINT ["/bin/sh", "-c", \
     until adb shell getprop sys.boot_completed 2>/dev/null | grep -q \"1\"; do echo \"Waiting for android emulator to be ready...\"; sleep 5; done && \
     # Run application
     exec \"$@\"", "--"]
-# ENTRYPOINT ["/bin/sh", "-c", "echo \"$ANDROID_EMULATOR_AUTH\" > ~/.emulator_console_auth_token & exec \"$@\"", "--"]

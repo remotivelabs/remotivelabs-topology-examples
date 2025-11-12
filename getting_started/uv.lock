@@ -350,7 +350,7 @@ wheels = [
 
 [[package]]
 name = "remotivelabs-topology"
-version = "0.9.4"
+version = "0.10.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "pyhamcrest" },
@@ -358,9 +358,9 @@ dependencies = [
     { name = "tenacity" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/5b/93/435526e29e68b92060885ab91f2f9ee398f3e2e9f4ae8eeeec04c86a25ea/remotivelabs_topology-0.9.4.tar.gz", hash = "sha256:e86a0f9de251c0ac0f182f4d853902166a6576e331dd346c5bea09a5175dad47", size = 33110, upload-time = "2025-10-09T07:49:21.641Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/e5/37/ff6b3f1c019f4e05d0fa8182baebd7868db855b72e9f1193d7f099dc6d2c/remotivelabs_topology-0.10.0.tar.gz", hash = "sha256:a3c1e881cb21dcfeb282db75cc6583d957f102c825066d736b5f8519074660ff", size = 33375, upload-time = "2025-10-15T12:17:07.745Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/b2/91/9051b27ef5114f14d86ead035bebed67de6e9a8f565b829a2d59ce2ca228/remotivelabs_topology-0.9.4-py3-none-any.whl", hash = "sha256:d7c66540fa9fff9ac9dbcacea04ef6b8992bbf91f974ab80c79f0e62cb16360b", size = 57045, upload-time = "2025-10-09T07:49:20.341Z" },
+    { url = "https://files.pythonhosted.org/packages/ff/f4/8d27281b5a496cda3c43db13ef1eff8ff3df7bc3781c70640cbf2e5a1999/remotivelabs_topology-0.10.0-py3-none-any.whl", hash = "sha256:1c948bca1fa42ea0059e5f185cf506edad199bf67140dcfb7b73de35de761563", size = 61323, upload-time = "2025-10-15T12:17:06.221Z" },
 ]
 
 [[package]]
@@ -388,13 +388,13 @@ requires-dist = [
     { name = "pytest", specifier = "==8.4.2" },
     { name = "pytest-asyncio", specifier = "==1.0.0" },
     { name = "pytest-timeout", specifier = "==2.4.0" },
-    { name = "remotivelabs-topology", specifier = "~=0.9.4" },
+    { name = "remotivelabs-topology", specifier = "~=0.10.0" },
 ]
 
 [package.metadata.requires-dev]
 dev = [
     { name = "mypy", specifier = ">=1.14.1" },
-    { name = "poethepoet", specifier = ">=0.18.0" },
+    { name = "poethepoet", specifier = ">=0.34.0" },
     { name = "pytest", specifier = ">=8.4.2" },
     { name = "pytest-asyncio", specifier = ">=1.0.0" },
     { name = "ruff", specifier = ">=0.11.10" },

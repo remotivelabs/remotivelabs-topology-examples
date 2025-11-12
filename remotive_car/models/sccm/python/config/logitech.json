@@ -1,0 +1,91 @@
+{
+  "name": "Logitech G29 Racing Wheel",
+  "broker": {
+    "url": "http://sccm-broker:50051"
+  },
+  "devices": {
+    "Logitech G29 Driving Force Racing Wheel": {
+      "button_mappings": [
+        {
+          "description": "Steering wheel",
+          "type": "axis",
+          "source_name": "ABS_X",
+          "source_type": 3,
+          "source_code": 0,
+          "target_name": "SCCM",
+          "target_signal": "SteeringAngle.SteeringAngle",
+          "gradient": 0.0134,
+          "intercept": -440
+        },
+        {
+          "description": "Brake pedal",
+          "type": "axis",
+          "source_name": "ABS_RZ",
+          "source_type": 3,
+          "source_code": 5,
+          "target_name": "SCCM",
+          "target_signal": "BrakePedalPositionSensor.BrakePedalPosition",
+          "gradient": -1.0,
+          "intercept": 255
+        },
+        {
+          "description": "Lights",
+          "type": "button",
+          "source_name": "KEY_712",
+          "source_type": 1,
+          "source_code": 712,
+          "target_name": "SCCM",
+          "target_signal": "LightStalk.LightMode",
+          "mapping": {
+            "0": 0,
+            "1": 2
+          }
+        },
+        {
+          "description": "High beam",
+          "type": "button",
+          "source_name": "KEY_293",
+          "source_type": 1,
+          "source_code": 293,
+          "target_name": "SCCM",
+          "target_signal": "LightControl.HighBeam"
+        },
+        {
+          "description": "Left turn signal",
+          "type": "button",
+          "source_name": "KEY_295",
+          "source_type": 1,
+          "source_code": 295,
+          "target_name": "SCCM",
+          "target_signal": "TurnStalk.TurnSignal",
+          "mapping": {
+            "0": 0,
+            "1": 1
+          }
+        },
+        {
+          "description": "Right turn signal",
+          "type": "button",
+          "source_name": "KEY_294",
+          "source_type": 1,
+          "source_code": 294,
+          "target_name": "SCCM",
+          "target_signal": "TurnStalk.TurnSignal",
+          "mapping": {
+            "0": 0,
+            "1": 2
+          }
+        },
+        {
+          "description": "Hazard button",
+          "type": "button",
+          "source_name": "KEY_711",
+          "source_type": 1,
+          "source_code": 711,
+          "target_name": "SCCM",
+          "target_signal": "HazardLightButton.HazardLightButton"
+        }
+      ]
+    }
+  }
+}

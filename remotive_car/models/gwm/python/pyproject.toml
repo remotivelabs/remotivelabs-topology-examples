@@ -5,14 +5,10 @@ version = "1.0.0"
 
 requires-python = ">=3.10,<4.0"
 
-dependencies = [
-  "structlog==25.4.0",
-  "remotivelabs-broker~=0.9.1",
-  "remotivelabs-topology~=0.9.4",
-]
+dependencies = ["structlog==25.4.0", "remotivelabs-topology~=0.10.0"]
 
 [dependency-groups]
-dev = ["poethepoet>=0.18.0", "ruff>=0.11.10", "mypy>=1.14.1"]
+dev = ["poethepoet>=0.34.0", "ruff>=0.11.10", "mypy>=1.14.1"]
 
 [tool.uv.build-backend]
 module-root = ""

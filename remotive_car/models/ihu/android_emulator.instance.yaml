@@ -11,8 +11,9 @@ ecus:
               - MODEL_PATH=ihu/python
             target: ihu_android
             dockerfile: ../../Dockerfile
-          command: python -m ihu.android
+          command: python -m ihu
           environment:
+            - VIRTUAL_DEVICE_TYPE=android_emulator
             - ANDROID_EMULATOR_AUTH=${ANDROID_EMULATOR_AUTH:-}
             - ANDROID_ADB_SERVER_PORT=${ANDROID_ADB_SERVER_PORT:-5037}
             - ANDROID_ADB_SERVER_ADDRESS=${ANDROID_ADB_SERVER_ADDRESS:-android_emulator}

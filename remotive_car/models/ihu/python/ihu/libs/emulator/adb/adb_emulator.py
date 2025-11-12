@@ -11,8 +11,9 @@ class AndroidEmulator:
         """
         self.emulator_name = emulator_name
         self._root_adb_device()
+        self._forward_ports()
 
-    def _root_adb_device(self) -> None:
+    def _root_adb_device(self):
         """
         Enables root mode on the adb device if not yet enabled. This causes a restart of adbd on the
         device and the connection to the devices is temporarily lost.
@@ -20,7 +21,21 @@ class AndroidEmulator:
         subprocess.check_output(["adb", "-s", self.emulator_name, "root"], encoding="UTF-8")
         subprocess.check_output(["adb", "-s", self.emulator_name, "wait-for-device"], encoding="UTF-8")
 
-    def _send_adb_command(self, cmd: list[str]) -> str:
+    def _forward_ports(self):
+        """Enables port forwarding to the Automotive VHAL emualator"""
+        subprocess.check_output(
+            [
+                "adb",
+                "-s",
+                self.emulator_name,
+                "forward",
+                "tcp:33452",
+                "tcp:33452",
+            ],
+            encoding="UTF-8",
+        )
+
+    def _send_adb_command(self, cmd) -> str:
         return subprocess.check_output(["adb", "-s", self.emulator_name] + cmd, encoding="UTF-8")
 
     def send_fix(self, lon: str, lat: str) -> str:

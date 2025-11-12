@@ -1,5 +1,8 @@
 schema: remotive-topology-instance:0.13
 
+includes:
+  - ../../models/ihu/android_emulator.instance.yaml
+
 containers:
   android_emulator:
     build:

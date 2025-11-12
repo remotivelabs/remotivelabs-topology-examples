@@ -1,0 +1,25 @@
+schema: remotive-topology-instance:0.13
+
+name: remotive_car_steering_wheel
+
+includes:
+  - ./../../common/jupyter/jupyter.instance.yaml
+  - ./../../common/remotivecar/remotivecar.instance.yaml
+  - ./../../models/python_models.instance.yaml
+  - ./../../models/sccm/python.instance.yaml
+
+platform:
+  includes:
+    - ../../platform/remotive-car.platform.yaml
+
+ecus:
+  DIM: {}
+  FLCM: {}
+  RL: {}
+  PAM:
+    mock: {}
+  TCU:
+    mock: {}
+  ABS:
+    mock: {}
+  HVAC: {}
