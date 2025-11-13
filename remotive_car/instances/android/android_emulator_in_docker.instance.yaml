@@ -3,6 +3,17 @@ schema: remotive-topology-instance:0.13
 includes:
   - ../../models/ihu/android_emulator.instance.yaml
 
+ecus:
+  IHU:
+    models:
+      ihu:
+        type: container
+        container:
+          environment:
+            - ANDROID_ADB_SERVER_PORT=${ANDROID_ADB_SERVER_PORT:-5037}
+            - ANDROID_ADB_SERVER_ADDRESS=${ANDROID_ADB_SERVER_ADDRESS:-android_emulator}
+            - ANDROID_EMULATOR_ADDRESS=${ANDROID_EMULATOR_ADDRESS:-android_emulator}
+
 containers:
   android_emulator:
     build:

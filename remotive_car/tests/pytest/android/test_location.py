@@ -65,9 +65,10 @@ async def adb_device(request: pytest.FixtureRequest) -> AsyncIterator[AdbDevice]
     device.shell("input keyevent 3")
 
 
-def get_location(adb_device: AdbDevice):
+async def get_location(adb_device: AdbDevice):
     # Push button to trigger new location fetch from providers
     adb_device.shell("input tap 387 478")
+    await asyncio.sleep(2)
     location_dump = str(adb_device.shell("dumpsys location"))
 
     match = re.search(r"location=Location\[gps ([\d\.\-]+),([\d\.\-]+)", location_dump)

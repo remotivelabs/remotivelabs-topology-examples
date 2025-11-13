@@ -15,9 +15,6 @@ ecus:
           environment:
             - VIRTUAL_DEVICE_TYPE=android_emulator
             - ANDROID_EMULATOR_AUTH=${ANDROID_EMULATOR_AUTH:-}
-            - ANDROID_ADB_SERVER_PORT=${ANDROID_ADB_SERVER_PORT:-5037}
-            - ANDROID_ADB_SERVER_ADDRESS=${ANDROID_ADB_SERVER_ADDRESS:-android_emulator}
-            - ANDROID_EMULATOR_ADDRESS=${ANDROID_EMULATOR_ADDRESS:-android_emulator}
             - PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
             - ANDROID_EMULATOR_NAME=${ANDROID_EMULATOR_NAME:-}
           extra_hosts:

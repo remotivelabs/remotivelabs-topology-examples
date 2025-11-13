@@ -325,13 +325,13 @@ Run one of the commands below, depending on your setup.
 # Linux with DockerCAN
 remotive-topology generate \
 -f remotive_car/instances/android/main.instance.yaml \
--f remotive_car/instances/android/android_emulator.instance.yaml \
+-f remotive_car/instances/android/android_emulator_in_docker.instance.yaml \
 remotive_car/build
 
 # Linux with CAN over UDP
 remotive-topology generate \
 -f remotive_car/instances/android/main.instance.yaml \
--f remotive_car/instances/android/android_emulator.instance.yaml \
+-f remotive_car/instances/android/android_emulator_in_docker.instance.yaml \
 -f remotive_car/instances/can_over_udp.instance.yaml \
 remotive_car/build
 ```
@@ -368,11 +368,13 @@ Run one of the commands below, depending on your setup.
 # Linux with DockerCAN
 remotive-topology generate \
 -f remotive_car/instances/android/main.instance.yaml \
+-f remotive_car/instances/android/android_emulator_on_host.instance.yaml \
 remotive_car/build
 
 # Windows/MacOS CAN over UDP
 remotive-topology generate \
 -f remotive_car/instances/android/main.instance.yaml \
+-f remotive_car/instances/android/android_emulator_on_host.instance.yaml \
 -f remotive_car/instances/can_over_udp.instance.yaml remotive_car/build
 ```
 
