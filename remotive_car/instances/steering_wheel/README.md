@@ -194,6 +194,16 @@ remotive-topology generate -f remotive_car/instances/steering_wheel/main.instanc
 RemotiveTopology uses Docker compose to define the containers and networks of the topology.
 Once generated, by following the steps in this section, it can be found [here](../../build/remotive_car_steering_wheel/docker-compose.yml).
 
+### Generate with google maps
+
+To run the Google Maps application in the Android emulator it first needs to be installed. This is done during topology startup but it requires the APK to be provided during build. Download the APK, e.g. from https://www.apkmirror.com/apk/google-inc/google-maps-android-automotive/, and place it in the remotive_car/instances/android/android_emulator folder.
+
+```
+remotive-topology generate -f remotive_car/instances/steering_wheel/android.instance.yaml remotive_car/build
+```
+
+You should then be able to reach the emulator by going to http://localhost:8085/vnc.html and connecting. The first time it starts you will have to configure some settings and permission for the maps application.
+
 ### Run
 ```bash
 # Run Jupyter notebook + webapp + remotivecar
