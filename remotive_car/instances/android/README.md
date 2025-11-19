@@ -390,7 +390,6 @@ export CLOUD_URL=$(./remotive_car/instances/android/run.sh my-demo 9459066702917
 CLOUD_AUTH=$(remotive cloud auth print-access-token) \
 ANDROID_EMULATOR_AUTH=$(cat ~/.emulator_console_auth_token) \
 docker compose -f remotive_car/build/remotive_car_android/docker-compose.yml \
---env-file=remotive_car/instances/android/host_emulator.env \
 --profile jupyter \
 --profile ui \
 --profile cloudfeeder up --build
