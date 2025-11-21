@@ -12,23 +12,5 @@ platform:
   includes:
     - ../../platform/remotive-car.platform.yaml
 
-containers:
-  cloudfeeder:
-    profiles: [cloudfeeder]
-    build:
-      dockerfile: Dockerfile.cloudfeeder
-    command: python -m cloudfeeder --url http://topology-broker.com:50051
-    depends_on:
-      - topology-broker.com
-      - abs-mock
-      - tcu-mock
-    environment:
-      - CLOUD_URL=${CLOUD_URL}
-      - CLOUD_AUTH=${CLOUD_AUTH}
-
 ecus:
-  TCU:
-    mock: {}
-  ABS:
-    mock: {}
   HVAC: {}

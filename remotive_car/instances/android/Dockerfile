@@ -13,7 +13,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 
 COPY pyproject.toml .
 COPY uv.lock .
-COPY cloudfeeder/ cloudfeeder/
+COPY playback/ playback/
 
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --locked --no-dev

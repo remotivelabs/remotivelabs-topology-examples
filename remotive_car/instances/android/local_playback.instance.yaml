@@ -1,0 +1,36 @@
+schema: remotive-topology-instance:0.13
+
+platform:
+  includes:
+    - ../../recordings/platform/topology.platform.yaml
+
+containers:
+  playback:
+    profiles: [playback]
+    build:
+      dockerfile: Dockerfile
+    working_dir: /app
+    command: python -m playback.local -s --recording-session ./tesla.recordingsession.yaml
+    depends_on:
+      - topology-broker.com
+
+ecus:
+  TCU:
+    models:
+      tcu:
+        type: container
+        container:
+          build:
+            dockerfile: Dockerfile
+          command: python -m playback.local.tcu
+  ABS:
+    models:
+      abs:
+        type: container
+        container:
+          build:
+            dockerfile: Dockerfile
+          command: python -m playback.local.abs
+
+settings:
+  recordings: ../../recordings/

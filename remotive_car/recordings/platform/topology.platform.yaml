@@ -1,0 +1,13 @@
+schema: remotive-topology-platform:0.12
+channels:
+  VSS:
+    type: can
+    database: ./databases/vss_rel_4.2.yaml
+
+ecus:
+  TCU:
+    channels:
+      VSS:
+  ABS:
+    channels:
+      VSS:

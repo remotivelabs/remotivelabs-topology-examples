@@ -1,0 +1,10 @@
+schema: remotive-topology-platform:0.7
+
+channels:
+  ChassisBus:
+    type: can
+    database: ./Model3CAN_ChassisBus.dbc
+
+  VehicleBus:
+    type: can
+    database: ./Model3CAN_VehicleBus.dbc

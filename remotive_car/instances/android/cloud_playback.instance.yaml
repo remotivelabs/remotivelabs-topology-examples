@@ -1,0 +1,25 @@
+schema: remotive-topology-instance:0.13
+
+platform:
+  includes:
+    - ../../platform/remotive-car.platform.yaml
+
+containers:
+  cloudplayback:
+    profiles: [playback]
+    build:
+      dockerfile: Dockerfile
+    command: python -m playback.cloud --url http://topology-broker.com:50051
+    depends_on:
+      - topology-broker.com
+      - abs-mock
+      - tcu-mock
+    environment:
+      - CLOUD_URL=${CLOUD_URL}
+      - CLOUD_AUTH=${CLOUD_AUTH}
+
+ecus:
+  TCU:
+    mock: {}
+  ABS:
+    mock: {}

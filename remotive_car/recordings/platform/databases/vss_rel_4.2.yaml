@@ -1,0 +1,24 @@
+Vehicle.Speed:
+  datatype: float
+  description: Vehicle speed.
+  type: sensor
+  unit: km/h
+  uuid: efe50798638d55fab18ab7d43cc490e9
+
+Vehicle.CurrentLocation.Latitude:
+  datatype: double
+  description: Current latitude of vehicle in WGS 84 geodetic coordinates, as measured at the position of GNSS receiver antenna.
+  max: 90
+  min: -90
+  type: sensor
+  unit: degrees
+  uuid: 08933c5a445055df80bea15fbfa07f1c
+
+Vehicle.CurrentLocation.Longitude:
+  datatype: double
+  description: Current longitude of vehicle in WGS 84 geodetic coordinates, as measured at the position of GNSS receiver antenna.
+  max: 180
+  min: -180
+  type: sensor
+  unit: degrees
+  uuid: 5246f2ec5fea550cb1b36f110854cfbb

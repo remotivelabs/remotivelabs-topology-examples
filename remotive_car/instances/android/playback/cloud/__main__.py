@@ -12,7 +12,7 @@ logger = structlog.get_logger(__name__)
 
 
 async def main(avp: BehavioralModelArgs):
-    logger.info("Starting Cloudfeeder")
+    logger.info("Starting cloud playback")
     logger.info("Connecting broker", url=avp.url)
     cloud_url = os.environ.get("CLOUD_URL")
     cloud_auth = os.environ.get("CLOUD_AUTH")

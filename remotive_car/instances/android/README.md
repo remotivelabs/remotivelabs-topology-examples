@@ -22,7 +22,7 @@ config:
 ---
     classDiagram
     namespace ABS {
-        class ECU_Mock_ABS
+        class Behavioral_Model_ABS
         class RemotiveBroker_ABS
     }
 
@@ -41,7 +41,7 @@ config:
     }
 
     namespace TCU {
-        class ECU_Mock_TCU
+        class Behavioral_Model_TCU
         class RemotiveBroker_TCU
     }
 
@@ -74,7 +74,6 @@ config:
     class Jupyter
     class Webapp
     class Behave
-    class CloudFeeder
 
     RemotiveBroker_ABS -- ChassisCan0
     RemotiveBroker_GWM -- ChassisCan0
@@ -91,10 +90,10 @@ config:
     RemotiveBroker_GWM -- SOMEIP
 
 
-    ECU_Mock_ABS -- RemotiveBroker_ABS
+    Behavioral_Model_ABS -- RemotiveBroker_ABS
     Behavioral_Model_BCM -- RemotiveBroker_BCM
     Behavioral_Model_GWM -- RemotiveBroker_GWM
-    ECU_Mock_TCU -- RemotiveBroker_TCU
+    Behavioral_Model_TCU -- RemotiveBroker_TCU
     Behavioral_Model_IHU -- RemotiveBroker_IHU
     Android -- Behavioral_Model_IHU
 
@@ -232,14 +231,9 @@ You will need the following tools
 - `RemotiveCLI` <https://docs.remotivelabs.com/docs/remotive-cli/installation>
 - `RemotiveTopology` <https://docs.remotivelabs.com/docs/remotive-topology/install>
 - On Linux, this example requires that you run `dockercan` service on your machine to enable CAN networks in Docker, install the latest version from [here](https://releases.remotivelabs.com/#docker_can/). Alternatively include [can_over_udp.instance.yaml](../can_over_udp.instance.yaml) in your instance, as shown in the examples below.
+- `git lfs` <https://git-lfs.com/> make sure to `git lfs pull` if `git lfs` wasn't installed during `git clone`.
 - (Optional) `socat` [See Emulator on host](#emulator-on-host)
 - (Optional) `Android-Studio` [See Emulator on host](#emulator-on-host)
-
-Select you recording you like to use as input, navigate to it and extract the session id from the recording url <https://console.cloud.remotivelabs.com/p/my-demo/recordings/9459066702917749000?tab=playback>
-Make sure the recording contains `ChassisBus` and `VehicleBus`
-e.g. `9459066702917749000` also take note of the project (in this case `my-demo` which is the name which contains "Recordings").
-
-> :warning: Unless already signed in start by doing `remotive cloud auth login`
 
 ## Getting started
 
@@ -265,15 +259,17 @@ The example is pre-configured with a Cuttlefish docker image that works with the
 Run one of the commands below, depending on your setup.
 
 ```bash
-# Linux with DockerCAN
+# With DockerCAN
 remotive-topology generate \
 -f remotive_car/instances/android/main.instance.yaml \
+-f remotive_car/instances/android/local_playback.instance.yaml \
 -f remotive_car/instances/android/cuttlefish.instance.yaml \
 remotive_car/build
 
-# Linux with CAN over UDP
+# With CAN over UDP
 remotive-topology generate \
 -f remotive_car/instances/android/main.instance.yaml \
+-f remotive_car/instances/android/local_playback.instance.yaml \
 -f remotive_car/instances/android/cuttlefish.instance.yaml \
 -f remotive_car/instances/can_over_udp.instance.yaml \
 remotive_car/build
@@ -283,32 +279,29 @@ RemotiveTopology uses Docker compose to define the containers and networks of th
 
 #### Run
 
-Start the cloud playback, and start the topology, from the root of this repository.
+From the root of this repository run
 
 ```bash
-# check above on how to extract you session id.
-export CLOUD_URL=$(./remotive_car/instances/android/run.sh my-demo 9459066702917749000)
-CLOUD_AUTH=$(remotive cloud auth print-access-token) \
 docker compose -f remotive_car/build/remotive_car_android/docker-compose.yml \
 -f remotive_car/instances/android/cuttlefish.compose.yaml \
 --profile jupyter \
---profile ui \
---profile cloudfeeder up --build
+--profile playback \
+--profile ui up --build
 ```
 
 You should then be able to reach the Cuttlefish instance by going to <https://localhost:1443>. The first time it starts you will have to configure some settings and permission for the maps application. If using the Organic Map you will also have to download maps for the areas you are interested in.
 
-You can also visit the RemotiveBroker Webapp at <http://localhost:8080> to observe the temperature signals being send back from the Cuttlefish instance.
+You can also visit the RemotiveBroker Webapp at <http://localhost:8080> to observe the temperature signals being sent back from the Cuttlefish instance.
 
 #### Tests
 
-The Cuttlefish instance provides two tests located in `remotive_car/tests/pytest/android`. These will verify that location updates can flow from the TCU into Android and that HVAC changes in Android will flow back to the TCU. These can be run by running with the `tester` profile (and excluding the `cloudfeeder` profile).
+The Cuttlefish instance provides two tests located in `remotive_car/tests/pytest/android`. These will verify that location updates can flow from the TCU into Android and that HVAC changes in Android will flow back to the TCU. These can be run by running with the `tester` profile (and excluding the `playback` profile).
 
 ```bash
 docker compose -f remotive_car/build/remotive_car_android/docker-compose.yml \
 -f remotive_car/instances/android/cuttlefish.compose.yaml \
 --profile ui \
---profile tester up --build
+--profile tester up --build --abort-on-container-exit
 ```
 
 The tests can also be run manually if you navigate to `remotive_car/tests/pytest` and run `uv run pytest -m android`.
@@ -322,15 +315,17 @@ To run the Google Maps application in the Android emulator it first needs to be 
 Run one of the commands below, depending on your setup.
 
 ```bash
-# Linux with DockerCAN
+# With DockerCAN
 remotive-topology generate \
 -f remotive_car/instances/android/main.instance.yaml \
+-f remotive_car/instances/android/local_playback.instance.yaml \
 -f remotive_car/instances/android/android_emulator_in_docker.instance.yaml \
 remotive_car/build
 
-# Linux with CAN over UDP
+# With CAN over UDP
 remotive-topology generate \
 -f remotive_car/instances/android/main.instance.yaml \
+-f remotive_car/instances/android/local_playback.instance.yaml \
 -f remotive_car/instances/android/android_emulator_in_docker.instance.yaml \
 -f remotive_car/instances/can_over_udp.instance.yaml \
 remotive_car/build
@@ -339,17 +334,11 @@ remotive_car/build
 RemotiveTopology uses Docker compose to define the containers and networks of the topology. Once generated, by following the steps in this section, it can be found [here](../../build/remotive_car_android/docker-compose.yml)
 
 #### Run
-
-Start the cloud playback, and start the topology, from the root of this repository.
-
 ```bash
-# check above on how to extract you session id.
-export CLOUD_URL=$(./remotive_car/instances/android/run.sh my-demo 9459066702917749000)
-CLOUD_AUTH=$(remotive cloud auth print-access-token) \
 docker compose -f remotive_car/build/remotive_car_android/docker-compose.yml \
 --profile jupyter \
---profile ui \
---profile cloudfeeder up --build
+--profile playback \
+--profile ui up --build
 ```
 
 You should then be able to reach the emulator by going to <http://localhost:8085/vnc.html> and connecting. The first time it starts you will have to configure some settings and permission for the maps application.
@@ -365,15 +354,17 @@ If you are not running on Linux or want more control of what to run within the e
 Run one of the commands below, depending on your setup.
 
 ```bash
-# Linux with DockerCAN
+# With DockerCAN
 remotive-topology generate \
 -f remotive_car/instances/android/main.instance.yaml \
+-f remotive_car/instances/android/local_playback.instance.yaml \
 -f remotive_car/instances/android/android_emulator_on_host.instance.yaml \
 remotive_car/build
 
 # Windows/MacOS CAN over UDP
 remotive-topology generate \
 -f remotive_car/instances/android/main.instance.yaml \
+-f remotive_car/instances/android/local_playback.instance.yaml \
 -f remotive_car/instances/android/android_emulator_on_host.instance.yaml \
 -f remotive_car/instances/can_over_udp.instance.yaml remotive_car/build
 ```
@@ -381,18 +372,49 @@ remotive-topology generate \
 RemotiveTopology uses Docker compose to define the containers and networks of the topology. Once generated, by following the steps in this section, it can be found [here](../../build/remotive_car_android/docker-compose.yml)
 
 #### Run
-
-Start the cloud playback, and start the topology, from the root of this repository.
-
+From the root of this repository run
 ```bash
-# check above on how to extract you session id.
-export CLOUD_URL=$(./remotive_car/instances/android/run.sh my-demo 9459066702917749000)
-CLOUD_AUTH=$(remotive cloud auth print-access-token) \
 ANDROID_EMULATOR_AUTH=$(cat ~/.emulator_console_auth_token) \
 docker compose -f remotive_car/build/remotive_car_android/docker-compose.yml \
 --profile jupyter \
---profile ui \
---profile cloudfeeder up --build
+--profile playback \
+--profile ui up --build
 ```
+
+You can also visit the RemotiveBroker Webapp at <http://localhost:8080> to observe the temperature signals being send back from the Android Emulator.
+
+### With playback from cloud
+Run `remotive-topology` with the cloud playback instance instead of local playback by replacing `-f remotive_car/instances/android/local_playback.instance.yaml` with `-f remotive_car/instances/android/cloud_playback.instance.yaml`.
+
+For example with android emulator in docker
+```bash
+# With CAN over UDP
+remotive-topology generate \
+-f remotive_car/instances/android/main.instance.yaml \
+-f remotive_car/instances/android/cloud_playback.instance.yaml \
+-f remotive_car/instances/android/android_emulator_in_docker.instance.yaml \
+-f remotive_car/instances/can_over_udp.instance.yaml \
+remotive_car/build
+```
+
+Select you recording you like to use as input, navigate to it and extract the session id from the recording url. For example for this URL `https://console.cloud.remotivelabs.com/p/my-demo/recordings/9459066702917749000?tab=playback` the project id is `my-demo` and recording session id is `9459066702917749000`.
+Make sure the recording contains `ChassisBus` and `VehicleBus`
+
+> :warning: Unless already signed in start by doing `remotive cloud auth login`
+
+
+```bash
+export CLOUD_URL=$(./remotive_car/instances/android/start_cloud_playback.sh my-demo 9459066702917749000)
+export CLOUD_AUTH=$(remotive cloud auth print-access-token)
+```
+
+```bash
+docker compose -f remotive_car/build/remotive_car_android/docker-compose.yml \
+--profile jupyter \
+--profile playback \
+--profile ui up --build
+```
+
+You should then be able to reach the emulator by going to <http://localhost:8085/vnc.html> and connecting. The first time it starts you will have to configure some settings and permission for the maps application.
 
 You can also visit the RemotiveBroker Webapp at <http://localhost:8080> to observe the temperature signals being send back from the Android Emulator.

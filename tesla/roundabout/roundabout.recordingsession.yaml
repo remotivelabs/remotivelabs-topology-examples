@@ -1,0 +1,28 @@
+schema: remotive-recording-session:0.1
+
+name: Roundabout
+start_time: 1753865338s
+end_time: 1753865361s
+
+files:
+  - location: ./ChassisBus.log
+    type: recording
+  - location: ./VehicleBus.log
+    type: recording
+    offset: -2s
+  - location: front.mp4
+    type: video
+    start_time: 1753865338s
+  - location: back.mp4
+    type: video
+    start_time: 1753865338s
+  - location: left.mp4
+    type: video
+    start_time: 1753865338s
+  - location: right.mp4
+    type: video
+    start_time: 1753865338s
+
+mapping:
+  platform:
+    - ../platform/tesla.platform.yaml
