@@ -1,0 +1,42 @@
+schema: remotive-topology-instance:0.13
+
+name: restbus-playback
+
+includes:
+  - ../../common/jupyter/jupyter.instance.yaml
+
+platform:
+  includes:
+    - ../../platform/restbus-playback.platform.yaml
+    - ../../recordings/platform/topology.platform.yaml
+
+containers:
+  playback:
+    profiles: [playback]
+    build:
+      dockerfile: Dockerfile
+    working_dir: /app
+    command: python -m playback.local -s --recording-session ./tesla.recordingsession.yaml
+    depends_on:
+      - topology-broker.com
+
+# TODO: uncomment this to run dockercan and interface with hardware
+#channels:
+#  BodyCan0:
+#    type: can
+#    driver:
+#      type: dockercan
+#      device_name: can0 # TODO: This must match the interface name
+
+ecus:
+  TCU:
+    models:
+      tcu:
+        type: container
+        container:
+          build:
+            dockerfile: Dockerfile
+          command: python -m playback.local.tcu
+
+settings:
+  recordings: ../../recordings/

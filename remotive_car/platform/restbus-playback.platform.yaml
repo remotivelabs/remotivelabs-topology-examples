@@ -1,0 +1,17 @@
+schema: remotive-topology-platform:0.12
+channels:
+  BodyCan0:
+    database: ./databases/example_location_only.dbc # TODO: this must be the DBC file you guys are using
+    type: can
+    can_physical_channel_name: BodyCan0
+    baudrate: 500000 # TODO: this must match the physical CAN buses expected baud rate but 500 000 is a reasonable guess
+    # baudrate_fd: 2000000
+
+
+ecus:
+  TCU:
+    channels:
+      BodyCan0:
+  IHU:  
+    channels:
+      BodyCan0:

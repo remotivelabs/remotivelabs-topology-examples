@@ -1,0 +1,8 @@
+{
+    "yaml.schemas": {
+        "https://files.remotivelabs.com/remotive_topology/topology-0.13.schema.json": [
+            "*.instance.yaml",
+            "*.platform.yaml"
+        ]
+    }
+}

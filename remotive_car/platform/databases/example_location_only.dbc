@@ -1,0 +1,23 @@
+VERSION "1.0"
+
+NS_ :
+    BO_
+    SG_
+    BA_DEF_
+    BA_
+    VAL_
+    BU_
+
+BU_:
+    TCU
+
+BA_DEF_ BO_ "GenMsgCycleTime" FLOAT 0 10000;
+BA_DEF_ SG_ "GenSigStartValue" FLOAT 0 0;
+
+BO_ 200 LocationFrame: 8 TCU
+ SG_ Longitude : 28|28@1- (1E-006,0) [-134.218|134.218] "Deg"  GWM
+ SG_ Latitude : 0|28@1- (1E-006,0) [-134.218|134.218] "Deg"  GWM
+
+
+
+BA_ "GenMsgCycleTime" BO_ 200 250;
