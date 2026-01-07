@@ -7,7 +7,7 @@ You will need to install `RemotiveTopology`, follow the instructions here <https
 ## Getting started
 Generate the instance
 ```bash
-remotive-topology generate -f remotive_car/instances/hello_world/main.instance.yaml -f remotive_car/instances/can_over_udp.instance.yaml remotive_car/build
+remotive topology generate -f remotive_car/instances/hello_world/main.instance.yaml -f remotive_car/instances/can_over_udp.instance.yaml remotive_car/build
 ```
 
 Start it

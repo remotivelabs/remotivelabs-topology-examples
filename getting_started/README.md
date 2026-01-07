@@ -158,7 +158,7 @@ This tells RemotiveTopology the following:
 Try viewing the resulting topology:
 
 ```sh
-$ remotive-topology show topology --resolve getting_started/instances/main.instance.yaml
+$ remotive topology show topology --resolve getting_started/instances/main.instance.yaml
 ```
 
 This shows:
@@ -346,8 +346,9 @@ Notice:
 To run the topology generate the runtime environment:
 
 ```sh
-remotive-topology generate -f getting_started/instances/main.instance.yaml -f getting_started/instances/can_over_udp.instance.yaml --name getting_started build
-docker compose -f build/getting_started/docker-compose.yml --profile tester up --abort-on-container-exit --build
+$ remotive topology generate -f getting_started/instances/main.instance.yaml -f getting_started/instances/can_over_udp.instance.yaml --name getting_started build
+Generated topology at: build/getting_started
+$ docker compose -f build/getting_started/docker-compose.yml --profile tester up --abort-on-container-exit --build
 ```
 
 You can run the tests several times. Once you are done, you should clean up the docker resources:

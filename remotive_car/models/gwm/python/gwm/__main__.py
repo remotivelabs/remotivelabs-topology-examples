@@ -46,6 +46,7 @@ class GWM:
             input_handlers=[
                 self.body_can_0.create_input_handler([filters.FrameFilter("TurnLightControl")], self.on_frame),
                 self.body_can_0.create_input_handler([filters.FrameFilter("LocationFrame")], self.on_location_frame),
+                self.body_can_0.create_input_handler([filters.FrameFilter("GearInfo")], self.on_gear_frame),
                 self.chassis_can_0.create_input_handler([filters.FrameFilter("UISpeedFrame")], self.on_speed_frame),
                 self.someip_bus.create_input_handler(
                     [filters.SomeIPEventFilter(service_instance_name="HVACService", event_name="CompartmentControl")],
@@ -86,6 +87,7 @@ class GWM:
                 parameters={
                     "Longitude": frame.signals["LocationFrame.Longitude"],
                     "Latitude": frame.signals["LocationFrame.Latitude"],
+                    "Heading": frame.signals["LocationFrame.Heading"],
                 },
             )
         )
@@ -97,6 +99,17 @@ class GWM:
                 service_instance_name="SpeedService",
                 parameters={
                     "Speed": frame.signals["UISpeedFrame.uispeed"],
+                },
+            )
+        )
+
+    async def on_gear_frame(self, frame: Frame) -> None:
+        await self.someip_bus.notify(
+            SomeIPEvent(
+                name="GearEvent",
+                service_instance_name="GearService",
+                parameters={
+                    "Gear": frame.signals["GearInfo.GearLeverPosition"],
                 },
             )
         )

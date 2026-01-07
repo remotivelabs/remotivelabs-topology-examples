@@ -177,10 +177,10 @@ In order to run the commands in the sections below, first navigate to the root o
 Run one of the commands below, depending on your setup.
 ```bash
 # Linux with DockerCAN
-remotive-topology generate -f remotive_car/instances/hello_world/main.instance.yaml remotive_car/build
+remotive topology generate -f remotive_car/instances/hello_world/main.instance.yaml remotive_car/build
 
 # Windows/MacOS CAN over UDP
-remotive-topology generate -f remotive_car/instances/hello_world/main.instance.yaml -f remotive_car/instances/can_over_udp.instance.yaml remotive_car/build
+remotive topology generate -f remotive_car/instances/hello_world/main.instance.yaml -f remotive_car/instances/can_over_udp.instance.yaml remotive_car/build
 ```
 
 RemotiveTopology uses Docker compose to define the containers and networks of the topology. Once generated, by following the steps in this section, it can be found [here](../../build/remotive_car_hello_world/docker-compose.yml).

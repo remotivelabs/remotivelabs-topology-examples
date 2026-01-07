@@ -1,4 +1,5 @@
 import json
+import time
 
 import requests
 import urllib3
@@ -9,22 +10,25 @@ class GnssClient:
         urllib3.disable_warnings()  # Cuttlefish runs the grpc proxy over https using a self-signed certificate
         self.cuttlefish_url = cuttlefish_url
 
-    def send_gps_vector(self, longitude: float, latitude: float, elevation: float = 15):
+    def send_gps(self, longitude: float, latitude: float, speed_mps: float = 0.0, bearing: float = 0.0):
+        elevation = 15
+        accuracy_meters = 3
+        speed_accuracy = 0.5
+        bearing_accuracy = 1.0
+        current_millis = round(time.time() * 1000)
+
         payload = {
-            "delay": 0,
-            "coordinates": [
-                {
-                    "latitude": latitude,
-                    "longitude": longitude,
-                    "elevation": elevation,
-                }
-            ],
+            "gps": (
+                f"Fix,GPS,{latitude},{longitude},{elevation},{speed_mps},"
+                f"{accuracy_meters},{bearing},{current_millis},{speed_accuracy},"
+                f"{bearing_accuracy},1"
+            )
         }
         headers = {"Content-Type": "application/json"}
 
         try:
             response = requests.post(
-                self.cuttlefish_url + "/services/GnssGrpcProxy/SendGpsVector",
+                self.cuttlefish_url + "/services/GnssGrpcProxy/SendGps",
                 headers=headers,
                 data=json.dumps(payload),
                 verify=False,  # Only use this in dev/testing

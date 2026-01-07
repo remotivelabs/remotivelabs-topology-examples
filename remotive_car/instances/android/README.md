@@ -260,14 +260,14 @@ Run one of the commands below, depending on your setup.
 
 ```bash
 # With DockerCAN
-remotive-topology generate \
+remotive topology generate \
 -f remotive_car/instances/android/main.instance.yaml \
 -f remotive_car/instances/android/local_playback.instance.yaml \
 -f remotive_car/instances/android/cuttlefish.instance.yaml \
 remotive_car/build
 
 # With CAN over UDP
-remotive-topology generate \
+remotive topology generate \
 -f remotive_car/instances/android/main.instance.yaml \
 -f remotive_car/instances/android/local_playback.instance.yaml \
 -f remotive_car/instances/android/cuttlefish.instance.yaml \
@@ -289,7 +289,9 @@ docker compose -f remotive_car/build/remotive_car_android/docker-compose.yml \
 --profile ui up --build
 ```
 
-You should then be able to reach the Cuttlefish instance by going to <https://localhost:1443>. The first time it starts you will have to configure some settings and permission for the maps application. If using the Organic Map you will also have to download maps for the areas you are interested in.
+You should then be able to reach the Cuttlefish instance by going to <https://localhost:8443>. The first time it starts you will have to configure some settings and permission for the maps application. If using the Organic Map you will also have to download maps for the areas you are interested in.
+
+If you wish to completely reset the state of the cuttlefish container, remove everything in the `cuttlefish/state` folder except the .gitignore.
 
 You can also visit the RemotiveBroker Webapp at <http://localhost:8080> to observe the temperature signals being sent back from the Cuttlefish instance.
 
@@ -316,14 +318,14 @@ Run one of the commands below, depending on your setup.
 
 ```bash
 # With DockerCAN
-remotive-topology generate \
+remotive topology generate \
 -f remotive_car/instances/android/main.instance.yaml \
 -f remotive_car/instances/android/local_playback.instance.yaml \
 -f remotive_car/instances/android/android_emulator_in_docker.instance.yaml \
 remotive_car/build
 
 # With CAN over UDP
-remotive-topology generate \
+remotive topology generate \
 -f remotive_car/instances/android/main.instance.yaml \
 -f remotive_car/instances/android/local_playback.instance.yaml \
 -f remotive_car/instances/android/android_emulator_in_docker.instance.yaml \
@@ -334,6 +336,7 @@ remotive_car/build
 RemotiveTopology uses Docker compose to define the containers and networks of the topology. Once generated, by following the steps in this section, it can be found [here](../../build/remotive_car_android/docker-compose.yml)
 
 #### Run
+
 ```bash
 docker compose -f remotive_car/build/remotive_car_android/docker-compose.yml \
 --profile jupyter \
@@ -355,14 +358,14 @@ Run one of the commands below, depending on your setup.
 
 ```bash
 # With DockerCAN
-remotive-topology generate \
+remotive topology generate \
 -f remotive_car/instances/android/main.instance.yaml \
 -f remotive_car/instances/android/local_playback.instance.yaml \
 -f remotive_car/instances/android/android_emulator_on_host.instance.yaml \
 remotive_car/build
 
 # Windows/MacOS CAN over UDP
-remotive-topology generate \
+remotive topology generate \
 -f remotive_car/instances/android/main.instance.yaml \
 -f remotive_car/instances/android/local_playback.instance.yaml \
 -f remotive_car/instances/android/android_emulator_on_host.instance.yaml \
@@ -372,7 +375,9 @@ remotive-topology generate \
 RemotiveTopology uses Docker compose to define the containers and networks of the topology. Once generated, by following the steps in this section, it can be found [here](../../build/remotive_car_android/docker-compose.yml)
 
 #### Run
+
 From the root of this repository run
+
 ```bash
 ANDROID_EMULATOR_AUTH=$(cat ~/.emulator_console_auth_token) \
 docker compose -f remotive_car/build/remotive_car_android/docker-compose.yml \
@@ -384,12 +389,14 @@ docker compose -f remotive_car/build/remotive_car_android/docker-compose.yml \
 You can also visit the RemotiveBroker Webapp at <http://localhost:8080> to observe the temperature signals being send back from the Android Emulator.
 
 ### With playback from cloud
+
 Run `remotive-topology` with the cloud playback instance instead of local playback by replacing `-f remotive_car/instances/android/local_playback.instance.yaml` with `-f remotive_car/instances/android/cloud_playback.instance.yaml`.
 
 For example with android emulator in docker
+
 ```bash
 # With CAN over UDP
-remotive-topology generate \
+remotive topology generate \
 -f remotive_car/instances/android/main.instance.yaml \
 -f remotive_car/instances/android/cloud_playback.instance.yaml \
 -f remotive_car/instances/android/android_emulator_in_docker.instance.yaml \
@@ -401,7 +408,6 @@ Select you recording you like to use as input, navigate to it and extract the se
 Make sure the recording contains `ChassisBus` and `VehicleBus`
 
 > :warning: Unless already signed in start by doing `remotive cloud auth login`
-
 
 ```bash
 export CLOUD_URL=$(./remotive_car/instances/android/start_cloud_playback.sh my-demo 9459066702917749000)

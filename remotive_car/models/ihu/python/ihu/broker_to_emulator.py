@@ -7,6 +7,7 @@ from .libs.emulator.vhal import vhal_emulator
 
 PERF_VEHICLE_SPEED = 0x11600207
 HVAC_TEMPERATURE_SET = 0x15600503
+GEAR_SELECTION = 0x11400400
 
 logger = structlog.get_logger(__name__)
 
@@ -36,6 +37,15 @@ class BrokerToEmulator:
             self.vhal.set_property(PERF_VEHICLE_SPEED, 0, speed_mps)
         except Exception as e:
             print(f"Error setting property ID 0x{PERF_VEHICLE_SPEED:08x}: {e}")
+
+    def update_gear_property(self, gear: int):
+        # gear: 0 = Reverse, 1 = Drive (from bodycan.dbc)
+        # VHAL GEAR_SELECTION: 1 = Park, 2 = Reverse, 4 = Neutral, 8 = Drive
+        vhal_gear = 8 if gear == 1 else 2  # Map 1->Drive(8), 0->Reverse(2)
+        try:
+            self.vhal.set_property(GEAR_SELECTION, 0, vhal_gear)
+        except Exception as e:
+            print(f"Error setting property ID 0x{GEAR_SELECTION:08x}: {e}")
 
     def _on_vhal_message(self, msg):
         """

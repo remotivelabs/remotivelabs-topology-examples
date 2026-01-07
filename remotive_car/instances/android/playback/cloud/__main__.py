@@ -25,14 +25,19 @@ async def main(avp: BehavioralModelArgs):
         async with BrokerClient(url=avp.url, auth=avp.auth) as broker_client:
             chassis_bus = CanNamespace("ChassisBus", cloud_broker_client)
             await chassis_bus.open()
-            itr = await chassis_bus.subscribe_frames(FrameSubscription("ID04FGPSLatLong"), on_change=False, decode_named_values=True)
+            latlong_itr = await chassis_bus.subscribe_frames(
+                FrameSubscription("ID04FGPSLatLong"), on_change=False, decode_named_values=True
+            )
+            solar_itr = await chassis_bus.subscribe_frames(
+                FrameSubscription("ID2D3UI_solarData"), on_change=False, decode_named_values=True
+            )
 
             vehicle_bus = CanNamespace("VehicleBus", cloud_broker_client)
             await vehicle_bus.open()
             speed_itr = await vehicle_bus.subscribe_frames(FrameSubscription("ID257DIspeed"), on_change=False, decode_named_values=True)
 
             async def handle_location():
-                async for frame in itr:
+                async for frame in latlong_itr:
                     logger.info("received location", frame=frame)
                     await broker_client.restbus.update_signals(
                         (
@@ -48,6 +53,19 @@ async def main(avp: BehavioralModelArgs):
                         )
                     )
 
+            async def handle_heading():
+                async for frame in solar_itr:
+                    heading = (
+                        float(frame.signals["ID2D3UI_solarData.UI_solarAzimuthAngle"])
+                        - float(frame.signals["ID2D3UI_solarData.UI_solarAzimuthAngleCarRef"])
+                    ) % 360
+                    await broker_client.restbus.update_signals(
+                        (
+                            "TCU-BodyCan0",
+                            [RestbusSignalConfig.set(name="LocationFrame.Heading", value=heading)],
+                        )
+                    )
+
             async def handle_speed():
                 async for frame in speed_itr:
                     # logger.info("received speed", frame=frame)
@@ -60,7 +78,7 @@ async def main(avp: BehavioralModelArgs):
                         )
                     )
 
-            await asyncio.gather(handle_location(), handle_speed())
+            await asyncio.gather(handle_location(), handle_heading(), handle_speed())
 
 
 if __name__ == "__main__":

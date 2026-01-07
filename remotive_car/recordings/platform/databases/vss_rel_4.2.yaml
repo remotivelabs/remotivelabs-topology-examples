@@ -22,3 +22,12 @@ Vehicle.CurrentLocation.Longitude:
   type: sensor
   unit: degrees
   uuid: 5246f2ec5fea550cb1b36f110854cfbb
+
+Vehicle.CurrentLocation.Heading:
+  datatype: double
+  description: Current heading of vehicle in degrees, calculated using measured solar angle
+  max: 0
+  min: 360
+  type: sensor
+  unit: degrees
+  uuid: ce2e26013f984d67aa2644aa250f5a81

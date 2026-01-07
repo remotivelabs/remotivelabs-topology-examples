@@ -6,12 +6,14 @@ includes:
 
 containers:
   cuttlefish:
-    image: remotivelabs/remotivelabs-cuttlefish
+    image: remotivelabs/remotivelabs-cuttlefish:15.0.0-4
     environment:
       - CUTTLEFISH_MEMORY_MB=2048
     ports:
       - "1443:1443"
       - "6520:6520"
+      - "8443:8443"
+      - "9300:9300"
     volumes:
       - ./cuttlefish/apks:/root/apks
-
+      - ./cuttlefish/state:/root/state

@@ -62,6 +62,10 @@ class IHU:
                     [filters.SomeIPEventFilter(service_instance_name="SpeedService", event_name="SpeedEvent")],
                     self._handle_speed_event,
                 ),
+                self._some_ip_eth.create_input_handler(
+                    [filters.SomeIPEventFilter(service_instance_name="GearService", event_name="GearEvent")],
+                    self._handle_gear_event,
+                ),
             ],
         )
 
@@ -97,10 +101,11 @@ class IHU:
     async def _handle_location_event(self, event: SomeIPEvent):
         lon = float(event.parameters.get("Longitude", 0))
         lat = float(event.parameters.get("Latitude", 0))
+        heading = float(event.parameters.get("Heading", 0))
         if self.br_emulator is not None:
             self.br_emulator.redirect_location_signals_to_emulator(lon, lat)
         if self.br_cuttlefish:
-            self.br_cuttlefish.redirect_location_signals_to_cuttlefish(lon, lat)
+            self.br_cuttlefish.redirect_location_signals_to_cuttlefish(lon, lat, heading)
 
     async def _handle_speed_event(self, event: SomeIPEvent):
         speed = float(event.parameters.get("Speed", 0))
@@ -108,6 +113,13 @@ class IHU:
             self.br_emulator.update_speed_property(speed)
         if self.br_cuttlefish:
             self.br_cuttlefish.update_speed_property(speed)
+
+    async def _handle_gear_event(self, event: SomeIPEvent):
+        gear = int(event.parameters.get("Gear", 0))
+        if self.br_emulator is not None:
+            self.br_emulator.update_gear_property(gear)
+        if self.br_cuttlefish:
+            self.br_cuttlefish.update_gear_property(gear)
 
     async def _send_someip_event(self, name, service_instance_name, parameters) -> None:
         await self._some_ip_eth.notify(SomeIPEvent(name=name, service_instance_name=service_instance_name, parameters=parameters))

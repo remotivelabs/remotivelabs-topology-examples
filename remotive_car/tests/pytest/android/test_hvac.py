@@ -28,7 +28,9 @@ async def broker_client(request: pytest.FixtureRequest) -> AsyncIterator[BrokerC
 @pytest_asyncio.fixture()
 async def adb_device(request: pytest.FixtureRequest) -> AsyncIterator[AdbDevice]:
     host = request.config.getoption("android_device_host")
-    device = AdbDeviceTcp(host, 6520, default_transport_timeout_s=5.0)
+    performance_level = request.config.getoption("android_performance_level")
+
+    device = AdbDeviceTcp(host, 6520, default_transport_timeout_s=10.0)
     device.connect()
 
     # Dismiss initial popup if there
@@ -40,7 +42,10 @@ async def adb_device(request: pytest.FixtureRequest) -> AsyncIterator[AdbDevice]
     yield device
 
     # Send home command to close hvac panel if opened during test. Wait a short duration in case it is still in the process of opening
-    await asyncio.sleep(1)
+    if performance_level == "low":
+        await asyncio.sleep(10)
+    else:
+        await asyncio.sleep(1)
     device.shell("input keyevent 3")
 
 
@@ -61,7 +66,7 @@ async def test_update_hvac_left_temperature(broker_client: BrokerClient, adb_dev
     adb_device.shell("input tap 350 750")
 
     sub = await broker_client.subscribe(("HVAC-BodyCan0", ["HVACControl.LeftTemperature"]))
-    await await_at_most(seconds=5).until(
+    await await_at_most(seconds=10).until(
         partial(take_values, sub),
         equal_to({"HVACControl.LeftTemperature": 16.5}),
     )

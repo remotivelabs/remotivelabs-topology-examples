@@ -3,11 +3,15 @@ channels:
   DriverCan0:
     database: ./databases/driver_can.dbc
     type: can
+    baudrate: 500000
+    baudrate_fd: 8000000
     can_physical_channel_name: DriverCan0
 
   BodyCan0:
     database: ./databases/body_can.dbc
     type: can
+    baudrate: 500000
+    baudrate_fd: 8000000
     can_physical_channel_name: BodyCan0
 
   SOMEIP:
@@ -25,6 +29,7 @@ channels:
               - TurnlightIndicator
               - LocationService
               - SpeedService
+              - GearService
             consumed_service_instances:
               - HVACService
       host_ihu:
@@ -37,6 +42,7 @@ channels:
               - TurnlightIndicator
               - LocationService
               - SpeedService
+              - GearService
             provided_service_instances:
               - HVACService
 

@@ -50,7 +50,7 @@
           "type": "button",
           "source_name": "BTN_TRIGGER_HAPPY20",
           "source_type": 1,
-          "source_code": 723,
+          "source_code": 643,
           "target_name": "SCCM",
           "target_signal": "HazardLightButton.HazardLightButton"
         },

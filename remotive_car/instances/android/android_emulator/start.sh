@@ -68,6 +68,9 @@ adb shell am start -a android.intent.action.MAIN \
   -c android.intent.category.LAUNCHER \
   -n com.google.android.apps.maps/com.google.android.maps.MapsActivity
 
+# Allow apps to be used while driving
+adb shell su shell cmd car_service enable-uxr false
+
 # Restart ADB server with -a flag to allow remote connections
 adb kill-server && adb -a server start
 

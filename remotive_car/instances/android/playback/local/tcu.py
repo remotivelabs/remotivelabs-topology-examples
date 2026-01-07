@@ -25,10 +25,13 @@ class TCU:
 
     vss_latitude: str = "Vehicle.CurrentLocation.Latitude"
     vss_longitude: str = "Vehicle.CurrentLocation.Longitude"
+    vss_heading: str = "Vehicle.CurrentLocation.Heading"
     latitude_signal: str = "LocationFrame.Latitude"
     longitude_signal: str = "LocationFrame.Longitude"
+    heading_signal: str = "LocationFrame.Heading"
     lat: float | None = None
     lng: float | None = None
+    heading: float | None = None
 
     def __init__(self, avp: BehavioralModelArgs) -> None:
         self._broker_client = BrokerClient(avp.url, auth=avp.auth)
@@ -54,6 +57,10 @@ class TCU:
                     [filters.FrameFilter(frame_name=TCU.vss_longitude)],
                     self.on_longitude,
                 ),
+                self.vss.create_input_handler(
+                    [filters.FrameFilter(frame_name=TCU.vss_heading)],
+                    self.on_heading,
+                ),
             ],
         )
 
@@ -77,6 +84,10 @@ class TCU:
         self.lng = cast(float, frame.value)
         await self._handle_location_state()
 
+    async def on_heading(self, frame: Frame) -> None:
+        self.heading = cast(float, frame.value)
+        await self._handle_location_state()
+
     async def _handle_location_state(self) -> None:
         if self.lat is not None and self.lng is not None:
             await self.body_can.restbus.update_signals(
@@ -85,6 +96,12 @@ class TCU:
             )
             self.lat = None
             self.lng = None
+
+        if self.heading is not None:
+            await self.body_can.restbus.update_signals(
+                RestbusSignalConfig.set(name=TCU.heading_signal, value=self.heading),
+            )
+            self.heading = None
 
 
 async def main(avp: BehavioralModelArgs):

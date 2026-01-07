@@ -172,7 +172,7 @@ Signal_representation {
 	TypeReq2 : counter;
 	SomeReq2Type2 : SomeReq2Type2;
 	SomeReq31 : counter_times_2;
-	Boolean : ReqLeft, ReqRight;
+	Boolean : ErrRespDEVS1, ReqLeft, ReqRight;
 	UInt8 : SomePartNrDEVS2EndSgn1, SomePartNrDEVS2EndSgn2, SomePartNrDEVS2EndSgn3, SomePartNrDEVS2Nr1, SomePartNrDEVS2Nr2, SomePartNrDEVS2Nr3, SomePartNrDEVS2Nr4;
 }
 

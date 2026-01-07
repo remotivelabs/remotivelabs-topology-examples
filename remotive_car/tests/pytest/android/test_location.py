@@ -37,6 +37,7 @@ async def broker_client(request: pytest.FixtureRequest) -> AsyncIterator[BrokerC
 @pytest_asyncio.fixture()
 async def adb_device(request: pytest.FixtureRequest) -> AsyncIterator[AdbDevice]:
     host = request.config.getoption("android_device_host")
+    performance_level = request.config.getoption("android_performance_level")
     device = AdbDeviceTcp(host, 6520, default_transport_timeout_s=5.0)
     device.connect()
 
@@ -58,7 +59,10 @@ async def adb_device(request: pytest.FixtureRequest) -> AsyncIterator[AdbDevice]
 
     # Start location test app
     device.shell("am start -n com.google.android.car.adaslocation/com.google.android.car.adaslocation.AdasLocationActivity")
-    await asyncio.sleep(1)
+    if performance_level == "low":
+        await asyncio.sleep(10)
+    else:
+        await asyncio.sleep(1)
     yield device
 
     # Send home command to close test app

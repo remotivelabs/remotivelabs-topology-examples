@@ -9,7 +9,7 @@ containers:
     volumes:
       - ..:/app
     working_dir: /app
-    command: "pytest --broker_url=http://topology-broker.com:50051 --android_device_host=cuttlefish -m android -s -vv"
+    command: "pytest --broker_url=http://topology-broker.com:50051 --android_device_host=cuttlefish --android_performance_level=${ANDROID_PERFORMANCE_LEVEL:-high} -m android -s -vv"
     depends_on:
       - bcm
       - gwm

@@ -21,3 +21,11 @@ def pytest_addoption(parser: pytest.Parser) -> None:
         type=str,
         help="Host where the android device residies",
     )
+    parser.addoption(
+        "--android_performance_level",
+        action="store",
+        choices=["high", "low"],
+        default="high",
+        type=str,
+        help="Performance level of the android device",
+    )
