@@ -1,0 +1,141 @@
+{
+  "name": "Gudsen R3 Racing Wheel",
+  "broker": {
+    "url": "http://sccm-broker:50051"
+  },
+  "devices": {
+    "Gudsen R3 Racing Wheel and Pedals": {
+      "button_mappings": [
+        {
+          "description": "Steering wheel",
+          "type": "axis",
+          "source_name": "ABS_X",
+          "source_type": 3,
+          "source_code": 0,
+          "target_name": "SCCM",
+          "target_signal": "SteeringAngle.SteeringAngle",
+          "gradient": 0.01345,
+          "intercept": -440,
+          "min": -440,
+          "max": 440
+        },
+        {
+          "description": "Brake pedal",
+          "type": "axis",
+          "source_name": "ABS_RZ",
+          "source_type": 3,
+          "source_code": 5,
+          "target_name": "SCCM",
+          "target_signal": "BrakePedalPositionSensor.BrakePedalPosition",
+          "gradient": 0.003899,
+          "intercept": 120,
+          "min": 0,
+          "max": 255
+        },
+        {
+          "description": "Accelerator pedal",
+          "type": "axis",
+          "source_name": "ABS_Z",
+          "source_type": 3,
+          "source_code": 2,
+          "target_name": "SCCM",
+          "target_signal": "AcceleratorPedalPositionSensor.AcceleratorPedalPosition",
+          "gradient": 0.003899,
+          "intercept": 120,
+          "min": 0,
+          "max": 255
+        },
+        {
+          "description": "Hazard button",
+          "type": "button",
+          "source_name": "BTN_TRIGGER_HAPPY20",
+          "source_type": 1,
+          "source_code": 643,
+          "target_name": "SCCM",
+          "target_signal": "HazardLightButton.HazardLightButton"
+        },
+        {
+          "description": "Gear up button",
+          "type": "button",
+          "source_name": "PADDLE_RIGHT",
+          "source_type": 1,
+          "source_code": 301,
+          "target_name": "SCCM",
+          "target_signal": "GearShiftPaddles.GearShiftUp"
+        },
+        {
+          "description": "Gear down button",
+          "type": "button",
+          "source_name": "PADDLE_LEFT",
+          "source_type": 1,
+          "source_code": 300,
+          "target_name": "SCCM",
+          "target_signal": "GearShiftPaddles.GearShiftDown"
+        }
+      ]
+    },
+    "Gudsen MOZA Multi-function Stalk": {
+      "button_mappings": [
+        {
+          "description": "Lights off",
+          "type": "button",
+          "source_name": "BTN_JOYSTICK",
+          "source_type": 1,
+          "source_code": 288,
+          "target_name": "SCCM",
+          "target_signal": "LightStalk.LightMode",
+          "mapping": {
+            "1": 0
+          }
+        },
+        {
+          "description": "Lights daytime running lights",
+          "type": "button",
+          "source_name": "BTN_THUMB",
+          "source_type": 1,
+          "source_code": 289,
+          "target_name": "SCCM",
+          "target_signal": "LightStalk.LightMode",
+          "mapping": {
+            "1": 1
+          }
+        },
+        {
+          "description": "Low beam",
+          "type": "button",
+          "source_name": "BTN_THUMB2",
+          "source_type": 1,
+          "source_code": 290,
+          "target_name": "SCCM",
+          "target_signal": "LightStalk.LightMode",
+          "mapping": {
+            "1": 2
+          }
+        },
+        {
+          "description": "High beam",
+          "type": "button",
+          "source_name": "BTN_PINKIE",
+          "source_type": 1,
+          "source_code": 293,
+          "target_name": "SCCM",
+          "target_signal": "LightStalk.HighBeam"
+        },
+        {
+          "description": "Turn stalk",
+          "type": "button",
+          "source_name": "EV_MSC",
+          "source_type": 4,
+          "source_code": 4,
+          "target_name": "SCCM",
+          "target_signal": "TurnStalk.TurnSignal",
+          "mapping": {
+            "589832": 2,
+            "589833": 0,
+            "589834": 1
+          }
+        }
+      ]
+    }
+  }
+}

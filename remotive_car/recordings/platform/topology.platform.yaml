@@ -11,3 +11,6 @@ ecus:
   ABS:
     channels:
       VSS:
+  SCCM:
+    channels:
+      VSS:

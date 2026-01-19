@@ -53,13 +53,11 @@ BO_ 108 GearInfo: 1 BCM
 BO_ 109 ProximityInfo: 2 PAM
   SG_ ProximityDistance : 0|8@1+ (0.02,0) [0|5.10] "m"  DIM, GWM
 
-BO_ 110 VehicleSpeed: 2 BCM
-  SG_ VehicleSpeed : 0|16@1+ (0.01,0) [0|100] "m/s"  DIM, GWM
 
 BO_ 200 LocationFrame: 12 TCU
  SG_ Longitude : 28|28@1- (1E-006,0) [-134.218|134.218] "Deg"  GWM
  SG_ Latitude : 0|28@1- (1E-006,0) [-134.218|134.218] "Deg"  GWM
- SG_ Heading : 56|28@1+ (1E-006,0) [0|360] "Deg"  GWM
+ SG_ Heading : 56|28@1+ (1E-005,0) [0|360] "Deg"  GWM
 
 BO_ 300 HVACControl: 8 GWM
  SG_ LeftTemperature : 0|16@1+ (0.1,0) [16|30] "°C" HVAC

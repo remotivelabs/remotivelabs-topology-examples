@@ -31,7 +31,7 @@ NS_ :
 
 
 BO_ 123 UISpeedFrame: 8   ABS
- SG_ uispeed : 0|16@1+ (0.01,0) [0|250] "km/h" GWM  
+ SG_ uispeed : 0|16@1+ (0.01,0) [0|250] "m/s" GWM  
 
 BA_DEF_ BO_ "GenMsgCycleTime" FLOAT 0 10000;
 

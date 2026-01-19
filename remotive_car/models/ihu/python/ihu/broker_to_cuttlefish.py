@@ -26,7 +26,7 @@ class BrokerToCuttlefish:
             self.gnss.send_gps(longitude=lon, latitude=lat, bearing=heading, speed_mps=self.speed_mps)
 
     def update_speed_property(self, speed: float):
-        self.speed_mps = speed / 3.6
+        self.speed_mps = speed
         try:
             self.vhal.set_property(0, PERF_VEHICLE_SPEED, self.speed_mps)
         except Exception as e:

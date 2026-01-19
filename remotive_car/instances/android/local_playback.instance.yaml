@@ -32,5 +32,14 @@ ecus:
             dockerfile: Dockerfile
           command: python -m playback.local.abs
 
+  SCCM:
+    models:
+      sccm:
+        type: container
+        container:
+          build:
+            dockerfile: Dockerfile
+          command: python -m playback.local.sccm
+
 settings:
   recordings: ../../recordings/

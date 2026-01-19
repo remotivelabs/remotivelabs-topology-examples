@@ -123,6 +123,7 @@ class BCM:
         self.beams_machine = BeamsStateMachine()
         self.turn_signals_machine = TurnSignalsStateMachine(callback=self._on_toggle_turn_signals)
         self.gears_machine = GearsStateMachine()
+        self._hazard_button_state = 0
 
     async def __aenter__(self):
         await self._broker_client.connect()
@@ -206,11 +207,13 @@ class BCM:
 
         Only update the state if the button is pressed. It needs to be clicked a second time to turn off the hazard lights.
         """
-        signal = frame.signals["HazardLightButton.HazardLightButton"]
+        signal = cast(int, frame.signals["HazardLightButton.HazardLightButton"])
         logger.debug("Incoming hazard button signal", payload=signal)
-        if signal:  # if signal is non zero (truthy), the button is clicked.
+        if self._hazard_button_state == 0 and signal:  # if signal is non zero (truthy) but previous state is zero, the button is clicked.
             new_state = self.turn_signals_machine.set_hazard_button_pressed()
             await self._set_turn_lights(state=new_state)
+
+        self._hazard_button_state = signal
 
     async def _on_toggle_turn_signals(self, state: str) -> None:
         """Handle turn signal toggle"""

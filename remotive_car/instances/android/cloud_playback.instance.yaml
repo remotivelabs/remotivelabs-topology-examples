@@ -14,6 +14,7 @@ containers:
       - topology-broker.com
       - abs-mock
       - tcu-mock
+      - sccm-mock
     environment:
       - CLOUD_URL=${CLOUD_URL}
       - CLOUD_AUTH=${CLOUD_AUTH}
@@ -22,4 +23,6 @@ ecus:
   TCU:
     mock: {}
   ABS:
+    mock: {}
+  SCCM:
     mock: {}

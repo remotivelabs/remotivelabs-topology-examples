@@ -25,9 +25,46 @@ Vehicle.CurrentLocation.Longitude:
 
 Vehicle.CurrentLocation.Heading:
   datatype: double
-  description: Current heading of vehicle in degrees, calculated using measured solar angle
+  description: Current heading relative to geographic north. 0 = North, 90 = East, 180 = South, 270 = West.
   max: 0
   min: 360
   type: sensor
   unit: degrees
-  uuid: ce2e26013f984d67aa2644aa250f5a81
+  uuid: 2a8f0afa2b315943aa001278875ce012
+
+Vehicle.Body.Lights.DirectionIndicator.Left.IsSignaling:
+  datatype: boolean
+  description: Indicates if light is signaling or off. True = signaling. False = Off.
+  type: actuator
+  uuid: 33ac6ec5e4d9550aac6ae0ce97dae259
+
+Vehicle.Body.Lights.DirectionIndicator.Right.IsSignaling:
+  datatype: boolean
+  description: Indicates if light is signaling or off. True = signaling. False = Off.
+  type: actuator
+  uuid: 9b0a1dab153f5dcda8df2116c3b6d487
+
+Vehicle.Chassis.SteeringWheel.Angle:
+  datatype: int16
+  description: Steering wheel angle. Positive = degrees to the left. Negative = degrees to the right.
+  type: sensor
+  unit: degrees
+  uuid: 92cd3b3d37585b2291806fe5127d9393
+
+Vehicle.Chassis.Brake.PedalPosition:
+  datatype: uint8
+  description: Brake pedal position as percent. 0 = Not depressed. 100 = Fully depressed.
+  max: 100
+  min: 0
+  type: sensor
+  unit: percent
+  uuid: 0477d3a4a831564ea473976cf34374f2
+
+Vehicle.Chassis.Accelerator.PedalPosition:
+  datatype: uint8
+  description: Accelerator pedal position as percent. 0 = Not depressed. 100 = Fully depressed.
+  max: 100
+  min: 0
+  type: sensor
+  unit: percent
+  uuid: 2fabd8b61db45f62b4e97e7a612b4a73

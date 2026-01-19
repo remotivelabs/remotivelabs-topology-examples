@@ -31,8 +31,7 @@ class BrokerToEmulator:
         if lat != 0 and lon != 0:
             self.emulator.send_fix(str(lon), str(lat))
 
-    def update_speed_property(self, speed: float):
-        speed_mps = speed / 3.6
+    def update_speed_property(self, speed_mps: float):
         try:
             self.vhal.set_property(PERF_VEHICLE_SPEED, 0, speed_mps)
         except Exception as e:
