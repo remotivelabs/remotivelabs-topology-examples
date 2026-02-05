@@ -116,8 +116,8 @@ class GWM:
 
     async def on_hvac_control(self, event: SomeIPEvent) -> None:
         await self.body_can_0.restbus.update_signals(
-            ("HVACControl.LeftTemperature", float(event.parameters.get("LeftTemperature", 0))),
-            ("HVACControl.RightTemperature", float(event.parameters.get("RightTemperature", 0))),
+            ("HVACControl.LeftTemperature", float(event.parameters.get("LeftTemperature") or 0)),
+            ("HVACControl.RightTemperature", float(event.parameters.get("RightTemperature") or 0)),
         )
 
 

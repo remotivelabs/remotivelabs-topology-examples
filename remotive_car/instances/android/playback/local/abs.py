@@ -57,7 +57,7 @@ class ABS:
 
     async def on_speed_frame(self, frame: Frame) -> None:
         await self.chassis_can.restbus.update_signals(
-            RestbusSignalConfig.set(name=ABS.speed_signal, value=(float(frame.value) / 3.6)),
+            RestbusSignalConfig.set(name=ABS.speed_signal, value=(float(frame.value or 0.0) / 3.6)),
         )
 
 

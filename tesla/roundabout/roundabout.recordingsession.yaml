@@ -1,4 +1,4 @@
-schema: remotive-recording-session:0.1
+schema: remotive-recording-session:0.2
 
 name: Roundabout
 start_time: 1753865338s
@@ -11,15 +11,19 @@ files:
     type: recording
     offset: -2s
   - location: front.mp4
+    name: front
     type: video
     start_time: 1753865338s
   - location: back.mp4
+    name: rear
     type: video
     start_time: 1753865338s
   - location: left.mp4
+    name: left
     type: video
     start_time: 1753865338s
   - location: right.mp4
+    name: right
     type: video
     start_time: 1753865338s
 

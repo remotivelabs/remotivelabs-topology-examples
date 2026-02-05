@@ -1,4 +1,4 @@
-schema: remotive-recording-session:0.1
+schema: remotive-recording-session:0.2
 
 name: Tesla M Drive 2025-07-30
 start_time: 1753865525523429us
@@ -10,15 +10,19 @@ files:
     default_device: VSS
 
   - location: ./m_drive_2025-07-30/back.mp4
+    name: rear
     type: video
 
   - location: ./m_drive_2025-07-30/front.mp4
+    name: front
     type: video
 
   - location: ./m_drive_2025-07-30/left.mp4
+    name: left
     type: video
 
   - location: ./m_drive_2025-07-30/right.mp4
+    name: right
     type: video
 
 mapping:

@@ -152,13 +152,14 @@ ecus:
 ```
 
 This tells RemotiveTopology the following:
+
 - This is a `remotive-topology-instance` file
 - Instantiate the ECU `BCM` and start a behavioral model called `bcm`. This is written in a python module called `bcm`
 
-Try viewing the resulting topology:
+Try viewing the resulting instance:
 
 ```sh
-$ remotive topology show topology --resolve getting_started/instances/main.instance.yaml
+$ remotive topology show instance --resolve getting_started/instances/main.instance.yaml
 ```
 
 This shows:
@@ -260,6 +261,7 @@ platform:
 ```
 
 Notice:
+
 - Only ECUs included in the instance are visible in the resolved platform, in this case `BCM`, `FLCM` and `SCCM`. The platform also includes channels that are either included in the instance or used by the included ECUs.
 
 ## Writing a test case
@@ -291,6 +293,7 @@ ecus:
 ```
 
 Notice:
+
 - Tests are running inside a generic docker container. You can use whatever framework you want!
 - Tests are using a profile which means they're optional when running the instance.
 - Since the tests are written using a mock, the mock need to be instantiated.
@@ -334,11 +337,13 @@ includes:
 ```
 
 This tells RemotiveTopology:
+
 - instantiate the `bcm` behavioral model
 - what tests to run
 - platform information
 
 Notice:
+
 - By explicitly including all the dependencies this ensures that the tests run in the environment you intend.
 - Since in this case you are testing a behavioral model and not real ECU software or hardware, you can use CAN emulation.
 - You can easily run the same tests using real hardware simply by replacing the `bcm` instance and configuring CAN devices instead of emulation.
@@ -409,7 +414,6 @@ config:
     TopologyBroker .. RemotiveBroker_BCM
     TopologyBroker .. RemotiveBroker_FLCM
 ```
-
 
 ## Steps forward
 

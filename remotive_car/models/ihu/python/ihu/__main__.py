@@ -99,23 +99,23 @@ class IHU:
         pass
 
     async def _handle_location_event(self, event: SomeIPEvent):
-        lon = float(event.parameters.get("Longitude", 0))
-        lat = float(event.parameters.get("Latitude", 0))
-        heading = float(event.parameters.get("Heading", 0))
+        lon = float(event.parameters.get("Longitude") or 0)
+        lat = float(event.parameters.get("Latitude") or 0)
+        heading = float(event.parameters.get("Heading") or 0)
         if self.br_emulator is not None:
             self.br_emulator.redirect_location_signals_to_emulator(lon, lat)
         if self.br_cuttlefish:
             self.br_cuttlefish.redirect_location_signals_to_cuttlefish(lon, lat, heading)
 
     async def _handle_speed_event(self, event: SomeIPEvent):
-        speed = float(event.parameters.get("Speed", 0))
+        speed = float(event.parameters.get("Speed") or 0)
         if self.br_emulator is not None:
             self.br_emulator.update_speed_property(speed)
         if self.br_cuttlefish:
             self.br_cuttlefish.update_speed_property(speed)
 
     async def _handle_gear_event(self, event: SomeIPEvent):
-        gear = int(event.parameters.get("Gear", 0))
+        gear = int(event.parameters.get("Gear") or 0)
         if self.br_emulator is not None:
             self.br_emulator.update_gear_property(gear)
         if self.br_cuttlefish:

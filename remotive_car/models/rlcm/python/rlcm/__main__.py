@@ -24,6 +24,9 @@ class RLCM:
     left_turn_light_request: str = "TurnLightControl.LeftTurnLightRequest"
     right_turn_light_request: str = "TurnLightControl.RightTurnLightRequest"
 
+    # 2 bit unsigned int counter
+    counter = 0
+
     def __init__(self, avp: BehavioralModelArgs) -> None:
         self._broker_client = BrokerClient(avp.url, auth=avp.auth)
         self.lin_bus = GenericNamespace(
@@ -35,7 +38,10 @@ class RLCM:
             RLCM.ecu_name,
             namespaces=[self.lin_bus, self.body_can_0],
             broker_client=self._broker_client,
-            input_handlers=[self.body_can_0.create_input_handler([filters.FrameFilter("TurnLightControl")], self.on_turn_req_frame)],
+            input_handlers=[
+                self.body_can_0.create_input_handler([filters.FrameFilter("TurnLightControl")], self.on_turn_req_frame),
+                self.lin_bus.create_input_handler([filters.FrameFilter("DEVMLIN01Fr01")], self.on_devmlin01fr01_frame),
+            ],
         )
 
     async def __aenter__(self):
@@ -60,6 +66,15 @@ class RLCM:
                 name="DEVMLIN01Fr01.ReqRight",
                 value=frame.signals[self.right_turn_light_request],
             ),
+        )
+
+    # A master can send updates "per frame" by listening to the frame
+    # sent by itself. For slaves, the same thing can be accomplished by
+    # listening to the header messages.
+    async def on_devmlin01fr01_frame(self, _frame: Frame) -> None:
+        RLCM.counter = (RLCM.counter + 1) % 4
+        await self.lin_bus.publish(
+            WriteSignal(name="DEVMLIN01Fr01.counter", value=RLCM.counter),
         )
 
 
