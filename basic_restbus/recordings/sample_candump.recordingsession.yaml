@@ -1,0 +1,13 @@
+schema: remotive-recording-session:0.1
+
+name: Sample recording (candump)
+start_time: 1770026764519173us
+end_time: 1770026824469261us
+
+files:
+  - location: ./candump.log
+    type: recording
+
+mapping:
+  platform:
+    - ../platform/topology.platform.yaml

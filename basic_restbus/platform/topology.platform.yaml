@@ -1,0 +1,13 @@
+schema: remotive-topology-platform:0.15
+channels:
+  DriverCan0:
+    database: ./databases/driver_can.dbc
+    type: can
+    baudrate: 500000
+    baudrate_fd: 8000000
+    can_physical_channel_name: DriverCan0
+
+ecus:
+  SCCM:
+    channels:
+      DriverCan0:

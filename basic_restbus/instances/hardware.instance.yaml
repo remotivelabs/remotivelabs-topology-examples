@@ -1,0 +1,11 @@
+schema: remotive-topology-instance:0.15
+
+channels:
+  DriverCan0:
+    type: can
+    driver:
+      type: remotivebus
+      config:
+        device: drivercan0
+        type: can
+        host_device: can0

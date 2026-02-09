@@ -6,6 +6,7 @@ It includes minimal examples for getting started quickly, as well as more advanc
 Get up and running with a minimal example:
 
 - [Getting Started](./getting_started/README.md)
+- [Basic restbus](./basic_restbus/README.md)
 
 ## Detailed Example
 Explore a more comprehensive setup:

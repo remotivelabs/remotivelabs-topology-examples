@@ -1,0 +1,34 @@
+[project]
+name = "basic-restbus-tests"
+description = "RemotiveTopology Basic Restbus Example Tests"
+version = "1.0.0"
+
+requires-python = ">=3.10,<4.0"
+
+dependencies = [
+  "pytest>=8.4.2",
+  "pytest-asyncio>=1.0.0",
+  "pytest-timeout>=2.4.0",
+  "remotivelabs-topology~=0.12.0",
+]
+
+[dependency-groups]
+dev = ["poethepoet>=0.34.0", "ruff>=0.11.10", "mypy>=1.14.1"]
+
+[tool.poe.tasks]
+format = [{ cmd = "ruff format ." }, { cmd = "ruff check --fix ." }]
+ruff = [{ cmd = "ruff check ." }, { cmd = "ruff format --check --diff ." }]
+mypy = [{ cmd = "mypy . --pretty" }]
+lint = ["ruff", "mypy"]
+test = { cmd = "echo no test in project, to run integration test, run `uv run pytest` or `uv run behave`" }
+
+[tool.ruff]
+extend = "../../ruff.toml"
+
+[tool.mypy]
+python_version = "3.10"
+disallow_untyped_calls = false
+check_untyped_defs = true
+warn_return_any = true
+warn_unused_ignores = true
+hide_error_codes = false

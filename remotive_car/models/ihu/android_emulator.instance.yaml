@@ -1,5 +1,9 @@
 schema: remotive-topology-instance:0.13
 
+platform:
+  includes:
+    - ../../platform/remotive-car.platform.yaml
+
 ecus:
   IHU:
     models:
