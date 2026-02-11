@@ -2,6 +2,12 @@
 
 This example demonstrates how to use RemotiveTopology as a simple way to simulate a restbus.
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="platform_dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="platform_light.png">
+  <img alt="Computer connected to hardware ECU" src="platform_light.png">
+</picture>
+
 While RemotiveTopology allows you to spin up full vehicle platforms, it can also be a useful tool if the only thing you need is a simple restbus. By defining a minimal platform with only a single ECU, you can attach it to a CAN bus and use it as a way to stimulate other ECUs. This example instantiates a restbus for a limited SCCM module that is attached to a CAN bus named `DriverCan0`, and allows you to update the signals programmatically. It also shows how you can use recorded data to replay it onto a CAN bus. It works both using a virtual and hardware CAN bus. For a more extensive example, check out [remotive_car](../remotive_car/README.md).
 
 ## Prerequisites
