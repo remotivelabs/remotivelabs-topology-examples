@@ -2,6 +2,8 @@
 
 Check out [prerequisites](#Prerequisites) if you have not already installed necessary tools.
 
+If you just like to get going within 1 minute before digging into the details try the [Hello World example](../remotive_car/instances/hello_world/README.md).
+
 In this example, the goal is to write a test that verifies whether the front light control module (`FLCM`) receives the correct signal when the hazard lights button is pressed. Pressing the hazard lights button triggers the Steering Column Control Module (`SCCM`) to send a message to the body control module (`BCM`), which contains the logic for forwarding the correct information to the light control modules.
 
 ```mermaid

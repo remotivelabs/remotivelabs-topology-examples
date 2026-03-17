@@ -6,7 +6,6 @@ includes:
   - ../../models/bcm/python.instance.yaml
   - ../../models/gwm/python.instance.yaml
   - ../../models/ihu/python.instance.yaml
-  - ../../common/jupyter/jupyter.instance.yaml
 
 platform:
   includes:

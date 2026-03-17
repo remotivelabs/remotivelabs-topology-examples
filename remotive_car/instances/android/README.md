@@ -71,7 +71,6 @@ config:
     class TopologyBroker
     class Android
     class TestSuite
-    class Jupyter
     class Webapp
     class Behave
 
@@ -98,7 +97,6 @@ config:
     Android -- Behavioral_Model_IHU
 
     TestSuite ..> TopologyBroker
-    Jupyter ..> TopologyBroker
     Behave ..> TopologyBroker
     Webapp ..> TopologyBroker
 
@@ -231,9 +229,9 @@ You will need the following tools
 - `RemotiveCLI` <https://docs.remotivelabs.com/docs/remotive-cli/installation>
 - `RemotiveTopology` <https://docs.remotivelabs.com/docs/remotive-topology/install>
 - On Linux, this example requires that you run `dockercan` service on your machine to enable CAN networks in Docker, install the latest version from [here](https://releases.remotivelabs.com/#docker_can/). Alternatively include [can_over_udp.instance.yaml](../can_over_udp.instance.yaml) in your instance, as shown in the examples below.
-- `git lfs` <https://git-lfs.com/> make sure to `git lfs pull` if `git lfs` wasn't installed during `git clone`.
-- (Optional) `socat` [See Emulator on host](#emulator-on-host)
-- (Optional) `Android-Studio` [See Emulator on host](#emulator-on-host)
+- `git lfs` <https://git-lfs.com/> make sure to do `git lfs pull` if `git lfs` wasn't installed during `git clone`. For Ubuntu `sudo apt install git-lfs`.
+- (Optional) `socat` [See Emulator on host](EMULATOR_ON_HOST.md)
+- (Optional) `Android-Studio` [See Emulator on host](EMULATOR_ON_HOST.md)
 
 ## Getting started
 
@@ -256,7 +254,7 @@ The example is pre-configured with a Cuttlefish docker image that works with the
 
 #### Generate
 
-Run one of the commands below, depending on your setup.
+From the root of this repository run, one of the commands below, depending on your setup.
 
 ```bash
 # With DockerCAN
@@ -265,7 +263,9 @@ remotive topology generate \
 -f remotive_car/instances/android/local_playback.instance.yaml \
 -f remotive_car/instances/android/cuttlefish.instance.yaml \
 remotive_car/build
+```
 
+```bash
 # With CAN over UDP
 remotive topology generate \
 -f remotive_car/instances/android/main.instance.yaml \
@@ -284,7 +284,6 @@ From the root of this repository run
 ```bash
 docker compose -f remotive_car/build/remotive_car_android/docker-compose.yml \
 -f remotive_car/instances/android/cuttlefish.compose.yaml \
---profile jupyter \
 --profile playback \
 --profile ui up --build
 ```
@@ -323,7 +322,9 @@ remotive topology generate \
 -f remotive_car/instances/android/local_playback.instance.yaml \
 -f remotive_car/instances/android/android_emulator_in_docker.instance.yaml \
 remotive_car/build
+```
 
+```bash
 # With CAN over UDP
 remotive topology generate \
 -f remotive_car/instances/android/main.instance.yaml \
@@ -339,7 +340,6 @@ RemotiveTopology uses Docker compose to define the containers and networks of th
 
 ```bash
 docker compose -f remotive_car/build/remotive_car_android/docker-compose.yml \
---profile jupyter \
 --profile playback \
 --profile ui up --build
 ```
@@ -354,7 +354,7 @@ If you are not running on Linux or want more control of what to run within the e
 
 #### Generate
 
-Run one of the commands below, depending on your setup.
+From the root of this repository run one of the commands below, depending on your setup.
 
 ```bash
 # With DockerCAN
@@ -381,7 +381,6 @@ From the root of this repository run
 ```bash
 ANDROID_EMULATOR_AUTH=$(cat ~/.emulator_console_auth_token) \
 docker compose -f remotive_car/build/remotive_car_android/docker-compose.yml \
---profile jupyter \
 --profile playback \
 --profile ui up --build
 ```
@@ -416,7 +415,6 @@ export CLOUD_AUTH=$(remotive cloud auth print-access-token)
 
 ```bash
 docker compose -f remotive_car/build/remotive_car_android/docker-compose.yml \
---profile jupyter \
 --profile playback \
 --profile ui up --build
 ```
@@ -424,3 +422,9 @@ docker compose -f remotive_car/build/remotive_car_android/docker-compose.yml \
 You should then be able to reach the emulator by going to <http://localhost:8085/vnc.html> and connecting. The first time it starts you will have to configure some settings and permission for the maps application.
 
 You can also visit the RemotiveBroker Webapp at <http://localhost:8080> to observe the temperature signals being send back from the Android Emulator.
+
+### Troubleshoot
+
+This guide presents deployment on various operating systems, but Linux is the preferred host operating system.
+- Playback is not operational: Make sure you have `git lfs` installed, [see Host setup](#host-setup).
+- Maps application is missing in Android Cuttlefish: Make sure to download the APK and put in the folder as described [above](#with-cuttlefish-within-docker).

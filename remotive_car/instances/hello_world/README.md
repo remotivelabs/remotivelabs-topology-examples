@@ -189,10 +189,14 @@ RemotiveTopology uses Docker compose to define the containers and networks of th
 ```bash
 # Run Jupyter notebook + webapp
 docker compose -f remotive_car/build/remotive_car_hello_world/docker-compose.yml --profile jupyter --profile ui up --build
+```
 
+```bash
 # Run testsuite
 docker compose -f remotive_car/build/remotive_car_hello_world/docker-compose.yml --profile tester up --build --abort-on-container-exit
+```
 
+```bash
 # Run the scenario based tests
 docker compose -f remotive_car/build/remotive_car_hello_world/docker-compose.yml --profile behave up --build --abort-on-container-exit
 ```
@@ -211,7 +215,9 @@ This instance includes the tests from [tester.instance.yaml](./../../tests/teste
 ```bash
 # Run testsuite
 docker compose -f remotive_car/build/remotive_car_hello_world/docker-compose.yml --profile tester up --build --abort-on-container-exit
+```
 
+```bash
 # Run the scenario based tests
 docker compose -f remotive_car/build/remotive_car_hello_world/docker-compose.yml --profile behave up --build --abort-on-container-exit
 ```
