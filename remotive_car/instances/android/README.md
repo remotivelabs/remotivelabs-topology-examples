@@ -423,6 +423,19 @@ You should then be able to reach the emulator by going to <http://localhost:8085
 
 You can also visit the RemotiveBroker Webapp at <http://localhost:8080> to observe the temperature signals being send back from the Android Emulator.
 
+### With VLAN networking
+
+By default, the remotive command generates normal docker bridge networks to represent the ethernet channels. If the platform specifies special VLAN ids for the channels (see SOMEIP channel) you may want the network traffic to also be tagged, especially if it should be connected to a physical network. You can do this by using the `remotivebus` driver for the ethernet channel. In this example it is done by including the file `vlan_networking.instance.yaml` when generating the topology.
+
+```bash
+remotive topology generate \
+-f remotive_car/instances/android/main.instance.yaml \
+-f remotive_car/instances/android/local_playback.instance.yaml \
+-f remotive_car/instances/android/cuttlefish.instance.yaml \
+-f remotive_car/instance/vlan_networking.instance.yaml \
+remotive_car/build
+```
+
 ### Troubleshoot
 
 This guide presents deployment on various operating systems, but Linux is the preferred host operating system.

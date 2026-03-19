@@ -1,0 +1,7 @@
+schema: remotive-topology-instance:0.15
+
+channels:
+  SOMEIP:
+    type: ethernet
+    driver:
+      type: remotivebus

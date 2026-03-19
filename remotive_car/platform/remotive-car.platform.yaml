@@ -18,6 +18,8 @@ channels:
     database: ./databases/someip.fibex.xml
     type: ethernet
     subnet: 172.31.0.0/24
+    cluster_name: corenetwork
+    vlan: 123
     endpoints:
       host_gwm:
         host: 172.31.0.18
