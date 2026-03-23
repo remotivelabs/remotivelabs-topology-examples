@@ -29,9 +29,18 @@ NS_ :
     BU_BO_REL_
     SG_MUL_VAL_
 
+BU_:
+    ABS
+    GWM
+
+CM_ BU_ ABS "Anti-lock Braking System - Prevents wheel lock during braking and provides vehicle speed data to other systems";
+CM_ BU_ GWM "Gateway Module - Bridges communication between different vehicle networks";
 
 BO_ 123 UISpeedFrame: 8   ABS
  SG_ uispeed : 0|16@1+ (0.01,0) [0|250] "m/s" GWM  
+
+CM_ BO_ 123 "Vehicle speed calculated from wheel speed sensors for display on instrument cluster. Compensated for wheel slip during ABS activation. Transmitted at 200ms intervals.";
+CM_ SG_ 123 uispeed "Vehicle speed for user interface display. Derived from average of non-slipping wheels. Resolution: 0.01 m/s (~0.036 km/h). Max speed: 250 m/s (900 km/h) for future compatibility.";
 
 BA_DEF_ BO_ "GenMsgCycleTime" FLOAT 0 10000;
 

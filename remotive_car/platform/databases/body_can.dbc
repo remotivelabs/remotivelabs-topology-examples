@@ -21,47 +21,97 @@ BU_:
 BA_DEF_ BO_ "GenMsgCycleTime" FLOAT 0 10000;
 BA_DEF_ SG_ "GenSigStartValue" FLOAT 0 0;
 
+CM_ BU_ BCM "Body Control Module - Controls lighting, door locks, and body electronics";
+CM_ BU_ DIM "Driver Information Module - Displays vehicle information to the driver";
+CM_ BU_ FLCM "Front Left Corner Module - Controls front left lighting and sensors";
+CM_ BU_ RLCM "Rear Left Corner Module - Controls rear left lighting and sensors";
+CM_ BU_ GWM "Gateway Module - Bridges communication between different vehicle networks";
+CM_ BU_ PAM "Parking Assistance Module - Manages parking sensors and proximity detection";
+CM_ BU_ TCU "Telematics Control Unit - Handles GPS and wireless communications";
+CM_ BU_ HVAC "Heating Ventilation Air Conditioning - Controls climate systems";
+
 BO_ 100 DaylightRunningLightControl: 1 BCM
   SG_ LeftDaylightRunningLightRequest : 0|1@1+ (1,0) [0|1] ""  DIM, FLCM, RLCM
   SG_ RightDaylightRunningLightRequest : 1|1@1+ (1,0) [0|1] ""  DIM, FLCM, RLCM
+
+CM_ BO_ 100 "Controls daytime running lights for both sides of the vehicle. Transmitted at 50ms intervals for rapid response to lighting conditions.";
+CM_ SG_ 100 LeftDaylightRunningLightRequest "Command signal to activate/deactivate left side DRL. Active when vehicle is running and headlights are off.";
+CM_ SG_ 100 RightDaylightRunningLightRequest "Command signal to activate/deactivate right side DRL. Active when vehicle is running and headlights are off.";
 
 BO_ 101 LowBeamLightControl: 1 BCM
   SG_ LeftLowBeamLightRequest : 0|1@1+ (1,0) [0|1] ""  DIM, FLCM, RLCM
   SG_ RightLowBeamLightRequest : 1|1@1+ (1,0) [0|1] ""  DIM, FLCM, RLCM
 
+CM_ BO_ 101 "Controls low beam headlights for night driving and poor visibility conditions.";
+CM_ SG_ 101 LeftLowBeamLightRequest "Activates left side low beam headlight. Must be off when high beam is active per lighting regulations.";
+CM_ SG_ 101 RightLowBeamLightRequest "Activates right side low beam headlight. Must be off when high beam is active per lighting regulations.";
+
 BO_ 102 HighBeamLightControl: 1 BCM
   SG_ LeftHighBeamLightRequest : 0|1@1+ (1,0) [0|1] ""  DIM, FLCM
   SG_ RightHighBeamLightRequest : 1|1@1+ (1,0) [0|1] ""  DIM, FLCM
+
+CM_ BO_ 102 "Controls high beam headlights for maximum visibility on unlit roads with no oncoming traffic.";
+CM_ SG_ 102 LeftHighBeamLightRequest "Activates left side high beam. Automatically disabled when oncoming vehicle detected or when low beam is required.";
+CM_ SG_ 102 RightHighBeamLightRequest "Activates right side high beam. Automatically disabled when oncoming vehicle detected or when low beam is required.";
 
 BO_ 103 TurnLightControl: 1 BCM
   SG_ LeftTurnLightRequest : 0|1@1+ (1,0) [0|1] ""  DIM, FLCM, RLCM, GWM
   SG_ RightTurnLightRequest : 1|1@1+ (1,0) [0|1] ""  DIM, FLCM, RLCM, GWM
 
+CM_ BO_ 103 "Controls turn signal indicators for lane changes and turns. Signal flashes at standard 1.5Hz rate per SAE J588 requirements.";
+CM_ SG_ 103 LeftTurnLightRequest "Activates left turn signal lights (front, side repeater, and rear). Cancels automatically after steering wheel returns to center.";
+CM_ SG_ 103 RightTurnLightRequest "Activates right turn signal lights (front, side repeater, and rear). Cancels automatically after steering wheel returns to center.";
+
 BO_ 104 BrakeLightControl: 1 BCM
   SG_ LeftBrakeLightRequest : 0|1@1+ (1,0) [0|1] ""  DIM, RLCM, GWM
   SG_ RightBrakeLightRequest : 1|1@1+ (1,0) [0|1] ""  DIM, RLCM, GWM
 
+CM_ BO_ 104 "Controls brake lights to alert following vehicles during braking. Includes emergency brake flash feature for rapid deceleration.";
+CM_ SG_ 104 LeftBrakeLightRequest "Activates left brake light when brake pedal pressed or regenerative braking engaged above threshold.";
+CM_ SG_ 104 RightBrakeLightRequest "Activates right brake light when brake pedal pressed or regenerative braking engaged above threshold.";
+
 BO_ 106 SteeringWheelInfo: 8 BCM
   SG_ SteeringWheelPosition : 0|14@1+ (0.1,-819.2) [-819.2|819.1] "deg"  DIM, GWM
+
+CM_ BO_ 106 "Provides steering wheel angle for driver assistance systems, instrument display, and turn signal auto-cancellation.";
+CM_ SG_ 106 SteeringWheelPosition "Steering wheel angle relative to center position. Positive values = clockwise rotation. Range covers approx 2.5 full rotations. Resolution: 0.1 degrees.";
 
 BO_ 107 AcceleratorPedalInfo: 8 BCM
   SG_ AcceleratorPedalPosition : 0|8@1+ (1,0) [0|255] ""  DIM, GWM
 
+CM_ BO_ 107 "Reports accelerator pedal position for powertrain control and eco-driving feedback on instrument cluster.";
+CM_ SG_ 107 AcceleratorPedalPosition "Accelerator pedal position. 0 = fully released, 255 = fully depressed. Used for torque demand calculation and kick-down detection.";
+
 BO_ 108 GearInfo: 1 BCM
   SG_ GearLeverPosition : 0|1@1+ (1,0) [0|1] "" DIM, GWM
+
+CM_ BO_ 108 "Indicates selected gear position. Used for reverse lights activation and transmission control.";
+CM_ SG_ 108 GearLeverPosition "Current gear selector position. 0 = Reverse (activates backup lights and parking sensors), 1 = Drive (forward gears).";
 
 BO_ 109 ProximityInfo: 2 PAM
   SG_ ProximityDistance : 0|8@1+ (0.02,0) [0|5.10] "m"  DIM, GWM
 
+
+CM_ BO_ 109 "Parking sensor distance measurement from ultrasonic sensors. Active in reverse and low-speed forward motion. Provides audible and visual warnings.";
+CM_ SG_ 109 ProximityDistance "Distance to nearest detected obstacle. Resolution: 2cm. Value 255 indicates no object detected within sensor range (>5m). Warning zones: Red <0.3m, Amber 0.3-0.8m, Green >0.8m.";
 
 BO_ 200 LocationFrame: 12 TCU
  SG_ Longitude : 28|28@1- (1E-006,0) [-134.218|134.218] "Deg"  GWM
  SG_ Latitude : 0|28@1- (1E-006,0) [-134.218|134.218] "Deg"  GWM
  SG_ Heading : 56|28@1+ (1E-005,0) [0|360] "Deg"  GWM
 
+CM_ BO_ 200 "GPS location and heading information from GNSS receiver. Updated at 5Hz (200ms). Used for navigation, geofencing, and stolen vehicle tracking.";
+CM_ SG_ 200 Longitude "WGS84 longitude coordinate. Positive = East, Negative = West. Resolution: ~11cm at equator. Typical accuracy: <5m with clear sky view.";
+CM_ SG_ 200 Latitude "WGS84 latitude coordinate. Positive = North, Negative = South. Resolution: ~11cm. Typical accuracy: <5m with clear sky view.";
+CM_ SG_ 200 Heading "Vehicle heading relative to true north (0-360 degrees). 0/360=North, 90=East, 180=South, 270=West. Derived from GPS velocity vector when moving >5km/h.";
+
 BO_ 300 HVACControl: 8 GWM
  SG_ LeftTemperature : 0|16@1+ (0.1,0) [16|30] "°C" HVAC
  SG_ RightTemperature : 16|16@1+ (0.1,0) [16|30] "°C" HVAC
+
+CM_ BO_ 300 "Dual-zone climate control temperature setpoints from infotainment system. Updated at 500ms for smooth temperature adjustments.";
+CM_ SG_ 300 LeftTemperature "Driver side temperature setpoint. Range: 16-30°C (LO/HI represented by boundary values). Resolution: 0.1°C for precise comfort control.";
+CM_ SG_ 300 RightTemperature "Passenger side temperature setpoint. Range: 16-30°C (LO/HI represented by boundary values). Resolution: 0.1°C for precise comfort control.";
 
 VAL_ 100 LeftDaylightRunningLightRequest 0 "Off" 1 "On";
 VAL_ 100 RightDaylightRunningLightRequest 0 "Off" 1 "On";

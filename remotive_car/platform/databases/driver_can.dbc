@@ -12,31 +12,57 @@ BU_:
     SCCM
     BCM
 
+CM_ BU_ SCCM "Steering Column Control Module - Manages steering wheel controls, stalks, and angle sensor";
+CM_ BU_ BCM "Body Control Module - Controls lighting, door locks, and body electronics";
+
 BA_DEF_ BO_ "GenMsgCycleTime" FLOAT 0 10000;
 BA_DEF_ SG_ "GenSigStartValue" FLOAT 0 0;
 
 BO_ 100 HazardLightButton: 1 SCCM
   SG_ HazardLightButton : 0|1@1+ (1,0) [0|1] ""  BCM
 
+CM_ BO_ 100 "Emergency hazard light switch status from dashboard. Activates all turn signals simultaneously to warn other drivers of stopped vehicle or hazard.";
+CM_ SG_ 100 HazardLightButton "Hazard warning light switch state. Pressing button toggles between On/Off. Overrides turn signal inputs when active.";
+
 BO_ 101 TurnStalk: 1 SCCM
   SG_ TurnSignal : 0|2@1+ (1,0) [0|2] ""  BCM
 
+CM_ BO_ 101 "Turn signal stalk position. Supports full lock (lane change) and momentary tap (3-flash comfort turn). Auto-cancels after steering wheel returns to center.";
+CM_ SG_ 101 TurnSignal "Turn signal lever position. 0=Off/Center, 1=Left turn, 2=Right turn. Momentary tap activates 3-flash sequence.";
+
 BO_ 102 SteeringAngle: 8 SCCM
   SG_ SteeringAngle : 0|14@1+ (0.1,-819.2) [-819.2|819.1] "deg"  BCM
+
+CM_ BO_ 102 "High-resolution steering angle from optical sensor in steering column. Critical input for ESC, lane keeping assist, and turn signal auto-cancellation.";
+CM_ SG_ 102 SteeringAngle "Absolute steering wheel angle relative to center. Positive = clockwise (right turn). Range: ±819° (~2.27 turns lock-to-lock). Accuracy: ±0.1°. Calibrated during vehicle assembly.";
 
 BO_ 103 LightStalk: 1 SCCM
   SG_ LightMode : 0|2@1+ (1,0) [0|2] ""  BCM
   SG_ HighBeam : 2|1@1+ (1,0) [0|1] ""  BCM
 
+CM_ BO_ 103 "Lighting control stalk for headlight mode selection and high beam activation. Integrates with ambient light sensor for auto headlight function.";
+CM_ SG_ 103 LightMode "Headlight mode selector. 0=Off, 1=DRL only (daytime), 2=Low beam (night). Auto mode handled by light sensor, not transmitted on CAN.";
+CM_ SG_ 103 HighBeam "High beam activation. 0=Off, 1=On. Pull stalk toward driver for momentary flash-to-pass, push away for latched high beam. Auto high beam uses camera input.";
+
 BO_ 104 BrakePedalPositionSensor: 8 SCCM
   SG_ BrakePedalPosition : 0|8@1+ (1,0) [0|255] ""  BCM
+
+CM_ BO_ 104 "Brake pedal position from dual potentiometric sensors for redundancy. Used for brake light activation, brake-by-wire systems, and driver intent detection.";
+CM_ SG_ 104 BrakePedalPosition "Brake pedal travel. 0 = fully released (idle), 255 = fully depressed (panic stop). Threshold for brake light: typically >10. Used for adaptive cruise control resume inhibit.";
 
 BO_ 105 AcceleratorPedalPositionSensor: 8 SCCM
   SG_ AcceleratorPedalPosition : 0|8@1+ (1,0) [0|255] ""  BCM
 
+CM_ BO_ 105 "Accelerator pedal position from Hall effect sensor. Primary input for electronic throttle control (drive-by-wire). Plausibility checked against secondary sensor.";
+CM_ SG_ 105 AcceleratorPedalPosition "Accelerator pedal travel. 0 = fully released (coasting), 255 = wide open throttle. Kick-down detected at >230 for transmission downshift. Eco mode may limit max value to 200.";
+
 BO_ 106 GearShiftPaddles: 1 SCCM
   SG_ GearShiftUp   : 0|1@1+ (1,0) [0|1] "" BCM
   SG_ GearShiftDown : 1|1@1+ (1,0) [0|1] "" BCM
+
+CM_ BO_ 106 "Steering wheel mounted paddle shifters for manual gear selection in sport/manual mode. Momentary switches - transmission confirms gear change via separate message.";
+CM_ SG_ 106 GearShiftUp "Right paddle - upshift request. Ignored if at max gear, vehicle speed too low, or in automatic mode. Overrides automatic shift logic for ~5 seconds.";
+CM_ SG_ 106 GearShiftDown "Left paddle - downshift request. Ignored if at gear 1, would over-rev engine, or in automatic mode. Rev-matching performed automatically on engagement.";
 
 VAL_ 100 HazardLightButton 0 "Off" 1 "On";
 VAL_ 101 TurnSignal 0 "Off" 1 "Left" 2 "Right";
