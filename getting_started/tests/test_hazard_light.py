@@ -2,9 +2,10 @@ from typing import AsyncIterator
 
 import pytest
 import pytest_asyncio
-from remotivelabs.broker import BrokerClient, FrameSubscription, RestbusSignalConfig
+from remotivelabs.broker import BrokerClient, RestbusSignalConfig
 from remotivelabs.topology.behavioral_model import PingRequest
 from remotivelabs.topology.control import ControlClient
+from remotivelabs.topology.testing.frames import capture_frames
 
 
 @pytest_asyncio.fixture()
@@ -28,7 +29,9 @@ async def test_light_turns_on_when_hazard_button_is_pressed(broker_client: Broke
     )
 
     # We subscribe to TurnLightControl frame on FLCM-BodyCan0 and validate the signal value
-    frames = await broker_client.subscribe_frames(("FLCM-BodyCan0", [FrameSubscription(name="TurnLightControl")]))
-    async for frame in frames:
-        if frame.signals["TurnLightControl.RightTurnLightRequest"] == 1.0 and frame.signals["TurnLightControl.LeftTurnLightRequest"] == 1.0:
-            break
+    async with capture_frames((broker_client, "FLCM-BodyCan0"), ["TurnLightControl"]) as cap:
+        await cap.wait_for_frame(
+            "TurnLightControl",
+            {"TurnLightControl.RightTurnLightRequest": 1.0, "TurnLightControl.LeftTurnLightRequest": 1.0},
+            timeout=9,
+        )

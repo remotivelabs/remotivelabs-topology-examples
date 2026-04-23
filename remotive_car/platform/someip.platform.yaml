@@ -1,0 +1,52 @@
+schema: remotive-topology-platform:0.15
+channels:
+  SOMEIP:
+    database: ./databases/someip.fibex.xml
+    type: ethernet
+    subnet: 172.31.0.0/24
+    cluster_name: corenetwork
+    vlan: 123
+    endpoints:
+      host_gwm:
+        host: 172.31.0.18
+        sockets:
+          gwm_someip:
+            type: udp
+            port: 16000
+            provided_service_instances:
+              - TurnlightIndicator
+              - LocationService
+              - SpeedService
+              - GearService
+            consumed_service_instances:
+              - HVACService
+      host_ihu:
+        host: 172.31.0.12
+        sockets:
+          ihu_someip:
+            type: udp
+            port: 16000
+            consumed_service_instances:
+              - TurnlightIndicator
+              - LocationService
+              - SpeedService
+              - GearService
+            provided_service_instances:
+              - HVACService
+
+ecus:
+  GWM:
+    channels:
+      SOMEIP:
+        config:
+          type: ethernet
+          provided_endpoints:
+            - host_gwm
+
+  IHU:
+    channels:
+      SOMEIP:
+        config:
+          type: ethernet
+          provided_endpoints:
+            - host_ihu

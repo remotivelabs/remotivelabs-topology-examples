@@ -11,7 +11,7 @@ from hamcrest import equal_to
 from remotivelabs.broker import BrokerClient, RestbusSignalConfig
 from remotivelabs.topology.behavioral_model import PingRequest
 from remotivelabs.topology.control.client import ControlClient
-from remotivelabs.topology.testing.retry import await_at_most
+from remotivelabs.topology.testing.hamcrest import await_at_most
 
 import pytest
 

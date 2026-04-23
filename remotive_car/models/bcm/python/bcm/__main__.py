@@ -14,6 +14,7 @@ from remotivelabs.topology.control import (
 )
 from remotivelabs.topology.namespaces import filters
 from remotivelabs.topology.namespaces.can import CanNamespace, RestbusConfig
+from remotivelabs.topology.namespaces.filters import E2eSignalsFilter
 
 from .log import configure_logging
 from .state_machines.beams import BeamsStateMachine, LightModePosition
@@ -103,6 +104,7 @@ class BCM:
             BCM.ecu_name,
             namespaces=[self.body_can_0, self.driver_can_0],
             broker_client=self._broker_client,
+            input_filters=[E2eSignalsFilter(exclude=True)],
             input_handlers=[
                 self.driver_can_0.create_input_handler([filters.FrameFilter(BCM.turn_stalk_frame)], self.on_turn_stalk),
                 self.driver_can_0.create_input_handler([filters.FrameFilter(BCM.hazard_button_frame)], self.on_hazard_button),

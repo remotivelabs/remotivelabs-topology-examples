@@ -1,16 +1,14 @@
 from __future__ import annotations
 
 import asyncio
-from functools import partial
 from typing import AsyncIterator
 
 import pytest_asyncio
 from adb_shell.adb_device import AdbDevice, AdbDeviceTcp
-from hamcrest import equal_to
-from remotivelabs.broker import BrokerClient, Signal
+from remotivelabs.broker import BrokerClient
 from remotivelabs.topology.behavioral_model import PingRequest
 from remotivelabs.topology.control.client import ControlClient
-from remotivelabs.topology.testing.retry import await_at_most
+from remotivelabs.topology.testing.frames import capture_frames
 
 import pytest
 
@@ -49,14 +47,6 @@ async def adb_device(request: pytest.FixtureRequest) -> AsyncIterator[AdbDevice]
     device.shell("input keyevent 3")
 
 
-async def take_values(sub: AsyncIterator[list[Signal]], x: int = 1):
-    result = {}
-    for _ in range(x):
-        signals = await sub.__anext__()
-        result.update({s.name: s.value for s in signals})
-    return result
-
-
 @pytest.mark.asyncio
 @pytest.mark.android
 async def test_update_hvac_left_temperature(broker_client: BrokerClient, adb_device: AdbDevice):
@@ -65,8 +55,5 @@ async def test_update_hvac_left_temperature(broker_client: BrokerClient, adb_dev
     adb_device.shell("input tap 280 750")
     adb_device.shell("input tap 350 750")
 
-    sub = await broker_client.subscribe(("HVAC-BodyCan0", ["HVACControl.LeftTemperature"]))
-    await await_at_most(seconds=10).until(
-        partial(take_values, sub),
-        equal_to({"HVACControl.LeftTemperature": 16.5}),
-    )
+    async with capture_frames((broker_client, "HVAC-BodyCan0"), ["HVACControl"]) as cap:
+        await cap.wait_for_frame("HVACControl", {"HVACControl.LeftTemperature": 16.5}, timeout=10)

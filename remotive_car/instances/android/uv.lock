@@ -1766,31 +1766,30 @@ wheels = [
 
 [[package]]
 name = "remotivelabs-broker"
-version = "0.11.0"
+version = "0.13.7"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "grpc-interceptor" },
     { name = "grpcio" },
     { name = "protobuf" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/6f/48/18c1f2baa47c0cd8f7167cb8de7fb57f069cec107d0b4095a3354929e046/remotivelabs_broker-0.11.0.tar.gz", hash = "sha256:03f4b2fe8b7f36e8ed18a93a4e6d6a17942a40981a2e85ea9a8a6c0b4966875a", size = 38950, upload-time = "2025-11-11T16:05:01.434Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/19/08/1785aaa441ceb9ccb67843baa5180384eb172669f27ddfe7d93207087096/remotivelabs_broker-0.13.7.tar.gz", hash = "sha256:ac4ea0e0ead1b603d15ccbdf5b1332f9e3ce64ee1ab74669beb2b4dac26a2e11", size = 51953, upload-time = "2026-04-21T12:23:35.289Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/22/c4/bf54f33bd5ccdce90f9a35d97319503664c94a83438cdd2e5c835513daed/remotivelabs_broker-0.11.0-py3-none-any.whl", hash = "sha256:2ff651d16b519f6862721e28f8f3bfdfbaa899b5fd44ad261507c96cb298ebec", size = 66035, upload-time = "2025-11-11T16:04:59.879Z" },
+    { url = "https://files.pythonhosted.org/packages/d9/51/d5e9e15a451a796960d00e5981c8ec479227b28de67db2d4e500fcf83f71/remotivelabs_broker-0.13.7-py3-none-any.whl", hash = "sha256:ac0ce5778e6338a04ca849207a6dbde8a62fb31be76da3499ce516732fedd4b3", size = 83352, upload-time = "2026-04-21T12:23:33.609Z" },
 ]
 
 [[package]]
 name = "remotivelabs-topology"
-version = "0.11.0"
+version = "0.15.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "pyhamcrest" },
     { name = "remotivelabs-broker" },
-    { name = "tenacity" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/60/44/71ce7c07e9426c0771f29bbbc955e581c5a25e6bd718cb5e98c36ef11bb7/remotivelabs_topology-0.11.0.tar.gz", hash = "sha256:7b88a061b2c356ce256dc5dd0d3586c499110f91b4892f9c7a9707dc1f95c0cf", size = 35404, upload-time = "2025-11-14T09:03:49.851Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/f3/81/3d1abfef9cd5ecd8da7f486614e4b6e8b6f2b53233ce2d04c97d40edda27/remotivelabs_topology-0.15.0.tar.gz", hash = "sha256:22da1907077989fce5c25586482097e6f9b9964eb02760a16bd3d9bedcab7d64", size = 44931, upload-time = "2026-04-23T12:52:29.483Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/db/47/cafa49ea7a851a5adec976f14984ad2f2c1dd7c197bd302beb4fabea529c/remotivelabs_topology-0.11.0-py3-none-any.whl", hash = "sha256:ad030784eefdab0b259a7022985986e0fe325c0108b2ce5f472cf5470426f6f8", size = 65000, upload-time = "2025-11-14T09:03:48.6Z" },
+    { url = "https://files.pythonhosted.org/packages/c8/21/a989e07d943041c06b8e9030b4c7200851808a56f4f1a4c4442af8af8077/remotivelabs_topology-0.15.0-py3-none-any.whl", hash = "sha256:d3e8b0f44205f36c4189640cf439a4257b9e2df0a617e2ab67cde6d783164730", size = 83573, upload-time = "2026-04-23T12:52:27.808Z" },
 ]
 
 [[package]]
@@ -1827,7 +1826,7 @@ requires-dist = [
     { name = "pillow", specifier = ">=11.1.0" },
     { name = "pytest", specifier = "==8.4.2" },
     { name = "pytest-asyncio", specifier = "==1.0.0" },
-    { name = "remotivelabs-topology", specifier = "~=0.11.0" },
+    { name = "remotivelabs-topology", specifier = "~=0.15.0" },
     { name = "structlog", specifier = "==25.4.0" },
 ]
 
@@ -2118,15 +2117,6 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/79/b9/6e672db4fec07349e7a8a8172c1a6ae235c58679ca29c3f86a61b5e59ff3/structlog-25.4.0.tar.gz", hash = "sha256:186cd1b0a8ae762e29417095664adf1d6a31702160a46dacb7796ea82f7409e4", size = 1369138, upload-time = "2025-06-02T08:21:12.971Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/a0/4a/97ee6973e3a73c74c8120d59829c3861ea52210667ec3e7a16045c62b64d/structlog-25.4.0-py3-none-any.whl", hash = "sha256:fe809ff5c27e557d14e613f45ca441aabda051d119ee5a0102aaba6ce40eed2c", size = 68720, upload-time = "2025-06-02T08:21:11.43Z" },
-]
-
-[[package]]
-name = "tenacity"
-version = "9.1.2"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/0a/d4/2b0cd0fe285e14b36db076e78c93766ff1d529d70408bd1d2a5a84f1d929/tenacity-9.1.2.tar.gz", hash = "sha256:1169d376c297e7de388d18b4481760d478b0e99a777cad3a9c86e556f4b697cb", size = 48036, upload-time = "2025-04-02T08:25:09.966Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/e5/30/643397144bfbfec6f6ef821f36f33e57d35946c44a2352d3c9f0ae847619/tenacity-9.1.2-py3-none-any.whl", hash = "sha256:f77bf36710d8b73a50b2dd155c97b870017ad21afe6ab300326b0371b3b05138", size = 28248, upload-time = "2025-04-02T08:25:07.678Z" },
 ]
 
 [[package]]

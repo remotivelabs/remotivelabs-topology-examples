@@ -14,6 +14,8 @@ BU_:
 
 BA_DEF_ BO_ "GenMsgCycleTime" FLOAT 0 10000;
 BA_DEF_ SG_ "GenSigStartValue" FLOAT 0 0;
+BA_DEF_ SG_ "GenSigFuncType" ENUM "NoFunction","CHK","CNTR","CNTR_AR_01","CRC_AR_01_BOTH","CRC_AR_01_ALT","CRC_AR_01_LOW","CRC_AR_01_NIBBLE","CNTR_AR_04","CRC_AR_04A","CNTR_AR_05","CRC_AR_05";
+BA_DEF_ SG_ "GenSigDataID" STRING;
 
 BO_ 100 HazardLightButton: 1 SCCM
   SG_ HazardLightButton : 0|1@1+ (1,0) [0|1] ""  BCM
@@ -29,7 +31,9 @@ BO_ 103 LightStalk: 1 SCCM
   SG_ HighBeam : 2|1@1+ (1,0) [0|1] ""  BCM
 
 BO_ 104 BrakePedalPositionSensor: 8 SCCM
-  SG_ BrakePedalPosition : 0|8@1+ (1,0) [0|255] ""  BCM
+  SG_ E2E_CRC : 0|8@1+ (1,0) [0|255] ""  BCM
+  SG_ E2E_COUNTER : 8|4@1+ (1,0) [0|15] ""  BCM
+  SG_ BrakePedalPosition : 12|8@1+ (1,0) [0|255] ""  BCM
 
 BO_ 105 AcceleratorPedalPositionSensor: 8 SCCM
   SG_ AcceleratorPedalPosition : 0|8@1+ (1,0) [0|255] ""  BCM
@@ -62,3 +66,7 @@ BA_ "GenMsgCycleTime" BO_ 103 50;
 BA_ "GenMsgCycleTime" BO_ 104 50;
 BA_ "GenMsgCycleTime" BO_ 105 50;
 BA_ "GenMsgCycleTime" BO_ 106 50;
+
+BA_ "GenSigDataID" SG_ 104 E2E_CRC "104";
+BA_ "GenSigFuncType" SG_ 104 E2E_COUNTER 3;
+BA_ "GenSigFuncType" SG_ 104 E2E_CRC 4;

@@ -34,7 +34,7 @@ requires-dist = [
     { name = "pytest", specifier = ">=8.4.2" },
     { name = "pytest-asyncio", specifier = ">=1.0.0" },
     { name = "pytest-timeout", specifier = ">=2.4.0" },
-    { name = "remotivelabs-topology", specifier = "~=0.12.0" },
+    { name = "remotivelabs-topology", specifier = "~=0.15.0" },
 ]
 
 [package.metadata.requires-dev]
@@ -468,30 +468,30 @@ wheels = [
 
 [[package]]
 name = "remotivelabs-broker"
-version = "0.12.0"
+version = "0.13.7"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "grpc-interceptor" },
     { name = "grpcio" },
     { name = "protobuf" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/df/c7/f6344b78b1e16475ea28028c2eb5f2feb9af3c264c6b0ed1cd0ca020e740/remotivelabs_broker-0.12.0.tar.gz", hash = "sha256:0867ffe5bf1f680698e0066290f760ebe555d0aa457d5fbaa38cd4cdc433282e", size = 44722, upload-time = "2026-01-26T16:39:43.584Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/19/08/1785aaa441ceb9ccb67843baa5180384eb172669f27ddfe7d93207087096/remotivelabs_broker-0.13.7.tar.gz", hash = "sha256:ac4ea0e0ead1b603d15ccbdf5b1332f9e3ce64ee1ab74669beb2b4dac26a2e11", size = 51953, upload-time = "2026-04-21T12:23:35.289Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/b2/4c/0f7ab1ff5e389541fd91d4d7336acec3eb07d2eadbf62325d93d3982dcab/remotivelabs_broker-0.12.0-py3-none-any.whl", hash = "sha256:c51bcbc8f11998542275a06ed06b4619c6a6bd2590eef02e6c0638cfe850a50b", size = 75988, upload-time = "2026-01-26T16:39:42.168Z" },
+    { url = "https://files.pythonhosted.org/packages/d9/51/d5e9e15a451a796960d00e5981c8ec479227b28de67db2d4e500fcf83f71/remotivelabs_broker-0.13.7-py3-none-any.whl", hash = "sha256:ac0ce5778e6338a04ca849207a6dbde8a62fb31be76da3499ce516732fedd4b3", size = 83352, upload-time = "2026-04-21T12:23:33.609Z" },
 ]
 
 [[package]]
 name = "remotivelabs-topology"
-version = "0.12.0"
+version = "0.15.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "pyhamcrest" },
     { name = "remotivelabs-broker" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/d0/fa/18c20a93d0ff457e9b4e54ac3283ea605ae002587261fc49dd137e255423/remotivelabs_topology-0.12.0.tar.gz", hash = "sha256:030edabb3cf3bda22acc67232cc65a8e233c0eb2f73a771c61f8317372b7852c", size = 36245, upload-time = "2026-01-27T09:49:33.515Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/f3/81/3d1abfef9cd5ecd8da7f486614e4b6e8b6f2b53233ce2d04c97d40edda27/remotivelabs_topology-0.15.0.tar.gz", hash = "sha256:22da1907077989fce5c25586482097e6f9b9964eb02760a16bd3d9bedcab7d64", size = 44931, upload-time = "2026-04-23T12:52:29.483Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/9c/e8/1c96c2c98c3c53085558391b9d0cad32456ed2a3b4c57078ab069deaec95/remotivelabs_topology-0.12.0-py3-none-any.whl", hash = "sha256:00dbfd50bb33f1a29e5ef1698e196fb8576925820087e84da5a07c6e905a7a72", size = 67298, upload-time = "2026-01-27T09:49:32.424Z" },
+    { url = "https://files.pythonhosted.org/packages/c8/21/a989e07d943041c06b8e9030b4c7200851808a56f4f1a4c4442af8af8077/remotivelabs_topology-0.15.0-py3-none-any.whl", hash = "sha256:d3e8b0f44205f36c4189640cf439a4257b9e2df0a617e2ab67cde6d783164730", size = 83573, upload-time = "2026-04-23T12:52:27.808Z" },
 ]
 
 [[package]]

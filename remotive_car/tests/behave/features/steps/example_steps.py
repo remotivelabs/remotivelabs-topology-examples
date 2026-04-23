@@ -1,14 +1,11 @@
 from __future__ import annotations
 
 import asyncio
-from collections import defaultdict
 from enum import Enum
-from typing import AsyncIterator
 
 from behave.api.async_step import async_run_until_complete
-from remotivelabs.broker import BrokerClient, NamespaceName, RestbusSignalConfig, Signal, SignalName, SignalValue
-from remotivelabs.topology.testing.matcher import contains_signal_value_sequences
-from remotivelabs.topology.testing.retry import await_at_most
+from remotivelabs.broker import BrokerClient, RestbusSignalConfig
+from remotivelabs.topology.testing.frames import capture_frames
 
 from behave import given, then, when  # type: ignore[attr-defined]
 
@@ -70,30 +67,6 @@ class HazardLight:
         )
 
 
-class SignalValueAccumulator:
-    def __init__(self, broker_client: BrokerClient, *signals: tuple[NamespaceName, list[SignalName]]) -> None:
-        self._client = broker_client
-        self.signals = signals
-        self._values: dict[NamespaceName, dict[SignalName, list[SignalValue]]] = defaultdict(lambda: defaultdict(list))
-        self._stream: AsyncIterator[list[Signal]] | None = None
-
-    async def __aenter__(self) -> SignalValueAccumulator:
-        self._stream = await self._client.subscribe(*self.signals, initial_empty=True)
-        return self
-
-    async def __aexit__(self, exc_type, exc, tb) -> None:
-        None
-
-    async def __call__(self) -> dict[NamespaceName, dict[SignalName, list[SignalValue]]]:
-        async def read():
-            assert self._stream is not None
-            for signal in await self._stream.__anext__():
-                self._values[signal.namespace][signal.name].append(signal.value)
-
-        await asyncio.shield(read())
-        return self._values
-
-
 @given("the system is running")
 @async_run_until_complete
 async def step_given_system_in_simulation_mode(context):
@@ -144,39 +117,29 @@ async def when_hazard_light_button(context, status: str):
 @then("the {turn} turn light blinks")
 @async_run_until_complete
 async def step_then_validate_turn_light_toggle(context, turn: str):
+    frame_name = "TurnLightControl"
     signal_name = f"TurnLightControl.{turn.capitalize()}TurnLightRequest"
-    async with SignalValueAccumulator(
-        context.broker_client, ("RLCM-BodyCan0", [signal_name]), ("FLCM-BodyCan0", [signal_name]), ("DIM-BodyCan0", [signal_name])
-    ) as consumer:
-        await await_at_most(seconds=5).until(
-            consumer,
-            contains_signal_value_sequences(
-                {
-                    "RLCM-BodyCan0": {signal_name: 2 * [1, 0]},
-                    "FLCM-BodyCan0": {signal_name: 2 * [1, 0]},
-                    "DIM-BodyCan0": {signal_name: 2 * [1, 0]},
-                }
-            ),
-        )
+    ns_names = ["RLCM-BodyCan0", "FLCM-BodyCan0", "DIM-BodyCan0"]
+
+    async def check_namespace(ns_name: str) -> None:
+        async with capture_frames((context.broker_client, ns_name), [frame_name]) as cap:
+            await cap.wait_for_signal_values(frame_name, signal_name, 2 * [1, 0], timeout=5)
+
+    await asyncio.gather(*[check_namespace(ns) for ns in ns_names])
 
 
 @then("the {turn} turn light remains off")
 @async_run_until_complete
 async def step_then_validate_turn_light_static(context, turn: str):
+    frame_name = "TurnLightControl"
     signal_name = f"TurnLightControl.{turn.capitalize()}TurnLightRequest"
-    async with SignalValueAccumulator(
-        context.broker_client, ("RLCM-BodyCan0", [signal_name]), ("FLCM-BodyCan0", [signal_name]), ("DIM-BodyCan0", [signal_name])
-    ) as consumer:
-        await await_at_most(seconds=4).until(
-            consumer,
-            contains_signal_value_sequences(
-                {
-                    "RLCM-BodyCan0": {signal_name: 8 * [0]},
-                    "FLCM-BodyCan0": {signal_name: 8 * [0]},
-                    "DIM-BodyCan0": {signal_name: 8 * [0]},
-                }
-            ),
-        )
+    ns_names = ["RLCM-BodyCan0", "FLCM-BodyCan0", "DIM-BodyCan0"]
+
+    async def check_namespace(ns_name: str) -> None:
+        async with capture_frames((context.broker_client, ns_name), [frame_name]) as cap:
+            await cap.wait_for_signal_values(frame_name, signal_name, 8 * [0], timeout=4)
+
+    await asyncio.gather(*[check_namespace(ns) for ns in ns_names])
 
 
 @then("both left and right turn light blinks")

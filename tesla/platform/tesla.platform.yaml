@@ -1,4 +1,4 @@
-schema: remotive-topology-platform:0.14
+schema: remotive-topology-platform:0.15
 
 channels:
   ChassisBus:
