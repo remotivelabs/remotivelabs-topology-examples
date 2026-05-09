@@ -9,6 +9,7 @@ release = "0.1.0"
 extensions = [
     "sphinx_needs",
     "sphinxcontrib.mermaid",
+    "sphinxcontrib.plantuml",
 ]
 
 templates_path = ["_templates"]
