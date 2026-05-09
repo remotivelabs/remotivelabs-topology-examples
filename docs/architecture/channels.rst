@@ -3,7 +3,7 @@ Communication Channels
 
 .. channel:: Driver CAN Bus
    :id: CH_DRIVER_CAN0
-   :status: draft
+   :status: reviewed
    :channel_name: DriverCan0
    :protocol: CAN
    :signal_database: platform/databases/driver_can.dbc
@@ -15,7 +15,7 @@ Communication Channels
 
 .. channel:: Body CAN Bus
    :id: CH_BODY_CAN0
-   :status: draft
+   :status: reviewed
    :channel_name: BodyCan0
    :protocol: CAN
    :signal_database: platform/databases/body_can.dbc
@@ -27,7 +27,7 @@ Communication Channels
 
 .. channel:: Chassis CAN Bus
    :id: CH_CHASSIS_CAN0
-   :status: draft
+   :status: reviewed
    :channel_name: ChassisCan0
    :protocol: CAN
    :signal_database: platform/databases/chassis_can.dbc
@@ -39,7 +39,7 @@ Communication Channels
 
 .. channel:: Rear Light LIN Bus
    :id: CH_REAR_LIGHT_LIN
-   :status: draft
+   :status: reviewed
    :channel_name: RearLightLIN
    :protocol: LIN
    :source_doc: remotive_car/platform/remotive-car.platform.yaml
@@ -50,7 +50,7 @@ Communication Channels
 
 .. channel:: SOME/IP Network
    :id: CH_SOMEIP
-   :status: draft
+   :status: reviewed
    :channel_name: SOMEIP
    :protocol: SOME/IP
    :source_doc: remotive_car/platform/someip.platform.yaml

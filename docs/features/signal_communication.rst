@@ -3,7 +3,7 @@ Signal Communication
 
 .. feat:: CAN Signal Routing
    :id: FEAT_CAN_ROUTING
-   :status: draft
+   :status: reviewed
    :source_doc: remotive_car/platform/remotive-car.platform.yaml
 
    The system shall route CAN signals between ECUs connected to
@@ -12,7 +12,7 @@ Signal Communication
 
 .. feat:: Gateway Message Forwarding
    :id: FEAT_GATEWAY
-   :status: draft
+   :status: reviewed
    :source_doc: remotive_car/models/gwm/python/gwm/__main__.py
 
    The Gateway Module (GWM) shall forward messages between

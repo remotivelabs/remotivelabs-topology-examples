@@ -3,7 +3,7 @@ Monitoring
 
 .. feat:: Jupyter Notebook Interaction
    :id: FEAT_JUPYTER
-   :status: draft
+   :status: reviewed
    :source_doc: remotive_car/common/jupyter/car.ipynb
 
    The system shall provide a Jupyter notebook interface for

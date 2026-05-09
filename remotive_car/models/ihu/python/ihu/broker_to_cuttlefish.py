@@ -10,6 +10,7 @@ GEAR_SELECTION = 0x11400400
 logger = structlog.get_logger(__name__)
 
 
+# @req COMP_REQ_IHU_SOMEIP: SOME/IP Service Consumption
 class BrokerToCuttlefish:
     def __init__(self, cuttlefish_gnss_url: str, cuttlefish_vhal_url: str, vhal_callback=None):
         self.gnss = GnssClient(cuttlefish_gnss_url)

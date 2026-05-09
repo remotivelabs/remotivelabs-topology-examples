@@ -6,7 +6,7 @@ Hazard Light Tests
 
 .. tc:: Hazard Light Activation
    :id: TC_HAZARD_ACTIVATE
-   :status: draft
+   :status: reviewed
    :verification_method: test
    :source_doc: remotive_car/tests/behave/features/hazard_light.feature
    :verifies: COMP_REQ_BCM_HAZARD
@@ -25,7 +25,7 @@ Hazard Light Tests
 
 .. tc:: Hazard Light Deactivation
    :id: TC_HAZARD_DEACTIVATE
-   :status: draft
+   :status: reviewed
    :verification_method: test
    :source_doc: remotive_car/tests/behave/features/hazard_light.feature
    :verifies: COMP_REQ_BCM_HAZARD
@@ -45,7 +45,7 @@ Turn Signal Tests
 
 .. tc:: Left Turn Signal Activation
    :id: TC_TURN_LEFT
-   :status: draft
+   :status: reviewed
    :verification_method: test
    :source_doc: remotive_car/tests/behave/features/blink_left.feature
    :verifies: COMP_REQ_BCM_TURN_LEFT
@@ -63,7 +63,7 @@ Turn Signal Tests
 
 .. tc:: Right Turn Signal Activation
    :id: TC_TURN_RIGHT
-   :status: draft
+   :status: reviewed
    :verification_method: test
    :source_doc: remotive_car/tests/behave/features/blink_left.feature
    :verifies: COMP_REQ_BCM_TURN_RIGHT
@@ -84,7 +84,7 @@ Beam Control Tests
 
 .. tc:: Beam State Transitions
    :id: TC_BEAMS
-   :status: draft
+   :status: reviewed
    :verification_method: test
    :source_doc: remotive_car/models/bcm/python/tests
    :verifies: COMP_REQ_BCM_BEAMS
@@ -100,9 +100,9 @@ Beam Control Tests
 
    **Expected:** Each input produces exactly one valid state transition.
 
-.. tc:: Gear State Tracking
+.. tc:: Gear State Tracking Verification
    :id: TC_GEARS
-   :status: draft
+   :status: reviewed
    :verification_method: test
    :source_doc: remotive_car/models/bcm/python/tests
    :verifies: COMP_REQ_BCM_GEARS
@@ -121,7 +121,7 @@ State Machine Tests
 
 .. tc:: Turn Signal State Machine Arbitration
    :id: TC_TURN_SM
-   :status: draft
+   :status: reviewed
    :verification_method: test
    :source_doc: remotive_car/models/bcm/python/bcm/state_machines/turn_signals.py
    :verifies: COMP_REQ_BCM_TURN_SM
@@ -138,12 +138,31 @@ State Machine Tests
    **Expected:** Hazard takes priority over directional signals.
    State transitions follow the hierarchical state machine graph.
 
+.. tc:: Turn Signal Blink Timing
+   :id: TC_BLINK_TIMING
+   :status: reviewed
+   :verification_method: test
+   :source_doc: remotive_car/models/bcm/python/bcm/state_machines/turn_signals.py
+   :verifies: COMP_REQ_BCM_TURN_SM
+
+   **Preconditions:** BCM model active, turn signal state machine in off state.
+
+   **Steps:**
+
+   1. Activate left turn signal
+   2. Measure timing of on/off transitions over 10 blink cycles
+   3. Verify blink frequency is within the specified cadence
+   4. Deactivate turn signal and verify blinking stops
+
+   **Expected:** Blink on/off timing shall be consistent across cycles
+   with frequency within the configured cadence tolerance.
+
 Integration Tests
 -----------------
 
 .. tc:: End-to-End Signal Chain
    :id: TC_E2E_SIGNAL
-   :status: draft
+   :status: reviewed
    :verification_method: test
    :source_doc: remotive_car/tests/pytest/test_simulate_driver.py
    :verifies: COMP_REQ_BCM_SUBSCRIBE
@@ -161,7 +180,7 @@ Integration Tests
 
 .. tc:: Restbus Default Values
    :id: TC_RESTBUS
-   :status: draft
+   :status: reviewed
    :verification_method: test
    :source_doc: remotive_car/models/bcm/python/bcm/__main__.py
    :verifies: COMP_REQ_BCM_RESTBUS
@@ -178,7 +197,7 @@ Integration Tests
 
 .. tc:: Gateway Signal Forwarding
    :id: TC_GWM_FORWARD
-   :status: draft
+   :status: reviewed
    :verification_method: test
    :source_doc: remotive_car/models/gwm/python/gwm/__main__.py
    :verifies: COMP_REQ_GWM_FORWARD
@@ -195,7 +214,7 @@ Integration Tests
 
 .. tc:: Front Light Control Verification
    :id: TC_FLCM
-   :status: draft
+   :status: reviewed
    :verification_method: test
    :source_doc: getting_started/tests/test_hazard_light.py
    :verifies: COMP_REQ_FLCM_CONTROL
@@ -211,7 +230,7 @@ Integration Tests
 
 .. tc:: Rear Light Control Verification
    :id: TC_RLCM
-   :status: draft
+   :status: reviewed
    :verification_method: test
    :source_doc: remotive_car/platform/remotive-car.platform.yaml
    :verifies: COMP_REQ_RLCM_CONTROL
@@ -227,9 +246,9 @@ Integration Tests
    **Expected:** RLCM forwards the lighting command to the rear
    light unit over the LIN bus.
 
-.. tc:: Gateway Protocol Translation
+.. tc:: Gateway Protocol Translation Verification
    :id: TC_GWM_TRANSLATE
-   :status: draft
+   :status: reviewed
    :verification_method: test
    :source_doc: remotive_car/models/gwm/python/gwm/__main__.py
    :verifies: COMP_REQ_GWM_TRANSLATE
@@ -247,7 +266,7 @@ Integration Tests
 
 .. tc:: IHU SOME/IP Consumption
    :id: TC_IHU_SOMEIP
-   :status: draft
+   :status: reviewed
    :verification_method: test
    :source_doc: remotive_car/models/ihu/python/ihu/__main__.py
    :verifies: COMP_REQ_IHU_SOMEIP
@@ -264,7 +283,7 @@ Integration Tests
 
 .. tc:: SCCM Input Processing
    :id: TC_SCCM_INPUT
-   :status: draft
+   :status: reviewed
    :verification_method: test
    :source_doc: remotive_car/models/sccm/python/sccm/__main__.py
    :verifies: COMP_REQ_SCCM_INPUT

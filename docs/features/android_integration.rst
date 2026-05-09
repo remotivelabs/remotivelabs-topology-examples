@@ -3,7 +3,7 @@ Android Integration
 
 .. feat:: Android Emulator Integration
    :id: FEAT_ANDROID
-   :status: draft
+   :status: reviewed
    :source_doc: remotive_car/instances/android/README.md
 
    The system shall integrate with Android Automotive OS

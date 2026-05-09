@@ -3,11 +3,12 @@ BCM Component Requirements
 
 .. comp_req:: Hazard Light Signal Processing
    :id: COMP_REQ_BCM_HAZARD
-   :status: draft
+   :status: reviewed
    :asil: B
    :verification_method: test
    :source_doc: remotive_car/models/bcm/python/bcm/__main__.py
    :satisfies: SYSREQ_HAZARD_LIGHT_SAFETY
+   :refines: MDL_BCM
 
    The Body Control Module shall activate both left and right turn
    light requests on BodyCan0 when the HazardLightButton signal
@@ -15,11 +16,12 @@ BCM Component Requirements
 
 .. comp_req:: Turn Signal Left Activation
    :id: COMP_REQ_BCM_TURN_LEFT
-   :status: draft
-   :asil: A
+   :status: reviewed
+   :asil: B
    :verification_method: test
    :source_doc: remotive_car/models/bcm/python/bcm/__main__.py
    :satisfies: SYSREQ_HAZARD_LIGHT_SAFETY
+   :refines: MDL_BCM
 
    The Body Control Module shall activate the left turn light
    request when the TurnSignalLeft input signal transitions to
@@ -28,11 +30,12 @@ BCM Component Requirements
 
 .. comp_req:: Turn Signal Right Activation
    :id: COMP_REQ_BCM_TURN_RIGHT
-   :status: draft
-   :asil: A
+   :status: reviewed
+   :asil: B
    :verification_method: test
    :source_doc: remotive_car/models/bcm/python/bcm/__main__.py
    :satisfies: SYSREQ_HAZARD_LIGHT_SAFETY
+   :refines: MDL_BCM
 
    The Body Control Module shall activate the right turn light
    request when the TurnSignalRight input signal transitions to
@@ -41,11 +44,12 @@ BCM Component Requirements
 
 .. comp_req:: Beam State Management
    :id: COMP_REQ_BCM_BEAMS
-   :status: draft
+   :status: reviewed
    :asil: QM
    :verification_method: test
    :source_doc: remotive_car/models/bcm/python/bcm/state_machines/beams.py
    :satisfies: SYSREQ_MODEL_LIFECYCLE
+   :refines: MDL_BCM
 
    The Body Control Module shall manage headlight beam states
    (off, daytime running lights, low beam) based on the
@@ -54,11 +58,12 @@ BCM Component Requirements
 
 .. comp_req:: Gear State Tracking
    :id: COMP_REQ_BCM_GEARS
-   :status: draft
+   :status: reviewed
    :asil: QM
    :verification_method: test
    :source_doc: remotive_car/models/bcm/python/bcm/state_machines/gears.py
    :satisfies: SYSREQ_MODEL_LIFECYCLE
+   :refines: MDL_BCM
 
    The Body Control Module shall track the current gear state
    (drive, reverse) and publish the reverse light status on
@@ -66,11 +71,12 @@ BCM Component Requirements
 
 .. comp_req:: Turn Signal State Machine
    :id: COMP_REQ_BCM_TURN_SM
-   :status: draft
+   :status: reviewed
    :asil: B
    :verification_method: test
    :source_doc: remotive_car/models/bcm/python/bcm/state_machines/turn_signals.py
    :satisfies: SYSREQ_HAZARD_LIGHT_SAFETY
+   :refines: MDL_BCM
 
    The Body Control Module shall implement a hierarchical state
    machine for turn signal arbitration with four top-level states
@@ -79,11 +85,12 @@ BCM Component Requirements
 
 .. comp_req:: Signal Subscription Setup
    :id: COMP_REQ_BCM_SUBSCRIBE
-   :status: draft
+   :status: reviewed
    :asil: QM
    :verification_method: test
    :source_doc: remotive_car/models/bcm/python/bcm/__main__.py
    :satisfies: SYSREQ_MODEL_LIFECYCLE; SYSREQ_TOPOLOGY_PARSE
+   :refines: MDL_BCM
 
    The Body Control Module shall subscribe to all input signals
    defined in the DriverCan0 namespace and dispatch received
@@ -91,11 +98,12 @@ BCM Component Requirements
 
 .. comp_req:: Restbus Behavior
    :id: COMP_REQ_BCM_RESTBUS
-   :status: draft
+   :status: reviewed
    :asil: QM
    :verification_method: test
    :source_doc: remotive_car/models/bcm/python/bcm/__main__.py
    :satisfies: SYSREQ_MODEL_LIFECYCLE
+   :refines: MDL_BCM
 
    The Body Control Module shall maintain a restbus on BodyCan0,
    continuously publishing default signal values for all output

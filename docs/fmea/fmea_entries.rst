@@ -3,7 +3,7 @@ FMEA Entries
 
 .. fmea:: Hazard Light Failure to Activate
    :id: FMEA_HAZARD_NO_ACTIVATE
-   :status: draft
+   :status: reviewed
    :severity: 8
    :occurrence: 3
    :detection: 4
@@ -24,7 +24,7 @@ FMEA Entries
 
 .. fmea:: Turn Signal Stuck Active
    :id: FMEA_TURN_STUCK
-   :status: draft
+   :status: reviewed
    :severity: 6
    :occurrence: 2
    :detection: 3
@@ -45,7 +45,7 @@ FMEA Entries
 
 .. fmea:: Gateway Signal Loss
    :id: FMEA_GWM_LOSS
-   :status: draft
+   :status: reviewed
    :severity: 5
    :occurrence: 3
    :detection: 5
@@ -66,7 +66,7 @@ FMEA Entries
 
 .. fmea:: Front Light No Response
    :id: FMEA_FLCM_NO_RESPONSE
-   :status: draft
+   :status: reviewed
    :severity: 7
    :occurrence: 2
    :detection: 4
@@ -87,7 +87,7 @@ FMEA Entries
 
 .. fmea:: Rear Light LIN Communication Failure
    :id: FMEA_RLCM_LIN_FAIL
-   :status: draft
+   :status: reviewed
    :severity: 7
    :occurrence: 2
    :detection: 5
@@ -105,3 +105,90 @@ FMEA Entries
 
    **Detection:** Test case TC_RLCM verifies end-to-end signal
    path from BodyCan0 through RearLightLIN to RL.
+
+.. fmea:: Turn Signal Left Failure to Activate
+   :id: FMEA_TURN_LEFT_NO_ACTIVATE
+   :status: reviewed
+   :severity: 7
+   :occurrence: 2
+   :detection: 3
+   :rpn: 42
+   :mitigates: COMP_REQ_BCM_TURN_LEFT
+
+   **Failure Mode:** Left turn signal does not activate when the
+   driver engages the turn stalk.
+
+   **Cause:** Input signal edge detection missed due to callback
+   registration failure or signal subscription dropped during
+   broker reconnection.
+
+   **Effect:** Left turn intention is not communicated to other
+   road users, increasing risk of side collision.
+
+   **Detection:** Test case TC_TURN_LEFT verifies left turn signal
+   activation within one processing cycle.
+
+.. fmea:: Turn Signal Right Failure to Activate
+   :id: FMEA_TURN_RIGHT_NO_ACTIVATE
+   :status: reviewed
+   :severity: 7
+   :occurrence: 2
+   :detection: 3
+   :rpn: 42
+   :mitigates: COMP_REQ_BCM_TURN_RIGHT
+
+   **Failure Mode:** Right turn signal does not activate when the
+   driver engages the turn stalk.
+
+   **Cause:** Input signal edge detection missed due to callback
+   registration failure or signal subscription dropped during
+   broker reconnection.
+
+   **Effect:** Right turn intention is not communicated to other
+   road users, increasing risk of side collision.
+
+   **Detection:** Test case TC_TURN_RIGHT verifies right turn signal
+   activation within one processing cycle.
+
+.. fmea:: Brake Light Failure to Activate
+   :id: FMEA_BRAKE_LIGHT_NO_ACTIVATE
+   :status: reviewed
+   :severity: 9
+   :occurrence: 2
+   :detection: 3
+   :rpn: 54
+   :mitigates: COMP_REQ_RLCM_CONTROL
+
+   **Failure Mode:** Brake lights do not illuminate when the brake
+   pedal is pressed.
+
+   **Cause:** RLCM fails to receive or process the BrakeLight
+   command signal on BodyCan0, or the RearLightLIN communication
+   is interrupted.
+
+   **Effect:** Following vehicles are not warned of deceleration,
+   significantly increasing rear collision risk.
+
+   **Detection:** Test case TC_RLCM verifies brake light signal
+   path from BodyCan0 through RLCM to the rear light unit.
+
+.. fmea:: Gear Position Mismatch
+   :id: FMEA_GEAR_POSITION_MISMATCH
+   :status: reviewed
+   :severity: 6
+   :occurrence: 2
+   :detection: 4
+   :rpn: 48
+   :mitigates: COMP_REQ_BCM_GEARS
+
+   **Failure Mode:** Published gear position does not match the
+   actual gear selector state.
+
+   **Cause:** State machine transition logic error or stale
+   GearPosition input signal value due to missed CAN frame.
+
+   **Effect:** Reverse light indicates incorrect direction of
+   travel; downstream systems receive wrong gear information.
+
+   **Detection:** Test case TC_GEARS verifies gear state tracking
+   and reverse light activation for each gear position.

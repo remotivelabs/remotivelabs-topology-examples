@@ -10,3 +10,4 @@ Requirements
    sccm_requirements
    ihu_requirements
    lighting_requirements
+   infrastructure_requirements

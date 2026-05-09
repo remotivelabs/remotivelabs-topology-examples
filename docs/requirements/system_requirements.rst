@@ -3,7 +3,7 @@ System Requirements
 
 .. sysreq:: Platform Topology Parsing
    :id: SYSREQ_TOPOLOGY_PARSE
-   :status: draft
+   :status: reviewed
    :asil: QM
    :verification_method: test
    :satisfies: FEAT_PLATFORM_TOPOLOGY
@@ -14,7 +14,7 @@ System Requirements
 
 .. sysreq:: Signal Database Loading
    :id: SYSREQ_SIGNAL_DB_LOAD
-   :status: draft
+   :status: reviewed
    :asil: QM
    :verification_method: test
    :satisfies: FEAT_SIGNAL_DATABASE
@@ -25,7 +25,7 @@ System Requirements
 
 .. sysreq:: Multi-Channel Routing
    :id: SYSREQ_MULTI_CHANNEL
-   :status: draft
+   :status: reviewed
    :asil: QM
    :verification_method: test
    :satisfies: FEAT_CAN_ROUTING; FEAT_MULTI_PROTOCOL; FEAT_GATEWAY
@@ -36,7 +36,7 @@ System Requirements
 
 .. sysreq:: Behavioral Model Lifecycle
    :id: SYSREQ_MODEL_LIFECYCLE
-   :status: draft
+   :status: reviewed
    :asil: QM
    :verification_method: test
    :satisfies: FEAT_BEHAVIORAL_MODEL
@@ -47,7 +47,7 @@ System Requirements
 
 .. sysreq:: Container Orchestration
    :id: SYSREQ_CONTAINER_ORCH
-   :status: draft
+   :status: reviewed
    :asil: QM
    :verification_method: test
    :satisfies: FEAT_CONTAINER_DEPLOY
@@ -58,7 +58,7 @@ System Requirements
 
 .. sysreq:: Test Framework Integration
    :id: SYSREQ_TEST_FRAMEWORK
-   :status: draft
+   :status: reviewed
    :asil: QM
    :verification_method: test
    :satisfies: FEAT_SCENARIO_TESTING; FEAT_INTEGRATION_TESTING
@@ -69,7 +69,7 @@ System Requirements
 
 .. sysreq:: Hazard Light Safety
    :id: SYSREQ_HAZARD_LIGHT_SAFETY
-   :status: draft
+   :status: reviewed
    :asil: B
    :verification_method: test
    :satisfies: FEAT_STATE_MACHINE
@@ -80,7 +80,7 @@ System Requirements
 
 .. sysreq:: Recording Session Management
    :id: SYSREQ_RECORDING
-   :status: draft
+   :status: reviewed
    :asil: QM
    :verification_method: test
    :satisfies: FEAT_RECORDING
@@ -91,7 +91,7 @@ System Requirements
 
 .. sysreq:: Interactive Monitoring
    :id: SYSREQ_MONITORING
-   :status: draft
+   :status: reviewed
    :asil: QM
    :verification_method: review
    :satisfies: FEAT_JUPYTER
@@ -102,7 +102,7 @@ System Requirements
 
 .. sysreq:: Android Integration
    :id: SYSREQ_ANDROID
-   :status: draft
+   :status: reviewed
    :asil: QM
    :verification_method: test
    :satisfies: FEAT_ANDROID

@@ -3,7 +3,7 @@ Behavioral Modeling
 
 .. feat:: ECU Behavioral Modeling
    :id: FEAT_BEHAVIORAL_MODEL
-   :status: draft
+   :status: reviewed
    :source_doc: remotive_car/models/bcm/python/bcm/__main__.py
 
    The system shall enable users to implement ECU behavioral models
@@ -13,7 +13,7 @@ Behavioral Modeling
 
 .. feat:: State Machine Logic
    :id: FEAT_STATE_MACHINE
-   :status: draft
+   :status: reviewed
    :source_doc: remotive_car/models/bcm/python/bcm/state_machines/turn_signals.py
 
    Behavioral models shall support hierarchical state machines

@@ -3,7 +3,7 @@ Platform Definition
 
 .. feat:: Platform Topology Definition
    :id: FEAT_PLATFORM_TOPOLOGY
-   :status: draft
+   :status: reviewed
    :source_doc: remotive_car/platform/remotive-car.platform.yaml
 
    The system shall allow users to define a vehicle platform topology
@@ -13,7 +13,7 @@ Platform Definition
 
 .. feat:: Multi-Protocol Communication
    :id: FEAT_MULTI_PROTOCOL
-   :status: draft
+   :status: reviewed
    :source_doc: remotive_car/platform/remotive-car.platform.yaml
 
    The platform shall support multiple communication protocols
@@ -22,7 +22,7 @@ Platform Definition
 
 .. feat:: Signal Database Integration
    :id: FEAT_SIGNAL_DATABASE
-   :status: draft
+   :status: reviewed
    :source_doc: getting_started/platform/databases/driver_can.dbc
 
    The system shall parse signal database files (DBC, LDF) to

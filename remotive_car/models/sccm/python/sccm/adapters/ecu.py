@@ -12,6 +12,7 @@ from sccm.target import Target
 logger = structlog.get_logger(__name__)
 
 
+# @req COMP_REQ_SCCM_INPUT: Steering Column Input Handling
 class SCCM(Target):
     def __init__(self, broker_url: str) -> None:
         self._name = "SCCM"

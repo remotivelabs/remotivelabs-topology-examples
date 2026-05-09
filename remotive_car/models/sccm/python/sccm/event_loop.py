@@ -33,6 +33,7 @@ class EventLoop:
             return event_loop.create_task(self._loop())
         return asyncio.create_task(self._loop())
 
+    # @req COMP_REQ_SCCM_INPUT: Steering Column Input Handling
     async def _loop(self) -> None:
         """
         Main event loop that pulls events from the input device, maps them, and sends them to the target.

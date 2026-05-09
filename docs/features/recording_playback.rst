@@ -3,7 +3,7 @@ Recording & Playback
 
 .. feat:: Signal Recording and Playback
    :id: FEAT_RECORDING
-   :status: draft
+   :status: reviewed
    :source_doc: remotive_car/recordings/tesla.recordingsession.yaml
 
    The system shall support recording vehicle signal sessions

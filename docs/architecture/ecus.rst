@@ -3,7 +3,7 @@ ECUs
 
 .. ecu:: Body Control Module
    :id: ECU_BCM
-   :status: draft
+   :status: reviewed
    :ecu_name: BCM
    :source_doc: remotive_car/platform/remotive-car.platform.yaml
    :satisfies: SYSREQ_MODEL_LIFECYCLE
@@ -13,7 +13,7 @@ ECUs
 
 .. ecu:: Steering Column Control Module
    :id: ECU_SCCM
-   :status: draft
+   :status: reviewed
    :ecu_name: SCCM
    :source_doc: remotive_car/platform/remotive-car.platform.yaml
    :satisfies: SYSREQ_MODEL_LIFECYCLE
@@ -23,7 +23,7 @@ ECUs
 
 .. ecu:: Front Light Control Module
    :id: ECU_FLCM
-   :status: draft
+   :status: reviewed
    :ecu_name: FLCM
    :source_doc: remotive_car/platform/remotive-car.platform.yaml
    :satisfies: SYSREQ_MODEL_LIFECYCLE
@@ -33,7 +33,7 @@ ECUs
 
 .. ecu:: Rear Light Control Module
    :id: ECU_RLCM
-   :status: draft
+   :status: reviewed
    :ecu_name: RLCM
    :source_doc: remotive_car/platform/remotive-car.platform.yaml
    :satisfies: SYSREQ_MODEL_LIFECYCLE
@@ -43,7 +43,7 @@ ECUs
 
 .. ecu:: Gateway Module
    :id: ECU_GWM
-   :status: draft
+   :status: reviewed
    :ecu_name: GWM
    :source_doc: remotive_car/platform/remotive-car.platform.yaml
    :satisfies: SYSREQ_MULTI_CHANNEL
@@ -53,7 +53,7 @@ ECUs
 
 .. ecu:: Driver Information Module
    :id: ECU_DIM
-   :status: draft
+   :status: reviewed
    :ecu_name: DIM
    :source_doc: remotive_car/platform/remotive-car.platform.yaml
    :satisfies: SYSREQ_MODEL_LIFECYCLE
@@ -63,7 +63,7 @@ ECUs
 
 .. ecu:: Anti-lock Braking System
    :id: ECU_ABS
-   :status: draft
+   :status: reviewed
    :ecu_name: ABS
    :source_doc: remotive_car/platform/remotive-car.platform.yaml
    :satisfies: SYSREQ_MODEL_LIFECYCLE
@@ -72,7 +72,7 @@ ECUs
 
 .. ecu:: Infotainment Head Unit
    :id: ECU_IHU
-   :status: draft
+   :status: reviewed
    :ecu_name: IHU
    :source_doc: remotive_car/platform/remotive-car.platform.yaml
    :satisfies: SYSREQ_MULTI_CHANNEL
@@ -82,7 +82,7 @@ ECUs
 
 .. ecu:: HVAC Module
    :id: ECU_HVAC
-   :status: draft
+   :status: reviewed
    :ecu_name: HVAC
    :source_doc: remotive_car/platform/remotive-car.platform.yaml
    :satisfies: SYSREQ_MODEL_LIFECYCLE
@@ -92,7 +92,7 @@ ECUs
 
 .. ecu:: Parking Assistant Module
    :id: ECU_PAM
-   :status: draft
+   :status: reviewed
    :ecu_name: PAM
    :source_doc: remotive_car/platform/remotive-car.platform.yaml
    :satisfies: SYSREQ_MODEL_LIFECYCLE
@@ -102,7 +102,7 @@ ECUs
 
 .. ecu:: Rear Light Unit
    :id: ECU_RL
-   :status: draft
+   :status: reviewed
    :ecu_name: RL
    :source_doc: remotive_car/platform/remotive-car.platform.yaml
    :satisfies: SYSREQ_MODEL_LIFECYCLE
@@ -111,7 +111,7 @@ ECUs
 
 .. ecu:: DEVS2 Module
    :id: ECU_DEVS2
-   :status: draft
+   :status: reviewed
    :ecu_name: DEVS2
    :source_doc: remotive_car/platform/remotive-car.platform.yaml
    :satisfies: SYSREQ_MODEL_LIFECYCLE
@@ -120,7 +120,7 @@ ECUs
 
 .. ecu:: Telematics Control Unit
    :id: ECU_TCU
-   :status: draft
+   :status: reviewed
    :ecu_name: TCU
    :source_doc: remotive_car/platform/remotive-car.platform.yaml
    :satisfies: SYSREQ_MODEL_LIFECYCLE

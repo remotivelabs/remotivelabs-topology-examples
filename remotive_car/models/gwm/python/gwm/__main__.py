@@ -16,6 +16,7 @@ from .log import configure_logging
 logger = structlog.get_logger(__name__)
 
 
+# @req COMP_REQ_GWM_FORWARD: Cross-Network Signal Forwarding
 @dataclass
 class GWM:
     ecu_name: str = "GWM"
@@ -67,6 +68,7 @@ class GWM:
     def __await__(self):
         return self.bm.run_forever().__await__()
 
+    # @req COMP_REQ_GWM_TRANSLATE: Gateway Protocol Translation
     async def on_frame(self, frame: Frame) -> None:
         await self.someip_bus.notify(
             SomeIPEvent(

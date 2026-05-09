@@ -1,4 +1,4 @@
-RemotiveLabs Topology — useblocks Traceability
+RemotiveLabs Topology — Sphinx-Needs Traceability
 =================================================
 
 .. raw:: html

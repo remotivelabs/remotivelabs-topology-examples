@@ -20,6 +20,7 @@ logger = structlog.get_logger(__name__)
 
 
 @dataclass
+# @req COMP_REQ_IHU_SOMEIP: SOME/IP Service Consumption
 class IHU:
     someip_ns: str = "IHU-SOMEIP"
     ecu_name: str = "IHU"

@@ -3,7 +3,7 @@ Behavioral Models
 
 .. model:: BCM Behavioral Model
    :id: MDL_BCM
-   :status: draft
+   :status: reviewed
    :source_doc: remotive_car/models/bcm/python/bcm/__main__.py
    :satisfies: SYSREQ_MODEL_LIFECYCLE
 
@@ -13,7 +13,7 @@ Behavioral Models
 
 .. model:: GWM Behavioral Model
    :id: MDL_GWM
-   :status: draft
+   :status: reviewed
    :source_doc: remotive_car/models/gwm/python/gwm/__main__.py
    :satisfies: SYSREQ_MULTI_CHANNEL
 
@@ -22,7 +22,7 @@ Behavioral Models
 
 .. model:: SCCM Behavioral Model
    :id: MDL_SCCM
-   :status: draft
+   :status: reviewed
    :source_doc: remotive_car/models/sccm/python/sccm/__main__.py
    :satisfies: SYSREQ_MODEL_LIFECYCLE
 
@@ -31,7 +31,7 @@ Behavioral Models
 
 .. model:: IHU Behavioral Model
    :id: MDL_IHU
-   :status: draft
+   :status: reviewed
    :source_doc: remotive_car/models/ihu/python/ihu/__main__.py
    :satisfies: SYSREQ_MULTI_CHANNEL
 
@@ -40,7 +40,7 @@ Behavioral Models
 
 .. model:: RLCM Behavioral Model
    :id: MDL_RLCM
-   :status: draft
+   :status: reviewed
    :source_doc: remotive_car/models/rlcm/python/rlcm/__main__.py
    :satisfies: SYSREQ_MODEL_LIFECYCLE
 
