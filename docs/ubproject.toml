@@ -149,3 +149,18 @@ nullable = true
 description = "Signal database file reference (DBC, LDF)"
 schema = {type = "string"}
 nullable = true
+
+[needs.fields.reviewer]
+description = "Independent reviewer identity (ISO 26262-8 §6.4.6)"
+schema = {type = "string"}
+nullable = true
+
+[needs.fields.approved_by]
+description = "Approving authority for formal lifecycle sign-off (ISO 26262-8 §6.4.5)"
+schema = {type = "string"}
+nullable = true
+
+[needs.fields.approved_date]
+description = "Date of formal approval in ISO 8601 format (YYYY-MM-DD)"
+schema = {type = "string"}
+nullable = true

@@ -69,10 +69,13 @@ System Requirements
 
 .. sysreq:: Hazard Light Safety
    :id: SYSREQ_HAZARD_LIGHT_SAFETY
-   :status: reviewed
+   :status: approved
    :asil: B
    :verification_method: test
    :satisfies: FEAT_STATE_MACHINE
+   :reviewer: safety-engineer
+   :approved_by: safety-manager
+   :approved_date: 2026-05-10
 
    When the hazard light button is activated, the Body Control
    Module shall command simultaneous left and right turn indicator

@@ -3,12 +3,15 @@ BCM Component Requirements
 
 .. comp_req:: Hazard Light Signal Processing
    :id: COMP_REQ_BCM_HAZARD
-   :status: reviewed
+   :status: approved
    :asil: B
    :verification_method: test
    :source_doc: remotive_car/models/bcm/python/bcm/__main__.py
    :satisfies: SYSREQ_HAZARD_LIGHT_SAFETY
    :refines: MDL_BCM
+   :reviewer: safety-engineer
+   :approved_by: safety-manager
+   :approved_date: 2026-05-10
 
    The Body Control Module shall activate both left and right turn
    light requests on BodyCan0 when the HazardLightButton signal
@@ -16,31 +19,35 @@ BCM Component Requirements
 
 .. comp_req:: Turn Signal Left Activation
    :id: COMP_REQ_BCM_TURN_LEFT
-   :status: reviewed
+   :status: approved
    :asil: B
    :verification_method: test
    :source_doc: remotive_car/models/bcm/python/bcm/__main__.py
    :satisfies: SYSREQ_HAZARD_LIGHT_SAFETY
    :refines: MDL_BCM
+   :reviewer: safety-engineer
+   :approved_by: safety-manager
+   :approved_date: 2026-05-10
 
-   The Body Control Module shall activate the left turn light
-   request when the TurnSignalLeft input signal transitions to
-   the active state, and deactivate it when the signal returns
-   to inactive.
+   The Body Control Module shall maintain the LeftTurnLight output
+   on BodyCan0 in the active state when and only when the
+   TurnSignalLeft input on DriverCan0 is asserted.
 
 .. comp_req:: Turn Signal Right Activation
    :id: COMP_REQ_BCM_TURN_RIGHT
-   :status: reviewed
+   :status: approved
    :asil: B
    :verification_method: test
    :source_doc: remotive_car/models/bcm/python/bcm/__main__.py
    :satisfies: SYSREQ_HAZARD_LIGHT_SAFETY
    :refines: MDL_BCM
+   :reviewer: safety-engineer
+   :approved_by: safety-manager
+   :approved_date: 2026-05-10
 
-   The Body Control Module shall activate the right turn light
-   request when the TurnSignalRight input signal transitions to
-   the active state, and deactivate it when the signal returns
-   to inactive.
+   The Body Control Module shall maintain the RightTurnLight output
+   on BodyCan0 in the active state when and only when the
+   TurnSignalRight input on DriverCan0 is asserted.
 
 .. comp_req:: Beam State Management
    :id: COMP_REQ_BCM_BEAMS
@@ -71,17 +78,20 @@ BCM Component Requirements
 
 .. comp_req:: Turn Signal State Machine
    :id: COMP_REQ_BCM_TURN_SM
-   :status: reviewed
+   :status: approved
    :asil: B
    :verification_method: test
    :source_doc: remotive_car/models/bcm/python/bcm/state_machines/turn_signals.py
    :satisfies: SYSREQ_HAZARD_LIGHT_SAFETY
    :refines: MDL_BCM
+   :reviewer: safety-engineer
+   :approved_by: safety-manager
+   :approved_date: 2026-05-10
 
    The Body Control Module shall implement a hierarchical state
    machine for turn signal arbitration with four top-level states
    (off, left, right, hazard), each with on/off substates for
-   blink cycling.
+   blink cycling at 1.5 Hz nominal (per ISO 4040 §6.1.1).
 
 .. comp_req:: Signal Subscription Setup
    :id: COMP_REQ_BCM_SUBSCRIBE

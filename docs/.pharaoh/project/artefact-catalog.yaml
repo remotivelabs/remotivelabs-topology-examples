@@ -10,11 +10,13 @@ types:
   sysreq:
     required_fields: [status, asil]
     optional_fields: [source_doc, verification_method, tags]
+    required_roles: [reviewer, approved_by]
     lifecycle: default
 
   comp_req:
     required_fields: [status, asil]
     optional_fields: [source_doc, verification_method, satisfies, tags]
+    required_roles: [reviewer, approved_by]
     lifecycle: default
 
   arch:
@@ -44,5 +46,5 @@ types:
 
   fmea:
     required_fields: [status, severity, occurrence, detection, rpn]
-    optional_fields: [mitigates, tags]
+    optional_fields: [asil, mitigates, tags]
     lifecycle: default

@@ -297,3 +297,107 @@ Integration Tests
 
    **Expected:** SCCM publishes correct CAN signals for each
    driver input event.
+
+Infrastructure Tests
+--------------------
+
+.. tc:: Container Topology Generation
+   :id: TC_CONTAINER_GEN
+   :status: reviewed
+   :verification_method: test
+   :source_doc: getting_started/Dockerfile
+   :verifies: COMP_REQ_CONTAINER_GEN
+
+   **Preconditions:** Instance YAML files available; Docker daemon running.
+
+   **Steps:**
+
+   1. Run the topology generator against the instance YAML
+   2. Inspect the produced Docker Compose file
+   3. Verify all declared ECUs appear as services
+   4. Verify virtual CAN interface mounts match channel definitions
+   5. Verify signal database volume mounts are present
+
+   **Expected:** Docker Compose file is syntactically valid and structurally
+   matches the instance YAML topology declaration.
+
+.. tc:: Recording Session Playback
+   :id: TC_RECORDING_PLAY
+   :status: reviewed
+   :verification_method: test
+   :source_doc: basic_restbus/recordings/sample_csv.recordingsession.yaml
+   :verifies: COMP_REQ_RECORDING_PLAY
+
+   **Preconditions:** Topology running; CSV recording session YAML available.
+
+   **Steps:**
+
+   1. Load the CSV recording session file
+   2. Start playback into the running topology
+   3. Capture signal values on the target channel during playback
+   4. Compare captured timestamps against recording timestamps
+
+   **Expected:** Recorded signals appear on the topology bus within
+   the timing tolerance specified in the session YAML.
+
+.. tc:: Test Framework Execution
+   :id: TC_TEST_EXEC
+   :status: reviewed
+   :verification_method: test
+   :source_doc: remotive_car/tests/tester.instance.yaml
+   :verifies: COMP_REQ_TEST_EXEC
+
+   **Preconditions:** Topology running with tester instance connected;
+   Behave and pytest dependencies installed.
+
+   **Steps:**
+
+   1. Run ``behave`` against the feature files with the topology active
+   2. Run ``pytest`` against the test modules with the topology active
+   3. Verify both runners complete without import or connectivity errors
+   4. Verify the BrokerClient API supports signal injection and assertion
+
+   **Expected:** Both Behave and pytest execute successfully; BrokerClient
+   signal helpers function correctly in both test contexts.
+
+.. tc:: Jupyter Monitoring Interface
+   :id: TC_JUPYTER_MONITOR
+   :status: reviewed
+   :verification_method: review
+   :source_doc: remotive_car/common/jupyter/car.ipynb
+   :verifies: COMP_REQ_JUPYTER_MONITOR
+
+   **Verification method rationale:** The Jupyter notebook interface is
+   interactive and session-scoped; automated test execution is not
+   applicable. Review of the executed notebook output constitutes
+   the verification evidence per ISO 26262-8 §9.4.
+
+   **Review criteria:**
+
+   1. Notebook cells execute without errors against a running topology
+   2. Real-time signal values are displayed in notebook output
+   3. Signal injection cell publishes a value confirmed on the bus
+   4. BrokerClient connection cell establishes and closes cleanly
+
+   **Expected:** Executed notebook snapshot demonstrates bidirectional
+   signal interaction with the topology broker.
+
+.. tc:: IHU Android Emulator Bridge
+   :id: TC_IHU_ANDROID
+   :status: reviewed
+   :verification_method: test
+   :source_doc: remotive_car/models/ihu/python/ihu/broker_to_emulator.py
+   :verifies: COMP_REQ_IHU_ANDROID
+
+   **Preconditions:** Topology running with IHU model; Android Automotive
+   OS emulator started with SOME/IP bridge configured.
+
+   **Steps:**
+
+   1. Start the IHU behavioral model with Android emulator bridge enabled
+   2. Send a vehicle signal through the topology
+   3. Verify the signal reaches the GWM SOME/IP output
+   4. Verify the IHU model forwards the signal to the Android emulator
+
+   **Expected:** Vehicle signals delivered via broker reach the Android
+   Automotive OS emulator display layer via the IHU SOME/IP bridge.

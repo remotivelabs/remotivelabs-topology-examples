@@ -4,6 +4,7 @@ FMEA Entries
 .. fmea:: Hazard Light Failure to Activate
    :id: FMEA_HAZARD_NO_ACTIVATE
    :status: reviewed
+   :asil: B
    :severity: 8
    :occurrence: 3
    :detection: 4
@@ -25,6 +26,7 @@ FMEA Entries
 .. fmea:: Turn Signal Stuck Active
    :id: FMEA_TURN_STUCK
    :status: reviewed
+   :asil: B
    :severity: 6
    :occurrence: 2
    :detection: 3
@@ -46,6 +48,7 @@ FMEA Entries
 .. fmea:: Gateway Signal Loss
    :id: FMEA_GWM_LOSS
    :status: reviewed
+   :asil: QM
    :severity: 5
    :occurrence: 3
    :detection: 5
@@ -67,6 +70,7 @@ FMEA Entries
 .. fmea:: Front Light No Response
    :id: FMEA_FLCM_NO_RESPONSE
    :status: reviewed
+   :asil: B
    :severity: 7
    :occurrence: 2
    :detection: 4
@@ -88,6 +92,7 @@ FMEA Entries
 .. fmea:: Rear Light LIN Communication Failure
    :id: FMEA_RLCM_LIN_FAIL
    :status: reviewed
+   :asil: B
    :severity: 7
    :occurrence: 2
    :detection: 5
@@ -109,6 +114,7 @@ FMEA Entries
 .. fmea:: Turn Signal Left Failure to Activate
    :id: FMEA_TURN_LEFT_NO_ACTIVATE
    :status: reviewed
+   :asil: B
    :severity: 7
    :occurrence: 2
    :detection: 3
@@ -131,6 +137,7 @@ FMEA Entries
 .. fmea:: Turn Signal Right Failure to Activate
    :id: FMEA_TURN_RIGHT_NO_ACTIVATE
    :status: reviewed
+   :asil: B
    :severity: 7
    :occurrence: 2
    :detection: 3
@@ -153,6 +160,7 @@ FMEA Entries
 .. fmea:: Brake Light Failure to Activate
    :id: FMEA_BRAKE_LIGHT_NO_ACTIVATE
    :status: reviewed
+   :asil: B
    :severity: 9
    :occurrence: 2
    :detection: 3
@@ -175,6 +183,7 @@ FMEA Entries
 .. fmea:: Gear Position Mismatch
    :id: FMEA_GEAR_POSITION_MISMATCH
    :status: reviewed
+   :asil: QM
    :severity: 6
    :occurrence: 2
    :detection: 4
