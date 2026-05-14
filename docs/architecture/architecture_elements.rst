@@ -5,11 +5,15 @@ Architecture Elements
    :id: ARCH_LIGHTING
    :status: reviewed
    :source_doc: remotive_car/platform/remotive-car.platform.yaml
-   :satisfies: SYSREQ_HAZARD_LIGHT_SAFETY
+   :satisfies: SYSREQ_HAZARD_LIGHT_SAFETY; SYSREQ_TURN_SIGNAL_SIGNALING; SYSREQ_BRAKE_LIGHT_SAFETY
 
    The lighting subsystem comprises the BCM (control logic),
    FLCM (front actuators), RLCM (rear actuators), and RL
    (LIN rear light unit). Signal flow: SCCM → BCM → FLCM/RLCM → RL.
+   It covers three distinct safety and signaling concerns: hazard
+   light activation, turn-signal indication, and brake-light
+   actuation. Each concern is realized through dedicated child
+   component requirements while sharing the common actuator chain.
 
 .. mermaid::
    :caption: ARCH_LIGHTING — signal flow through lighting subsystem
@@ -23,9 +27,9 @@ Architecture Elements
        RLCM(["RLCM"]):::ecu
        LIN["RearLightLIN"]:::chan
        RL(["RL"]):::ecu
-       SCCM -->|hazard / turn| DRV
+       SCCM -->|hazard / turn / brake| DRV
        DRV --> BCM
-       BCM -->|light cmds| BDY
+       BCM -->|turn / brake / beam cmds| BDY
        BDY --> FLCM
        BDY --> RLCM
        RLCM -->|LIN frames| LIN --> RL
@@ -114,31 +118,51 @@ Architecture Elements
        classDef comp fill:#e4ff3e,color:#000,stroke:#aaa
        classDef ctr fill:#583eff,color:#fff,stroke:#3d2bbf
 
-.. arch:: Platform Signal Pipeline
-   :id: ARCH_SIGNAL_PIPELINE
+.. arch:: Platform Topology Parser
+   :id: ARCH_TOPOLOGY_PARSE
    :status: reviewed
    :source_doc: getting_started/platform/topology.platform.yaml
-   :satisfies: SYSREQ_TOPOLOGY_PARSE; SYSREQ_SIGNAL_DB_LOAD
+   :satisfies: SYSREQ_TOPOLOGY_PARSE
 
-   The signal pipeline architecture covers platform YAML parsing,
-   DBC/LDF database loading, and signal namespace resolution.
-   Platform definitions declare channels and ECU endpoints; signal
-   databases provide encoding and routing metadata.
+   The topology parser architecture covers platform YAML parsing
+   and channel/ECU instantiation. Platform definitions declare
+   channels and ECU endpoints; the parser resolves these into a
+   signal namespace consumed by the broker.
 
 .. mermaid::
-   :caption: ARCH_SIGNAL_PIPELINE — signal ingestion pipeline
+   :caption: ARCH_TOPOLOGY_PARSE — platform topology parsing
 
    graph LR
        YAML["platform.yaml"]:::src
-       DBC["DBC / LDF databases"]:::src
        PARSE(["YAML Parser"]):::stage
-       LOAD(["DB Loader"]):::stage
        NS(["Signal Namespace"]):::stage
        BRK(["Topology Broker"]):::stage
        YAML --> PARSE
-       DBC --> LOAD
        PARSE --> NS
-       LOAD --> NS
+       NS --> BRK
+       classDef src fill:#f0f0f0,color:#333,stroke:#aaa
+       classDef stage fill:#583eff,color:#fff,stroke:#3d2bbf
+
+.. arch:: Signal Database Subsystem
+   :id: ARCH_SIGNAL_DB
+   :status: reviewed
+   :source_doc: getting_started/platform/databases/driver_can.dbc
+   :satisfies: SYSREQ_SIGNAL_DB_LOAD
+
+   The signal database subsystem loads DBC and LDF files referenced
+   in the platform definition, populates the signal namespace with
+   encoding metadata, and exposes signal lookup for the broker.
+
+.. mermaid::
+   :caption: ARCH_SIGNAL_DB — signal database loader
+
+   graph LR
+       FILES["DBC / LDF files"]:::src
+       LOADER(["DB Loader"]):::stage
+       NS(["Signal Namespace"]):::stage
+       BRK(["Topology Broker"]):::stage
+       FILES --> LOADER
+       LOADER --> NS
        NS --> BRK
        classDef src fill:#f0f0f0,color:#333,stroke:#aaa
        classDef stage fill:#583eff,color:#fff,stroke:#3d2bbf

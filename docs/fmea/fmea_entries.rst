@@ -14,8 +14,11 @@ FMEA Entries
    **Failure Mode:** Hazard light button press does not activate
    both turn indicators simultaneously.
 
-   **Cause:** State machine fails to transition to hazard state due
-   to corrupted input signal or race condition in callback dispatch.
+   **Cause:** The HazardLightButton input is corrupted on DriverCan0
+   (harness fault or stuck-low contact); the BCM hazard-button handler
+   fails to evaluate the input; or the BCM fails to drive both
+   ``LeftTurnLightRequest`` and ``RightTurnLightRequest`` on BodyCan0
+   within one signal-processing cycle.
 
    **Effect:** Other road users are not warned of emergency situation,
    increasing collision risk.
@@ -36,8 +39,11 @@ FMEA Entries
    **Failure Mode:** Turn signal remains active after deactivation
    command is sent.
 
-   **Cause:** State machine transition from active to off state is
-   not triggered due to missed signal edge or stale callback state.
+   **Cause:** The deactivation transition of the turn-signal state
+   machine fails to fire because the off-state stalk edge is missed on
+   DriverCan0 (intermittent contact or single-frame loss) or because
+   the BCM continues to drive the turn-indicator output even though the
+   internal state has reached the off state.
 
    **Effect:** Misleading indication to other road users about
    intended vehicle direction.
@@ -80,8 +86,10 @@ FMEA Entries
    **Failure Mode:** Front Light Control Module does not activate
    turn indicators when commanded.
 
-   **Cause:** BodyCan0 message lost or FLCM signal subscription
-   fails during initialization.
+   **Cause:** The ``TurnLightControl`` frame is lost or corrupted on
+   BodyCan0 between BCM and FLCM (harness fault or bus error); or the
+   FLCM does not actuate the front-indicator lamp driver despite a
+   valid frame.
 
    **Effect:** Front turn indicators do not illuminate, reducing
    visibility of turn intention to oncoming traffic.
@@ -89,7 +97,7 @@ FMEA Entries
    **Detection:** Test case TC_FLCM verifies signal reception
    and actuation response.
 
-.. fmea:: Rear Light LIN Communication Failure
+.. fmea:: Rear Light Turn Indicator LIN Communication Failure
    :id: FMEA_RLCM_LIN_FAIL
    :status: reviewed
    :asil: B
@@ -105,8 +113,8 @@ FMEA Entries
    **Cause:** LIN bus communication error or timing violation
    in the RLCM-to-RL protocol exchange.
 
-   **Effect:** Rear lights do not respond to turn or brake
-   commands, reducing visibility to following vehicles.
+   **Effect:** Rear turn indicators do not respond to commands,
+   reducing visibility of turn intention to following vehicles.
 
    **Detection:** Test case TC_RLCM verifies end-to-end signal
    path from BodyCan0 through RearLightLIN to RL.
@@ -124,9 +132,11 @@ FMEA Entries
    **Failure Mode:** Left turn signal does not activate when the
    driver engages the turn stalk.
 
-   **Cause:** Input signal edge detection missed due to callback
-   registration failure or signal subscription dropped during
-   broker reconnection.
+   **Cause:** The left turn-stalk input is stuck low on DriverCan0
+   (harness fault or stuck-at-zero sensor); the BCM turn-signal state
+   machine fails to transition to the left-active state due to missed
+   CAN frame; or the BCM fails to drive the ``LeftTurnLightRequest``
+   output on BodyCan0.
 
    **Effect:** Left turn intention is not communicated to other
    road users, increasing risk of side collision.
@@ -147,9 +157,11 @@ FMEA Entries
    **Failure Mode:** Right turn signal does not activate when the
    driver engages the turn stalk.
 
-   **Cause:** Input signal edge detection missed due to callback
-   registration failure or signal subscription dropped during
-   broker reconnection.
+   **Cause:** The right turn-stalk input is stuck low on DriverCan0
+   (harness fault or stuck-at-zero sensor); the BCM turn-signal state
+   machine fails to transition to the right-active state due to missed
+   CAN frame; or the BCM fails to drive the ``RightTurnLightRequest``
+   output on BodyCan0.
 
    **Effect:** Right turn intention is not communicated to other
    road users, increasing risk of side collision.
@@ -160,25 +172,31 @@ FMEA Entries
 .. fmea:: Brake Light Failure to Activate
    :id: FMEA_BRAKE_LIGHT_NO_ACTIVATE
    :status: reviewed
-   :asil: B
+   :asil: C
    :severity: 9
    :occurrence: 2
    :detection: 3
    :rpn: 54
-   :mitigates: COMP_REQ_RLCM_CONTROL
+   :mitigates: COMP_REQ_BCM_BRAKE_LIGHT
 
-   **Failure Mode:** Brake lights do not illuminate when the brake
-   pedal is pressed.
+   **Failure Mode:** The brake light is not illuminated when the
+   BrakeLight command is asserted on BodyCan0.
 
-   **Cause:** RLCM fails to receive or process the BrakeLight
-   command signal on BodyCan0, or the RearLightLIN communication
-   is interrupted.
+   **Cause:** The BCM brake-pedal input handler fails to evaluate the
+   pedal position (e.g. CAN frame loss on DriverCan0 or stuck-at-zero
+   sensor); the BCM brake-light publisher fails to drive the
+   ``BrakeLightControl`` signals on BodyCan0; or downstream listeners
+   (DIM, RLCM, GWM) do not propagate the asserted brake-light request
+   to the physical brake-light actuator.
 
    **Effect:** Following vehicles are not warned of deceleration,
    significantly increasing rear collision risk.
 
-   **Detection:** Test case TC_RLCM verifies brake light signal
-   path from BodyCan0 through RLCM to the rear light unit.
+   **Detection:** Test case TC_BRAKE_LIGHT exercises the BCM
+   brake-pedal input on DriverCan0 and observes the
+   ``BrakeLightControl`` signals on BodyCan0, asserting that the
+   brake-light request is published within one bus cycle of pedal
+   assertion and released within one bus cycle of pedal release.
 
 .. fmea:: Gear Position Mismatch
    :id: FMEA_GEAR_POSITION_MISMATCH

@@ -128,3 +128,14 @@ Behavioral Models
        LOGIC -->|LIN frames| LIN
        classDef chan fill:#f0f0f0,color:#333,stroke:#aaa
        classDef comp fill:#583eff,color:#fff,stroke:#3d2bbf
+
+.. model:: Front Light Control Model
+   :id: MDL_FLCM
+   :status: reviewed
+   :source_doc: remotive_car/platform/remotive-car.platform.yaml
+
+   Behavioural model for the Front Light Control Module. FLCM
+   illuminates the front turn indicators and headlights in response
+   to TurnLightControl and HeadlightControl commands received on
+   BodyCan0. In this topology FLCM is implemented declaratively via
+   the platform manifest rather than via a dedicated Python model.

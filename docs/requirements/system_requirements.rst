@@ -73,13 +73,43 @@ System Requirements
    :asil: B
    :verification_method: test
    :satisfies: FEAT_STATE_MACHINE
-   :reviewer: safety-engineer
-   :approved_by: safety-manager
+   :reviewer: Max Pabinger
+   :approved_by: Bartosz Burda
    :approved_date: 2026-05-10
 
    When the hazard light button is activated, the Body Control
    Module shall command simultaneous left and right turn indicator
    activation within one signal processing cycle.
+
+.. sysreq:: Turn Signal Indication
+   :id: SYSREQ_TURN_SIGNAL_SIGNALING
+   :status: approved
+   :asil: B
+   :verification_method: test
+   :satisfies: FEAT_STATE_MACHINE
+   :reviewer: Max Pabinger
+   :approved_by: Bartosz Burda
+   :approved_date: 2026-05-13
+
+   When the driver asserts a left or right turn intention, the system
+   shall illuminate only the front and rear turn indicator lamps on
+   the side matching the active turn input.
+
+.. sysreq:: Brake Light Activation
+   :id: SYSREQ_BRAKE_LIGHT_SAFETY
+   :status: approved
+   :asil: C
+   :verification_method: test
+   :satisfies: FEAT_STATE_MACHINE
+   :reviewer: Max Pabinger
+   :approved_by: Bartosz Burda
+   :approved_date: 2026-05-13
+
+   When the brake actuation signal is asserted on the driver network,
+   the system shall publish the brake-light request on the body network
+   within one signal-processing cycle so that downstream actuators are
+   commanded to illuminate the rear brake light and warn following
+   vehicles of deceleration.
 
 .. sysreq:: Recording Session Management
    :id: SYSREQ_RECORDING
