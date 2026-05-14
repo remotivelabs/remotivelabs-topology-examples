@@ -26,19 +26,19 @@ This creates a requirement with a unique ID, metadata fields (status, ASIL ratin
 
 ### What we defined
 
-The project currently has **84 needs** across 9 types:
+The project currently has **124 needs** across 9 types:
 
 | Type | Prefix | Count | Purpose |
 |------|--------|-------|---------|
 | Feature | `FEAT_` | 13 | User-facing capabilities from our docs |
-| System Requirement | `SYSREQ_` | 10 | What the system shall do |
-| Component Requirement | `COMP_REQ_` | 14 | What each ECU/module shall do |
-| Architecture Element | `ARCH_` | 4 | Subsystem designs |
+| System Requirement | `SYSREQ_` | 12 | What the system shall do |
+| Component Requirement | `COMP_REQ_` | 21 | What each ECU/module shall do |
+| Architecture Element | `ARCH_` | 10 | Subsystem designs |
 | ECU | `ECU_` | 13 | All 13 ECUs from the platform |
 | Channel | `CH_` | 5 | Communication channels (CAN, LIN, SOME/IP) |
-| Behavioral Model | `MDL_` | 5 | Python model implementations |
-| Test Case | `TC_` | 16 | Verification test cases |
-| FMEA Entry | `FMEA_` | 5 | Failure mode analysis |
+| Behavioral Model | `MDL_` | 6 | Behavioural models (Python or declarative) |
+| Test Case | `TC_` | 35 | Verification test cases (4 in `draft` pending stimulus implementation) |
+| FMEA Entry | `FMEA_` | 9 | Failure mode analysis |
 
 ### Traceability chain
 
@@ -52,13 +52,53 @@ Every component requirement traces up to a system requirement, which traces up t
 
 ---
 
+## Demo provenance and review independence (ISO 26262-8 §6.4.6 caveat)
+
+The 11 safety-relevant approved needs in this corpus carry
+`:reviewer:` and `:approved_by:` role assignments (Max Pabinger and
+Bartosz Burda respectively). ISO 26262-8 §6.4.6 additionally requires
+independence of the reviewer and approver **from the author of the
+requirement**. This demo corpus does not currently record an
+`:author:` field, so independence-of-author cannot be verified from
+the artefacts alone.
+
+For a production deliverable an audit log would establish that
+neither Max nor Bartosz authored the items they reviewed and
+approved. For this useblocks × RemotiveLabs partnership example the
+review/approval roles are illustrative of the §6.4.6 mechanism, not a
+substantive compliance claim.
+
+### Test-case scope honesty
+
+Four test cases ship with `:status: draft` because their cited test
+artefacts do not yet implement the verification steps the TC describes:
+
+| TC | Verifies | Why draft |
+|----|----------|-----------|
+| `TC_BLINK_TIMING` | `COMP_REQ_BCM_TURN_BLINK` | Cited unit test exercises state-machine transitions only; numerical cadence measurement (1.0-2.0 Hz, 40-60 % duty) is not yet implemented |
+| `TC_BRAKE_LIGHT` | `COMP_REQ_BCM_BRAKE_LIGHT` | Brake-pedal stimulus is not yet present in the cited pytest test path |
+| `TC_SYS_BRAKE_LIGHT` | `SYSREQ_BRAKE_LIGHT_SAFETY` | Same — system-level brake-light integration test not yet implemented |
+| `TC_TURN_SM_OUTPUTS` | `COMP_REQ_BCM_TURN_SM` | Complements `TC_TURN_SM` by adding BodyCan0 output verification on top of the state-machine state-name verification; integration scenario not yet present |
+
+Each `draft` TC carries a `**Note:**` paragraph explicitly stating
+what is missing and which file is the intended home for the test
+implementation. The associated requirements remain `approved` because
+their content is fixed; only the verification evidence is pending.
+
+---
+
 ## How to build the documentation
 
 ### Prerequisites
 
 ```bash
-pip install sphinx-needs sphinxcontrib-mermaid furo
+pip install -r docs/requirements.txt
 ```
+
+This pins the version set the corpus has been built and validated
+against (sphinx >= 8, sphinx-needs >= 8, sphinxcontrib-mermaid,
+sphinxcontrib-plantuml, furo, Pillow). `Pillow` is required by
+PlantUML rendering used inside `needflow`.
 
 ### Build HTML
 
@@ -66,13 +106,15 @@ From the repo root:
 
 ```bash
 cd docs
-sphinx-build -b html . _build
+sphinx-build -W -b html . _build/html
 ```
 
-The HTML output lands in `docs/_build/`. Open `docs/_build/index.html` in a browser, or serve it locally:
+`-W` treats every warning as an error — the corpus should build clean.
+The HTML output lands in `docs/_build/html/`. Open
+`docs/_build/html/index.html` in a browser, or serve it locally:
 
 ```bash
-cd docs/_build
+cd docs/_build/html
 python3 -m http.server 8080
 # Then open http://localhost:8080
 ```
@@ -210,6 +252,35 @@ In VS Code with GitHub Copilot, you can invoke an agent in chat:
 
 The agent reads its SKILL.md instructions and follows the exact procedure — proper shall-clause form, no internal implementation details, correct ID prefixes, traceability links.
 
+### Papyrus prerequisite for rationale-aware agents
+
+Six of the shipped agents read from or write to a [Papyrus](https://github.com/useblocks/papyrus) workspace — a sidecar memory store that holds decisions, findings, and project-specific terms linked to sphinx-needs IDs:
+
+| Agent | What it uses Papyrus for |
+|-------|--------------------------|
+| `@pharaoh.papyrus-non-empty-check` | Verifies a Papyrus workspace exists before audit fan-out |
+| `@pharaoh.context-gather` | Retrieves rationale memories relevant to the authoring context |
+| `@pharaoh.decision-record` | Persists canonical decisions / facts / preferences |
+| `@pharaoh.finding-record` | Persists audit findings with dedup on `(category, subject_id)` |
+| `@pharaoh.audit-fanout` | Routes per-need audits and aggregates findings via Papyrus |
+| `@pharaoh.req-from-code` | Looks up canonical concept names before naming new requirements |
+
+Bootstrap a workspace at the repo root before invoking any of these:
+
+```bash
+pip install papyrus      # or: uv pip install papyrus
+papyrus init .papyrus/
+```
+
+For semantic recall (used by `@pharaoh.context-gather`):
+
+```bash
+pip install "papyrus[semantic]"
+papyrus --workspace .papyrus rebuild-index
+```
+
+The `.papyrus/` directory is already listed in `.gitignore` — the rationale store stays local by default. Share it across the team explicitly by removing the ignore entry once your conventions are settled.
+
 ---
 
 ## Directory structure
@@ -220,12 +291,13 @@ docs/
 ├── ubproject.toml             # Need types, links, fields
 ├── schemas.json               # 13 validation rules
 ├── pharaoh.toml               # Pharaoh framework config
+├── requirements.txt           # Pinned build dependencies
 ├── index.rst                  # Landing page
 ├── features/                  # 13 feature needs
-├── requirements/              # 10 system + 14 component requirements
-├── architecture/              # 4 arch elements + 13 ECUs + 5 channels + 5 models
-├── verification/              # 16 test cases
-├── fmea/                      # 5 FMEA entries
+├── requirements/              # 12 system + 21 component requirements
+├── architecture/              # 10 arch elements + 13 ECUs + 5 channels + 6 models
+├── verification/              # 35 test cases (31 reviewed, 4 draft)
+├── fmea/                      # 9 FMEA entries
 ├── _static/                   # Logos, CSS (useblocks brand colors)
 └── .pharaoh/project/          # Tailoring (ID conventions, workflows, checklists)
 ```

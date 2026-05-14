@@ -7,6 +7,7 @@ Hazard Light Tests
 .. tc:: Hazard Light Activation
    :id: TC_HAZARD_ACTIVATE
    :status: reviewed
+   :asil: B
    :verification_method: test
    :source_doc: remotive_car/tests/behave/features/hazard_light.feature
    :verifies: COMP_REQ_BCM_HAZARD
@@ -26,6 +27,7 @@ Hazard Light Tests
 .. tc:: Hazard Light Deactivation
    :id: TC_HAZARD_DEACTIVATE
    :status: reviewed
+   :asil: B
    :verification_method: test
    :source_doc: remotive_car/tests/behave/features/hazard_light.feature
    :verifies: COMP_REQ_BCM_HAZARD
@@ -46,6 +48,7 @@ Turn Signal Tests
 .. tc:: Left Turn Signal Activation
    :id: TC_TURN_LEFT
    :status: reviewed
+   :asil: B
    :verification_method: test
    :source_doc: remotive_car/tests/behave/features/blink_left.feature
    :verifies: COMP_REQ_BCM_TURN_LEFT
@@ -64,11 +67,16 @@ Turn Signal Tests
 .. tc:: Right Turn Signal Activation
    :id: TC_TURN_RIGHT
    :status: reviewed
+   :asil: B
    :verification_method: test
    :source_doc: remotive_car/tests/behave/features/blink_left.feature
    :verifies: COMP_REQ_BCM_TURN_RIGHT
 
    **Preconditions:** Topology running, no active turn signals.
+
+   The ``blink_left.feature`` file contains scenarios for both left and
+   right turn directions; the right-turn scenario rows in the example
+   table cover this test case.
 
    **Steps:**
 
@@ -86,7 +94,7 @@ Beam Control Tests
    :id: TC_BEAMS
    :status: reviewed
    :verification_method: test
-   :source_doc: remotive_car/models/bcm/python/tests
+   :source_doc: remotive_car/models/bcm/python/tests/test_beams_state_machine.py
    :verifies: COMP_REQ_BCM_BEAMS
 
    **Preconditions:** BCM model active, beams in off state.
@@ -104,7 +112,7 @@ Beam Control Tests
    :id: TC_GEARS
    :status: reviewed
    :verification_method: test
-   :source_doc: remotive_car/models/bcm/python/tests
+   :source_doc: remotive_car/models/bcm/python/tests/test_gears_state_machine.py
    :verifies: COMP_REQ_BCM_GEARS
 
    **Preconditions:** BCM model active, gear in drive state.
@@ -119,43 +127,97 @@ Beam Control Tests
 State Machine Tests
 -------------------
 
-.. tc:: Turn Signal State Machine Arbitration
+.. tc:: Turn Signal Hazard Priority
    :id: TC_TURN_SM
    :status: reviewed
+   :asil: B
    :verification_method: test
-   :source_doc: remotive_car/models/bcm/python/bcm/state_machines/turn_signals.py
+   :source_doc: remotive_car/models/bcm/python/tests/test_turn_signals_state_machine.py
    :verifies: COMP_REQ_BCM_TURN_SM
 
    **Preconditions:** BCM model active, turn signal state machine in off state.
 
    **Steps:**
 
-   1. Activate left turn signal — verify state = left
-   2. While left active, activate hazard — verify state = hazard (priority)
-   3. Deactivate hazard — verify state returns to left
-   4. Deactivate left — verify state = off
+   1. Trigger the left turn signal — verify state machine reports
+      ``state == "left_on"`` or equivalent.
+   2. While left is active, trigger hazard — verify state machine
+      reports the hazard-active state.
+   3. Trigger hazard deactivation — verify state machine returns to
+      the left-only state.
+   4. Trigger left deactivation — verify state machine reports the
+      off state.
 
-   **Expected:** Hazard takes priority over directional signals.
-   State transitions follow the hierarchical state machine graph.
+   **Expected:** The state machine transitions between off / left /
+   hazard states as triggered. The hazard state takes priority over
+   directional states. No transition occurs that is not represented
+   in the state-machine graph.
 
-.. tc:: Turn Signal Blink Timing
+.. tc:: Turn Signal Blink Cadence Measurement
    :id: TC_BLINK_TIMING
-   :status: reviewed
+   :status: draft
+   :asil: B
    :verification_method: test
-   :source_doc: remotive_car/models/bcm/python/bcm/state_machines/turn_signals.py
-   :verifies: COMP_REQ_BCM_TURN_SM
+   :source_doc: remotive_car/models/bcm/python/tests/test_turn_signals_state_machine.py
+   :verifies: COMP_REQ_BCM_TURN_BLINK
 
-   **Preconditions:** BCM model active, turn signal state machine in off state.
+   **Preconditions:** BCM model active, turn signal state machine in
+   off state.
 
    **Steps:**
 
-   1. Activate left turn signal
-   2. Measure timing of on/off transitions over 10 blink cycles
-   3. Verify blink frequency is within the specified cadence
-   4. Deactivate turn signal and verify blinking stops
+   1. Activate left turn signal.
+   2. Record the timestamp of every rising and falling edge of the
+      LeftTurnLightRequest signal for at least 10 blink cycles.
+   3. Compute the mean blink frequency from the inter-edge intervals
+      and the duty cycle (active time over period).
+   4. Deactivate the turn signal and confirm no further edges occur
+      within the next 2 seconds.
 
-   **Expected:** Blink on/off timing shall be consistent across cycles
-   with frequency within the configured cadence tolerance.
+   **Expected:** The measured blink frequency is in the range
+   1.0 Hz to 2.0 Hz with a mean of 1.5 Hz plus or minus 0.5 Hz; the
+   active-state duty cycle is between 40 percent and 60 percent; no
+   edges occur after deactivation.
+
+   **Note:** Status is ``draft`` because the cited test currently
+   exercises state-machine transitions only. Numerical cadence
+   measurement (frequency, duty cycle) needs to be added before this
+   TC can move to ``reviewed``.
+
+.. tc:: Turn Signal Hazard Priority — CAN Output Verification
+   :id: TC_TURN_SM_OUTPUTS
+   :status: draft
+   :asil: B
+   :verification_method: test
+   :source_doc: remotive_car/tests/pytest/test_simulate_driver.py
+   :verifies: COMP_REQ_BCM_TURN_SM
+
+   **Preconditions:** Full topology running with BCM model active;
+   ``LeftTurnLightRequest`` and ``RightTurnLightRequest`` on BodyCan0
+   both inactive.
+
+   **Steps:**
+
+   1. Publish ``TurnSignalLeft`` = 1 on DriverCan0.
+   2. Within one signal-processing cycle, sample
+      ``LeftTurnLightRequest`` and ``RightTurnLightRequest`` on
+      BodyCan0.
+   3. While ``TurnSignalLeft`` is asserted, publish
+      ``HazardLightButton`` = 1 on DriverCan0.
+   4. Within one signal-processing cycle, sample both outputs again.
+   5. Publish ``HazardLightButton`` = 0.
+   6. Within one signal-processing cycle, sample both outputs.
+
+   **Expected:** After step 2 only ``LeftTurnLightRequest`` is active.
+   After step 4 both indicator outputs are active. After step 6 only
+   ``LeftTurnLightRequest`` is active. State-name verification is
+   covered by ``TC_TURN_SM``; this TC covers the state-to-CAN-output
+   emission mapping.
+
+   **Note:** Status is ``draft`` because the integration scenario
+   for hazard-priority CAN-output observation is not yet present in
+   ``test_simulate_driver.py``. The ``source_doc`` path is the
+   intended home.
 
 Integration Tests
 -----------------
@@ -182,7 +244,7 @@ Integration Tests
    :id: TC_RESTBUS
    :status: reviewed
    :verification_method: test
-   :source_doc: remotive_car/models/bcm/python/bcm/__main__.py
+   :source_doc: remotive_car/tests/pytest/test_simulate_driver.py
    :verifies: COMP_REQ_BCM_RESTBUS
 
    **Preconditions:** BCM model active, no input signals received.
@@ -199,7 +261,7 @@ Integration Tests
    :id: TC_GWM_FORWARD
    :status: reviewed
    :verification_method: test
-   :source_doc: remotive_car/models/gwm/python/gwm/__main__.py
+   :source_doc: remotive_car/tests/pytest/test_simulate_driver.py
    :verifies: COMP_REQ_GWM_FORWARD
 
    **Preconditions:** Topology running with GWM model active.
@@ -212,9 +274,10 @@ Integration Tests
    **Expected:** Designated signals are forwarded between CAN domains
    according to the routing configuration.
 
-.. tc:: Front Light Control Verification
+.. tc:: Front Turn Indicator Verification
    :id: TC_FLCM
    :status: reviewed
+   :asil: B
    :verification_method: test
    :source_doc: getting_started/tests/test_hazard_light.py
    :verifies: COMP_REQ_FLCM_CONTROL
@@ -223,16 +286,22 @@ Integration Tests
 
    **Steps:**
 
-   1. Send TurnLightControl with LeftTurnLightRequest = 1 on BodyCan0
-   2. Verify FLCM receives and processes the command
+   1. Send HazardLightButton = 1 on DriverCan0.
+   2. Within one bus cycle, sample the FLCM front turn indicator
+      outputs for both left and right sides.
 
-   **Expected:** FLCM activates the front left turn indicator.
+   **Expected:** FLCM activates both front turn indicators (left and
+   right) within one bus cycle of hazard activation, exercising the
+   FLCM side-selection logic in the symmetric (hazard) case. Isolated
+   single-side stimuli (left-only or right-only) are not covered by
+   the cited test and remain to be exercised separately.
 
-.. tc:: Rear Light Control Verification
+.. tc:: Rear Turn Indicator Verification
    :id: TC_RLCM
    :status: reviewed
+   :asil: B
    :verification_method: test
-   :source_doc: remotive_car/platform/remotive-car.platform.yaml
+   :source_doc: remotive_car/tests/pytest/test_simulate_driver.py
    :verifies: COMP_REQ_RLCM_CONTROL
 
    **Preconditions:** Topology running with RLCM connected to BodyCan0
@@ -246,11 +315,44 @@ Integration Tests
    **Expected:** RLCM forwards the lighting command to the rear
    light unit over the LIN bus.
 
+.. tc:: Brake Light Signal Publication
+   :id: TC_BRAKE_LIGHT
+   :status: draft
+   :asil: C
+   :verification_method: test
+   :source_doc: remotive_car/models/bcm/python/tests/test_brake_signals.py
+   :verifies: COMP_REQ_BCM_BRAKE_LIGHT
+
+   **Preconditions:** Topology running with BCM model active;
+   ``BrakeLightControl.LeftBrakeLightRequest`` and
+   ``BrakeLightControl.RightBrakeLightRequest`` both inactive on
+   BodyCan0.
+
+   **Steps:**
+
+   1. Publish ``BrakePedalPositionSensor.BrakePedalPosition`` = 50
+      (non-zero) on DriverCan0.
+   2. Within one signal-processing cycle, sample both
+      ``BrakeLightControl.LeftBrakeLightRequest`` and
+      ``BrakeLightControl.RightBrakeLightRequest`` on BodyCan0.
+   3. Publish ``BrakePedalPositionSensor.BrakePedalPosition`` = 0
+      on DriverCan0.
+   4. Within one signal-processing cycle, sample both signals again.
+
+   **Expected:** Both brake-light request signals report active
+   (value = 1) within one cycle of brake-pedal assertion and inactive
+   (value = 0) within one cycle of brake-pedal release.
+
+   **Note:** Status is ``draft`` because the test implementation for
+   the brake-pedal stimulus is not yet present in
+   ``test_simulate_driver.py``; the source_doc path is the intended
+   home for the test.
+
 .. tc:: Gateway Protocol Translation Verification
    :id: TC_GWM_TRANSLATE
    :status: reviewed
    :verification_method: test
-   :source_doc: remotive_car/models/gwm/python/gwm/__main__.py
+   :source_doc: remotive_car/tests/pytest/android/test_hvac.py
    :verifies: COMP_REQ_GWM_TRANSLATE
 
    **Preconditions:** Topology running with GWM bridging CAN and SOME/IP.
@@ -268,7 +370,7 @@ Integration Tests
    :id: TC_IHU_SOMEIP
    :status: reviewed
    :verification_method: test
-   :source_doc: remotive_car/models/ihu/python/ihu/__main__.py
+   :source_doc: remotive_car/tests/pytest/android/test_hvac.py
    :verifies: COMP_REQ_IHU_SOMEIP
 
    **Preconditions:** Topology running with IHU and GWM active.
@@ -285,7 +387,7 @@ Integration Tests
    :id: TC_SCCM_INPUT
    :status: reviewed
    :verification_method: test
-   :source_doc: remotive_car/models/sccm/python/sccm/__main__.py
+   :source_doc: remotive_car/models/sccm/python/tests/test_device.py
    :verifies: COMP_REQ_SCCM_INPUT
 
    **Preconditions:** Topology running with SCCM model active.
@@ -386,7 +488,7 @@ Infrastructure Tests
    :id: TC_IHU_ANDROID
    :status: reviewed
    :verification_method: test
-   :source_doc: remotive_car/models/ihu/python/ihu/broker_to_emulator.py
+   :source_doc: remotive_car/tests/pytest/android/test_location.py
    :verifies: COMP_REQ_IHU_ANDROID
 
    **Preconditions:** Topology running with IHU model; Android Automotive

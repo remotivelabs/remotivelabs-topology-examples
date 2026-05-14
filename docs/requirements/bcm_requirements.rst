@@ -9,8 +9,8 @@ BCM Component Requirements
    :source_doc: remotive_car/models/bcm/python/bcm/__main__.py
    :satisfies: SYSREQ_HAZARD_LIGHT_SAFETY
    :refines: MDL_BCM
-   :reviewer: safety-engineer
-   :approved_by: safety-manager
+   :reviewer: Max Pabinger
+   :approved_by: Bartosz Burda
    :approved_date: 2026-05-10
 
    The Body Control Module shall activate both left and right turn
@@ -23,15 +23,16 @@ BCM Component Requirements
    :asil: B
    :verification_method: test
    :source_doc: remotive_car/models/bcm/python/bcm/__main__.py
-   :satisfies: SYSREQ_HAZARD_LIGHT_SAFETY
+   :satisfies: SYSREQ_TURN_SIGNAL_SIGNALING
    :refines: MDL_BCM
-   :reviewer: safety-engineer
-   :approved_by: safety-manager
-   :approved_date: 2026-05-10
+   :reviewer: Max Pabinger
+   :approved_by: Bartosz Burda
+   :approved_date: 2026-05-13
 
-   The Body Control Module shall maintain the LeftTurnLight output
-   on BodyCan0 in the active state when and only when the
-   TurnSignalLeft input on DriverCan0 is asserted.
+   The Body Control Module shall maintain the LeftTurnLight output on
+   BodyCan0 in the active state within one signal-processing cycle
+   when and only when the TurnSignalLeft input on DriverCan0 is
+   asserted.
 
 .. comp_req:: Turn Signal Right Activation
    :id: COMP_REQ_BCM_TURN_RIGHT
@@ -39,15 +40,16 @@ BCM Component Requirements
    :asil: B
    :verification_method: test
    :source_doc: remotive_car/models/bcm/python/bcm/__main__.py
-   :satisfies: SYSREQ_HAZARD_LIGHT_SAFETY
+   :satisfies: SYSREQ_TURN_SIGNAL_SIGNALING
    :refines: MDL_BCM
-   :reviewer: safety-engineer
-   :approved_by: safety-manager
-   :approved_date: 2026-05-10
+   :reviewer: Max Pabinger
+   :approved_by: Bartosz Burda
+   :approved_date: 2026-05-13
 
-   The Body Control Module shall maintain the RightTurnLight output
-   on BodyCan0 in the active state when and only when the
-   TurnSignalRight input on DriverCan0 is asserted.
+   The Body Control Module shall maintain the RightTurnLight output on
+   BodyCan0 in the active state within one signal-processing cycle
+   when and only when the TurnSignalRight input on DriverCan0 is
+   asserted.
 
 .. comp_req:: Beam State Management
    :id: COMP_REQ_BCM_BEAMS
@@ -76,22 +78,42 @@ BCM Component Requirements
    (drive, reverse) and publish the reverse light status on
    BodyCan0 based on the GearPosition input signal.
 
-.. comp_req:: Turn Signal State Machine
+.. comp_req:: Turn Signal Hazard Priority
    :id: COMP_REQ_BCM_TURN_SM
    :status: approved
    :asil: B
    :verification_method: test
    :source_doc: remotive_car/models/bcm/python/bcm/state_machines/turn_signals.py
-   :satisfies: SYSREQ_HAZARD_LIGHT_SAFETY
+   :satisfies: SYSREQ_HAZARD_LIGHT_SAFETY; SYSREQ_TURN_SIGNAL_SIGNALING
    :refines: MDL_BCM
-   :reviewer: safety-engineer
-   :approved_by: safety-manager
-   :approved_date: 2026-05-10
+   :reviewer: Max Pabinger
+   :approved_by: Bartosz Burda
+   :approved_date: 2026-05-13
 
-   The Body Control Module shall implement a hierarchical state
-   machine for turn signal arbitration with four top-level states
-   (off, left, right, hazard), each with on/off substates for
-   blink cycling at 1.5 Hz nominal (per ISO 4040 §6.1.1).
+   The Body Control Module shall command the turn indicator outputs
+   such that when the hazard state is active both indicator outputs
+   are commanded irrespective of the directional inputs, and when the
+   hazard state is inactive only the indicator on the side of the
+   active directional input is commanded.
+
+.. comp_req:: Turn Signal Blink Cadence
+   :id: COMP_REQ_BCM_TURN_BLINK
+   :status: approved
+   :asil: B
+   :verification_method: test
+   :source_doc: remotive_car/models/bcm/python/bcm/state_machines/turn_signals.py
+   :satisfies: SYSREQ_TURN_SIGNAL_SIGNALING
+   :refines: MDL_BCM
+   :reviewer: Max Pabinger
+   :approved_by: Bartosz Burda
+   :approved_date: 2026-05-13
+
+   While a turn indicator output is commanded active, the Body Control
+   Module shall toggle that output between the active and inactive
+   states at a frequency of 1.5 Hz with a tolerance of plus or minus
+   0.5 Hz, keeping the cycle within the regulatory range of 60 to 120
+   cycles per minute defined by UNECE Regulation No. 48 for direction
+   indicator lamps.
 
 .. comp_req:: Signal Subscription Setup
    :id: COMP_REQ_BCM_SUBSCRIBE
@@ -118,3 +140,22 @@ BCM Component Requirements
    The Body Control Module shall maintain a restbus on BodyCan0,
    continuously publishing default signal values for all output
    signals not actively driven by input events.
+
+.. comp_req:: Brake Light Signal Publication
+   :id: COMP_REQ_BCM_BRAKE_LIGHT
+   :status: approved
+   :asil: C
+   :verification_method: test
+   :source_doc: remotive_car/models/bcm/python/bcm/__main__.py
+   :satisfies: SYSREQ_BRAKE_LIGHT_SAFETY
+   :refines: MDL_BCM
+   :reviewer: Max Pabinger
+   :approved_by: Bartosz Burda
+   :approved_date: 2026-05-13
+
+   The Body Control Module shall publish
+   ``BrakeLightControl.LeftBrakeLightRequest`` and
+   ``BrakeLightControl.RightBrakeLightRequest`` on BodyCan0 in the
+   active state within one signal-processing cycle while
+   ``BrakePedalPositionSensor.BrakePedalPosition`` on DriverCan0
+   reports a non-zero value.

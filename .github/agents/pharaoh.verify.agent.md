@@ -16,4 +16,4 @@ handoffs:
 
 Use when checking whether one sphinx-needs artefact actually addresses the substance of every parent it links to via :satisfies: or :verifies:. Cross-need content check — distinct from structural MECE, schema-level tailor-review, and per-axis req-review/arch-review.
 
-See [`skills/pharaoh-verify/SKILL.md`](../../skills/pharaoh-verify/SKILL.md) for the full atomic specification — inputs, scoring scale, and composition patterns.
+See [`skills/pharaoh-verify/SKILL.md`](skills/pharaoh-verify/SKILL.md) for the full atomic specification — inputs, scoring scale, and composition patterns.

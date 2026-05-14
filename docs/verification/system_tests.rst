@@ -9,6 +9,7 @@ Hazard Light System Test
 .. tc:: System-Level Hazard Light Safety
    :id: TC_SYS_HAZARD_SAFETY
    :status: reviewed
+   :asil: B
    :verification_method: test
    :source_doc: remotive_car/tests/behave/features/hazard_light.feature
    :verifies: SYSREQ_HAZARD_LIGHT_SAFETY
@@ -27,6 +28,65 @@ Hazard Light System Test
    **Expected:** All four turn indicators (front-left, front-right,
    rear-left, rear-right) shall activate within one processing cycle
    of the hazard button press.
+
+.. tc:: System-Level Turn Signal Indication
+   :id: TC_SYS_TURN_SIGNAL
+   :status: reviewed
+   :asil: B
+   :verification_method: test
+   :source_doc: remotive_car/tests/behave/features/blink_left.feature
+   :verifies: SYSREQ_TURN_SIGNAL_SIGNALING
+
+   **Preconditions:** Full topology running with SCCM, BCM, FLCM, and
+   RLCM models active.
+
+   **Steps:**
+
+   1. Drive the scenario outline with ``<turn_direction>`` = ``left``
+      via the SCCM behave step (which asserts the corresponding CAN
+      signal on DriverCan0).
+   2. Within one processing cycle, observe the front-left, rear-left,
+      front-right, and rear-right indicator outputs.
+   3. Repeat for ``<turn_direction>`` = ``right``.
+   4. Repeat for ``<turn_direction>`` = ``none``.
+
+   **Expected:** For each scenario row the indicator outputs on the
+   side matching ``<turn_direction>`` illuminate within one processing
+   cycle; the indicator outputs on the opposite side remain off. For
+   ``none`` no indicator is illuminated.
+
+.. tc:: System-Level Brake Light Activation
+   :id: TC_SYS_BRAKE_LIGHT
+   :status: draft
+   :asil: C
+   :verification_method: test
+   :source_doc: remotive_car/tests/pytest/test_brake_light_system.py
+   :verifies: SYSREQ_BRAKE_LIGHT_SAFETY
+
+   **Preconditions:** Full topology running with BCM model active;
+   ``BrakeLightControl.LeftBrakeLightRequest`` and
+   ``BrakeLightControl.RightBrakeLightRequest`` both inactive on
+   BodyCan0.
+
+   **Steps:**
+
+   1. Publish a non-zero ``BrakePedalPositionSensor.BrakePedalPosition``
+      on DriverCan0.
+   2. Within one signal-processing cycle, sample both
+      ``BrakeLightControl`` request signals on BodyCan0.
+   3. Restore ``BrakePedalPositionSensor.BrakePedalPosition`` to zero.
+   4. Within one signal-processing cycle, sample the same signals
+      again.
+
+   **Expected:** Both ``BrakeLightControl`` request signals report
+   active (value = 1) while the brake pedal is asserted and inactive
+   (value = 0) once the brake pedal is released, within one
+   signal-processing cycle of each transition.
+
+   **Note:** Status is ``draft`` because the brake-pedal stimulus
+   for ``test_simulate_driver.py`` is not yet implemented; the
+   ``source_doc`` path is the intended home for the system-level
+   brake-light test.
 
 Platform and Routing Tests
 --------------------------
@@ -72,7 +132,7 @@ Platform and Routing Tests
    :id: TC_SYS_MULTI_CHANNEL
    :status: reviewed
    :verification_method: test
-   :source_doc: remotive_car/models/gwm/python/gwm/__main__.py
+   :source_doc: remotive_car/tests/pytest/test_simulate_driver.py
    :verifies: SYSREQ_MULTI_CHANNEL
 
    **Preconditions:** Topology running with DriverCan0, BodyCan0,
@@ -95,7 +155,7 @@ Lifecycle and Infrastructure Tests
    :id: TC_SYS_MODEL_LIFECYCLE
    :status: reviewed
    :verification_method: test
-   :source_doc: remotive_car/models/bcm/python/bcm/__main__.py
+   :source_doc: remotive_car/tests/pytest/test_simulate_driver.py
    :verifies: SYSREQ_MODEL_LIFECYCLE
 
    **Preconditions:** BCM model container available.
@@ -189,7 +249,7 @@ Lifecycle and Infrastructure Tests
    :id: TC_SYS_ANDROID
    :status: reviewed
    :verification_method: test
-   :source_doc: remotive_car/instances/android/main.instance.yaml
+   :source_doc: remotive_car/tests/pytest/android/test_hvac.py
    :verifies: SYSREQ_ANDROID
 
    **Preconditions:** Topology running with IHU model and Android
