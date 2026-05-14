@@ -16,4 +16,4 @@ handoffs:
 
 Use when authoring or modifying a single sphinx-needs artefact (requirement, architecture element, test case, decision) by routing to the matching atomic drafting skill based on the project's artefact catalog. Returns the drafted RST directive with an ID, file placement suggestion, and parent link.
 
-See [`skills/pharaoh-author/SKILL.md`](../../skills/pharaoh-author/SKILL.md) for the full atomic specification — inputs, dispatch table, and composition patterns.
+See [`skills/pharaoh-author/SKILL.md`](skills/pharaoh-author/SKILL.md) for the full atomic specification — inputs, dispatch table, and composition patterns.

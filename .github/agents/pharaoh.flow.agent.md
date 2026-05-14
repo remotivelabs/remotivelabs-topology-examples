@@ -9,4 +9,4 @@ Use when orchestrating the full V-model chain for one feature context across the
 
 Dispatches to pharaoh-req-draft, pharaoh-req-review, pharaoh-arch-draft, pharaoh-arch-review, pharaoh-vplan-draft, pharaoh-vplan-review, and pharaoh-fmea. Safety-V types route through pharaoh-req-draft with the appropriate target_level (hazard, safety_goal, fsr) — no new safety-V drafting skills are introduced.
 
-See [`skills/pharaoh-flow/SKILL.md`](../../skills/pharaoh-flow/SKILL.md) for the full atomic specification — inputs, outputs, atomicity contract, and composition patterns.
+See [`skills/pharaoh-flow/SKILL.md`](skills/pharaoh-flow/SKILL.md) for the full atomic specification — inputs, outputs, atomicity contract, and composition patterns.

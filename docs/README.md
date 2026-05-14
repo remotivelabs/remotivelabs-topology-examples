@@ -210,6 +210,35 @@ In VS Code with GitHub Copilot, you can invoke an agent in chat:
 
 The agent reads its SKILL.md instructions and follows the exact procedure — proper shall-clause form, no internal implementation details, correct ID prefixes, traceability links.
 
+### Papyrus prerequisite for rationale-aware agents
+
+Six of the shipped agents read from or write to a [Papyrus](https://github.com/useblocks/papyrus) workspace — a sidecar memory store that holds decisions, findings, and project-specific terms linked to sphinx-needs IDs:
+
+| Agent | What it uses Papyrus for |
+|-------|--------------------------|
+| `@pharaoh.papyrus-non-empty-check` | Verifies a Papyrus workspace exists before audit fan-out |
+| `@pharaoh.context-gather` | Retrieves rationale memories relevant to the authoring context |
+| `@pharaoh.decision-record` | Persists canonical decisions / facts / preferences |
+| `@pharaoh.finding-record` | Persists audit findings with dedup on `(category, subject_id)` |
+| `@pharaoh.audit-fanout` | Routes per-need audits and aggregates findings via Papyrus |
+| `@pharaoh.req-from-code` | Looks up canonical concept names before naming new requirements |
+
+Bootstrap a workspace at the repo root before invoking any of these:
+
+```bash
+pip install papyrus      # or: uv pip install papyrus
+papyrus init .papyrus/
+```
+
+For semantic recall (used by `@pharaoh.context-gather`):
+
+```bash
+pip install "papyrus[semantic]"
+papyrus --workspace .papyrus rebuild-index
+```
+
+The `.papyrus/` directory is already listed in `.gitignore` — the rationale store stays local by default. Share it across the team explicitly by removing the ignore entry once your conventions are settled.
+
 ---
 
 ## Directory structure
