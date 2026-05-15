@@ -1,4 +1,4 @@
-schema: remotive-topology-instance:0.15
+schema: remotive-topology-instance:0.17
 
 ecus:
   IHU:
@@ -10,7 +10,7 @@ ecus:
             args:
               - MODEL_PATH=ihu/python
             target: model
-            dockerfile: ../../Dockerfile
+            dockerfile: ../Dockerfile
           command: python -m ihu
           environment:
             - VIRTUAL_DEVICE_TYPE=cuttlefish

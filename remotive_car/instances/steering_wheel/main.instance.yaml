@@ -1,12 +1,13 @@
-schema: remotive-topology-instance:0.15
+schema: remotive-topology-instance:0.17
 
 name: remotive_car_steering_wheel
 
 includes:
   - ./../../common/jupyter/jupyter.instance.yaml
   - ./../../common/remotivecar/remotivecar.instance.yaml
-  - ./../../models/python_models.instance.yaml
-  - ./../../models/sccm/python.instance.yaml
+  - ./../../models/bcm_gwm_ihu.instance.yaml
+  - ./../../models/rl_rlcm.instance.yaml
+  - ./../../models/sccm.bm.instance.yaml
 
 platform:
   includes:

@@ -176,8 +176,8 @@ config:
 ## Host setup
 
 - `RemotiveTopology` <https://docs.remotivelabs.com/docs/remotive-topology/install>
-- `dockercan` to enable CAN networks in Docker; install the latest version from [here](https://releases.remotivelabs.com/#docker_can/).
-  Alternatively include [can_over_udp.instance.yaml](../can_over_udp.instance.yaml) in your instance, as shown in the examples below.
+- `RemotiveBus` to enable CAN networks in Docker; see installation instructions [here](https://docs.remotivelabs.com/docs/remotive-bus/install).
+  Alternatively include [can_over_udp.instance.yaml](../../settings/can_over_udp.settings.instance.yaml) and [vlan_using_bridge.instance.yaml](../../settings/vlan_using_bridge.instance.yaml) in your instance, as shown in the examples below.
 
 Note! Only runs on Linux as the physical steering wheel requires the Linux `evdev` kernel module.
 
@@ -215,7 +215,8 @@ docker compose -f remotive_car/build/remotive_car_steering_wheel/docker-compose.
 All configuration is done using RemotiveTopology instance files:
 
 > :link: [Main instance](main.instance.yaml)<br>
-> :link: [CAN over UDP](../can_over_udp.instance.yaml)
+> :link: [CAN over UDP](../../settings/can_over_udp.settings.instance.yaml)
+> :link: [VLAN using bridge](../../settings/vlan_using_bridge.instance.yaml)
 
 Notice how the main instance includes other instance configuration files and also the platform configuration
 RemotiveTopology is based around a modular approach to describe both platforms and different ways to instantiate them.

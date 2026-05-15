@@ -41,7 +41,7 @@ class GWM:
         self.chassis_can_0 = CanNamespace(GWM.chassis_ns, broker_client=self._broker_client)
         self.bm = BehavioralModel(
             GWM.ecu_name,
-            namespaces=[self.someip_bus, self.body_can_0],
+            namespaces=[self.someip_bus, self.body_can_0, self.chassis_can_0],
             broker_client=self._broker_client,
             input_handlers=[
                 self.body_can_0.create_input_handler([filters.FrameFilter("TurnLightControl")], self.on_frame),

@@ -1,11 +1,11 @@
-schema: remotive-topology-instance:0.15
+schema: remotive-topology-instance:0.17
 
 name: remotive_car_android
 
 includes:
-  - ../../models/bcm/python.instance.yaml
-  - ../../models/gwm/python.instance.yaml
-  - ../../models/ihu/python.instance.yaml
+  - ../../models/bcm.bm.instance.yaml
+  - ../../models/gwm.bm.instance.yaml
+  - ../../models/ihu.bm.instance.yaml
 
 platform:
   includes:

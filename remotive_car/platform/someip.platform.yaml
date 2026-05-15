@@ -1,4 +1,4 @@
-schema: remotive-topology-platform:0.15
+schema: remotive-topology-platform:0.17
 channels:
   SOMEIP:
     database: ./databases/someip.fibex.xml

@@ -1,8 +1,8 @@
-schema: remotive-topology-instance:0.15
+schema: remotive-topology-instance:0.17
 
 platform:
   includes:
-    - ../../platform/remotive-car.platform.yaml
+    - ../platform/remotive-car.platform.yaml
 
 ecus:
   IHU:
@@ -14,7 +14,7 @@ ecus:
             args:
               - MODEL_PATH=ihu/python
             target: ihu_android
-            dockerfile: ../../Dockerfile
+            dockerfile: ../Dockerfile
           command: python -m ihu
           environment:
             - VIRTUAL_DEVICE_TYPE=android_emulator

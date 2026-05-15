@@ -168,7 +168,7 @@ config:
 
 ## Host setup
 - `RemotiveTopology` <https://docs.remotivelabs.com/docs/remotive-topology/install>
-- On Linux, this example requires that you run `dockercan` service on your machine to enable CAN networks in Docker, install the latest version from [here](https://releases.remotivelabs.com/#docker_can/). Alternatively include [can_over_udp.instance.yaml](../can_over_udp.instance.yaml) in your instance, as shown in the examples below.
+- On Linux, this example requires that you run `RemotiveBus` service on your machine to enable CAN and VLAN networks in Docker, see installation instructions [here](https://docs.remotivelabs.com/docs/remotive-bus/install). Alternatively include [can_over_udp.instance.yaml](../../settings/can_over_udp.settings.instance.yaml) and [vlan_using_bridge.instance.yaml](../../settings/vlan_using_bridge.settings.instance.yaml) in your instance, as shown in the examples below.
 
 ## Getting started
 In order to run the commands in the sections below, first navigate to the root of this repository.
@@ -176,11 +176,11 @@ In order to run the commands in the sections below, first navigate to the root o
 ### Generate
 Run one of the commands below, depending on your setup.
 ```bash
-# Linux with DockerCAN
+# Linux with RemotiveBus
 remotive topology generate -f remotive_car/instances/hello_world/main.instance.yaml remotive_car/build
 
 # Windows/MacOS CAN over UDP
-remotive topology generate -f remotive_car/instances/hello_world/main.instance.yaml -f remotive_car/instances/can_over_udp.instance.yaml remotive_car/build
+remotive topology generate -f remotive_car/instances/hello_world/main.instance.yaml -f remotive_car/settings/can_over_udp.settings.instance.yaml -f remotive_car/settings/vlan_using_bridge.settings.instance.yaml remotive_car/build
 ```
 
 RemotiveTopology uses Docker compose to define the containers and networks of the topology. Once generated, by following the steps in this section, it can be found [here](../../build/remotive_car_hello_world/docker-compose.yml).
@@ -205,9 +205,10 @@ docker compose -f remotive_car/build/remotive_car_hello_world/docker-compose.yml
 All configuration is done using RemotiveTopology instance files:
 
 > :link: [Main instance](main.instance.yaml)<br>
-> :link: [CAN over UDP](../can_over_udp.instance.yaml)
+> :link: [CAN over UDP](../../settings/can_over_udp.settings.instance.yaml)
+> :link: [VLAN using bridge](../../settings/vlan_using_bridge.settings.instance.yaml)
 
-Notice how the main instance includes other instance configuration files and also the platform configuration. RemotiveTopology is based around a modular approach to describe both platforms and different ways to instantiate them. For example in this example you can see how the simple models are defined in a [reusable instance file](../../models/python_models.instance.yaml).
+Notice how the main instance includes other instance configuration files and also the platform configuration. RemotiveTopology is based around a modular approach to describe both platforms and different ways to instantiate them. For example in this example you can see how the ECU models are composed from reusable instance files like [bcm_gwm_ihu.instance.yaml](../../models/bcm_gwm_ihu.instance.yaml) and [rl_rlcm.instance.yaml](../../models/rl_rlcm.instance.yaml).
 
 ### Test
 This instance includes the tests from [tester.instance.yaml](./../../tests/tester.instance.yaml), which contains both pytest and scenario based tests using behave. To run these you use the profile `tester` for pytest and `behave` for behave.

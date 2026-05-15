@@ -1,7 +1,7 @@
-schema: remotive-topology-instance:0.15
+schema: remotive-topology-instance:0.17
 
 includes:
-  - ../../models/ihu/android_emulator.instance.yaml
+  - ../../models/ihu.android_emulator.instance.yaml
 
 ecus:
   IHU:

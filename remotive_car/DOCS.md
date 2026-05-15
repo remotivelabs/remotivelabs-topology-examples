@@ -15,7 +15,7 @@ The purpose of the example is to show a somewhat realistic topology where multip
 Notice while the example is showing ECUs possible present in a real vehicle, the signals and implementations are simplified to make the example easy to understand. The goal is not intended to be fully realistic.
 
 ## Host setup
-On Linux, this example requires that you run `dockercan` service on your machine to enable CAN networks in Docker, install the latest version from [here](https://releases.remotivelabs.com/#docker_can/) or read about how to do this over udp in the [documentation](https://docs.remotivelabs.com/docs/remotive-topology/getting-started#can).
+On Linux, this example requires that you run `RemotiveBus` service on your machine to enable CAN networks in Docker, see installation instructions [here](https://docs.remotivelabs.com/docs/remotive-bus/install) or read about how to do this over udp in the [documentation](https://docs.remotivelabs.com/docs/remotive-topology/getting-started#can).
 
 ## Project structure
 Below is an overview of the project's directory layout and its main components:
@@ -48,7 +48,7 @@ There is also an instance that integrates with a physical steering wheel, replac
 Note that running the steering wheel example requires hardware.
 
 ### Models (ECU implementation)
-The [models](models) directory contains multiple implementations of ECUs. The most simple instance of these ECUs is [python_models.instance.yaml](models/python_models.instance.yaml) where each ECU uses a simple `BehavioralModel`.
+The [models](models) directory contains multiple implementations of ECUs. The most simple instance bundles all Python behavioral models using [bcm_gwm_ihu.instance.yaml](models/bcm_gwm_ihu.instance.yaml) and [rl_rlcm.instance.yaml](models/rl_rlcm.instance.yaml).
 
 Each model specifies how it should be instantiated from the main instance, and these definitions are used to generate the final output.
 

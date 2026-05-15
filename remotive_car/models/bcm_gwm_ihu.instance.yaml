@@ -1,0 +1,6 @@
+schema: remotive-topology-instance:0.17
+
+includes:
+  - ./bcm.bm.instance.yaml
+  - ./gwm.bm.instance.yaml
+  - ./ihu.bm.instance.yaml

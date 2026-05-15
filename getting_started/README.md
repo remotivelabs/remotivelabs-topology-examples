@@ -55,7 +55,7 @@ RemotiveTopology now understands that there exists 4 other ECUs `DIM`, `FLCM`, `
 Since the DBC files doesn't include information about what the CAN channels are called you need to add additional information using a RemotiveTopology [platform.yaml](platform/topology.platform.yaml) file:
 
 ```yaml
-schema: remotive-topology-platform:0.15
+schema: remotive-topology-platform:0.17
 channels:
   DriverCan0:
     type: can
@@ -140,7 +140,7 @@ While being a simplified example, the structure is common to most kinds of behav
 In RemotiveTopology you create a topology by combining one or more instance.yaml files. Each file can contain one or more ECUs or other settings. In this case you need to instantiate the Behavioral Model for the `BCM` ECU:
 
 ```yaml
-schema: remotive-topology-instance:0.15
+schema: remotive-topology-instance:0.17
 
 ecus:
   BCM:
@@ -168,7 +168,7 @@ This shows:
 
 ```yaml
 ---
-schema: remotive-topology-instance:0.15
+schema: remotive-topology-instance:0.17
 name: getting-started
 includes:
   - <path>/getting_started/models/bcm.instance.yaml
@@ -177,15 +177,19 @@ channels:
   BodyCan0:
     type: can
     driver:
-      type: dockercan
-      device_name: bodycan0
-      peer: bodycan0
+      type: remotivebus
+      config:
+        type: can
+        device: bodycan0
+        host_device: bodycan0
   DriverCan0:
     type: can
     driver:
-      type: dockercan
-      device_name: drivercan0
-      peer: drivercan0
+      type: remotivebus
+      config:
+        type: can
+        device: drivercan0
+        host_device: drivercan0
 ecus:
   BCM:
     channels:
@@ -273,7 +277,7 @@ A minimal test case that checks that the lights turn on when pressing the hazard
 These tests are added in the topology with an instance file like:
 
 ```yaml
-schema: remotive-topology-instance:0.15
+schema: remotive-topology-instance:0.17
 
 containers:
   tester:
@@ -304,17 +308,17 @@ Notice:
 
 RemotiveTopology supports two ways of instantiating a CAN network:
 
-1. [RemotiveLabs DockerCAN](https://releases.remotivelabs.com/#docker_can/) driver for SocketCAN (default)
+1. [RemotiveLabs RemotiveBus](https://docs.remotivelabs.com/docs/remotive-bus) driver for SocketCAN (default)
 2. Emulation using UDP (by broadcasting ethernet PDUs)
 
-DockerCAN is needed to connect to physical hardware and to use standard CAN tooling such as `candump`. DockerCAN using SocketCAN is the natural way to implement CAN and is therefore the default setting in RemotiveTopology.
+RemotiveBus is needed to connect to physical hardware and to use standard CAN tooling such as `candump`. RemotiveBus using SocketCAN is the natural way to implement CAN and is therefore the default setting in RemotiveTopology.
 
-:warning: SocketCAN is only supported on Linux with [RemotiveLabs DockerCAN](https://releases.remotivelabs.com/#docker_can/) driver. On Mac/Windows you need to fall back to emulation. Notice that the UDP packets are still encoded in the same way as the real CAN frames, by using ethernet PDUs.
+:warning: SocketCAN is only supported on Linux with [RemotiveLabs RemotiveBus](https://docs.remotivelabs.com/docs/remotive-bus) driver. On Mac/Windows you need to fall back to emulation. Notice that the UDP packets are still encoded in the same way as the real CAN frames, by using ethernet PDUs.
 
 To make this example run on all platforms use CAN over UDP. This is configured by adding the following instance.yaml:
 
 ```yaml
-schema: remotive-topology-instance:0.15
+schema: remotive-topology-instance:0.17
 
 settings:
   can:
@@ -326,7 +330,7 @@ settings:
 Tests need to be configured in what environment they should run. This is done using yet another instance.yaml:
 
 ```yaml
-schema: remotive-topology-instance:0.15
+schema: remotive-topology-instance:0.17
 
 name: getting-started
 platform:
@@ -353,7 +357,7 @@ Notice:
 To run the topology generate the runtime environment:
 
 ```sh
-$ remotive topology generate -f getting_started/instances/main.instance.yaml -f getting_started/instances/can_over_udp.instance.yaml --name getting_started build
+$ remotive topology generate -f getting_started/instances/main.instance.yaml -f getting_started/settings/can_over_udp.settings.instance.yaml --name getting_started build
 Generated topology at: build/getting_started
 $ docker compose -f build/getting_started/docker-compose.yml --profile tester up --abort-on-container-exit --build
 ```

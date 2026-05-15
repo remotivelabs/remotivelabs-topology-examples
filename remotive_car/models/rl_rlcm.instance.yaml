@@ -1,0 +1,5 @@
+schema: remotive-topology-instance:0.17
+
+includes:
+  - ./rl.bm.instance.yaml
+  - ./rlcm.bm.instance.yaml

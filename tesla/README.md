@@ -13,7 +13,7 @@ Generate the instance
 ```bash
 mkdir tesla/build
 remotive topology recording-session instantiate tesla/roundabout/roundabout.recordingsession.yaml tesla/build/roundabout.instance.yaml
-remotive topology generate -f tesla/build/roundabout.instance.yaml -f tesla/can_over_udp.instance.yaml tesla/build
+remotive topology generate -f tesla/build/roundabout.instance.yaml -f tesla/settings/can_over_udp.settings.instance.yaml tesla/build
 ```
 
 Start it

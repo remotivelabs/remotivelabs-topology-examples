@@ -228,7 +228,7 @@ You will need the following tools
 
 - `RemotiveCLI` <https://docs.remotivelabs.com/docs/remotive-cli/installation>
 - `RemotiveTopology` <https://docs.remotivelabs.com/docs/remotive-topology/install>
-- On Linux, this example requires that you run `dockercan` service on your machine to enable CAN networks in Docker, install the latest version from [here](https://releases.remotivelabs.com/#docker_can/). Alternatively include [can_over_udp.instance.yaml](../can_over_udp.instance.yaml) in your instance, as shown in the examples below.
+- On Linux, this example requires that you run `RemotiveBus` service on your machine to enable CAN and VLAN networks in Docker, see installation instructions [here](https://docs.remotivelabs.com/docs/remotive-bus/install). Alternatively include [can_over_udp.instance.yaml](../../settings/can_over_udp.settings.instance.yaml) and [vlan_using_bridge.instance.yaml](../../settings/vlan_using_bridge.settings.instance.yaml) in your instance, as shown in the examples below.
 - `git lfs` <https://git-lfs.com/> make sure to do `git lfs pull` if `git lfs` wasn't installed during `git clone`. For Ubuntu `sudo apt install git-lfs`.
 - (Optional) `socat` [See Emulator on host](EMULATOR_ON_HOST.md)
 - (Optional) `Android-Studio` [See Emulator on host](EMULATOR_ON_HOST.md)
@@ -244,7 +244,8 @@ The example can be run either using an Android emulator or a Cuttlefish instance
 All configuration is done using RemotiveTopology instance files:
 
 > :link: [Main instance](main.instance.yaml)<br>
-> :link: [CAN over UDP](../can_over_udp.instance.yaml)<br>
+> :link: [CAN over UDP](../../settings/can_over_udp.settings.instance.yaml)<br>
+> :link: [VLAN using bridge](../../settings/vlan_using_bridge.settings.instance.yaml)<br>
 
 Notice how the main instance includes other instance configuration files and also the platform configuration. RemotiveTopology is based around a modular approach to describe both platforms and different ways to instantiate them. For example in this example you can see how the IHU model is specifically built for this example, as it integrates towards android, by including [android.instance.yaml](../../models/ihu/android.instance.yaml).
 
@@ -257,7 +258,7 @@ The example is pre-configured with a Cuttlefish docker image that works with the
 From the root of this repository run, one of the commands below, depending on your setup.
 
 ```bash
-# With DockerCAN
+# With RemotiveBus
 remotive topology generate \
 -f remotive_car/instances/android/main.instance.yaml \
 -f remotive_car/instances/android/local_playback.instance.yaml \
@@ -266,12 +267,13 @@ remotive_car/build
 ```
 
 ```bash
-# With CAN over UDP
+# Without Remotivebus
 remotive topology generate \
 -f remotive_car/instances/android/main.instance.yaml \
 -f remotive_car/instances/android/local_playback.instance.yaml \
 -f remotive_car/instances/android/cuttlefish.instance.yaml \
--f remotive_car/instances/can_over_udp.instance.yaml \
+-f remotive_car/settings/can_over_udp.settings.instance.yaml \
+-f remotive_car/settings/vlan_using_bridge.settings.instance.yaml \
 remotive_car/build
 ```
 
@@ -316,7 +318,7 @@ To run the Google Maps application in the Android emulator it first needs to be 
 Run one of the commands below, depending on your setup.
 
 ```bash
-# With DockerCAN
+# With RemotiveBus
 remotive topology generate \
 -f remotive_car/instances/android/main.instance.yaml \
 -f remotive_car/instances/android/local_playback.instance.yaml \
@@ -325,12 +327,13 @@ remotive_car/build
 ```
 
 ```bash
-# With CAN over UDP
+# Without RemotiveBus
 remotive topology generate \
 -f remotive_car/instances/android/main.instance.yaml \
 -f remotive_car/instances/android/local_playback.instance.yaml \
 -f remotive_car/instances/android/android_emulator_in_docker.instance.yaml \
--f remotive_car/instances/can_over_udp.instance.yaml \
+-f remotive_car/settings/can_over_udp.settings.instance.yaml \
+-f remotive_car/settings/vlan_using_bridge.settings.instance.yaml \
 remotive_car/build
 ```
 
@@ -357,19 +360,20 @@ If you are not running on Linux or want more control of what to run within the e
 From the root of this repository run one of the commands below, depending on your setup.
 
 ```bash
-# With DockerCAN
+# With RemotiveBus
 remotive topology generate \
 -f remotive_car/instances/android/main.instance.yaml \
 -f remotive_car/instances/android/local_playback.instance.yaml \
 -f remotive_car/instances/android/android_emulator_on_host.instance.yaml \
 remotive_car/build
 
-# Windows/MacOS CAN over UDP
+# Without RemotiveBus
 remotive topology generate \
 -f remotive_car/instances/android/main.instance.yaml \
 -f remotive_car/instances/android/local_playback.instance.yaml \
 -f remotive_car/instances/android/android_emulator_on_host.instance.yaml \
--f remotive_car/instances/can_over_udp.instance.yaml remotive_car/build
+-f remotive_car/settings/can_over_udp.settings.instance.yaml \
+-f remotive_car/settings/vlan_using_bridge.settings.instance.yaml remotive_car/build
 ```
 
 RemotiveTopology uses Docker compose to define the containers and networks of the topology. Once generated, by following the steps in this section, it can be found [here](../../build/remotive_car_android/docker-compose.yml)
@@ -394,12 +398,13 @@ Run `remotive-topology` with the cloud playback instance instead of local playba
 For example with android emulator in docker
 
 ```bash
-# With CAN over UDP
+# Without RemotiveBus
 remotive topology generate \
 -f remotive_car/instances/android/main.instance.yaml \
 -f remotive_car/instances/android/cloud_playback.instance.yaml \
 -f remotive_car/instances/android/android_emulator_in_docker.instance.yaml \
--f remotive_car/instances/can_over_udp.instance.yaml \
+-f remotive_car/settings/can_over_udp.settings.instance.yaml \
+-f remotive_car/settings/vlan_using_bridge.settings.instance.yaml \
 remotive_car/build
 ```
 

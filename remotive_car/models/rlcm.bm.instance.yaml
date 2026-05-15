@@ -1,0 +1,23 @@
+schema: remotive-topology-instance:0.17
+
+platform:
+  includes:
+    - ../platform/remotive-car.platform.yaml
+
+channels:
+  RearLightLIN:
+    type: lin
+    schedule_table_name: DEVMLIN01Schedule01
+
+ecus:
+  RLCM:
+    models:
+      rlcm:
+        type: container
+        container:
+          build:
+            args:
+              - MODEL_PATH=rlcm/python
+            target: model
+            dockerfile: ../Dockerfile
+          command: python -m rlcm
