@@ -12,6 +12,8 @@ GEAR_SELECTION = 0x11400400
 logger = structlog.get_logger(__name__)
 
 
+# @req COMP_REQ_IHU_SOMEIP: SOME/IP Service Consumption
+# @req COMP_REQ_IHU_ANDROID: IHU Android Emulator Bridge
 class BrokerToEmulator:
     def __init__(self, emulator_name: str, vhal_callback=None):
         self.emulator = AndroidEmulator(emulator_name=emulator_name)

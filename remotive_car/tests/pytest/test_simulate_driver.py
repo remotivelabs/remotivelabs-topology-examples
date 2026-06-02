@@ -29,6 +29,9 @@ async def broker_client(request: pytest.FixtureRequest) -> AsyncIterator[BrokerC
         )
 
 
+# @req COMP_REQ_BCM_TURN_LEFT: Turn Signal Left Activation
+# @req COMP_REQ_FLCM_CONTROL: Front Light Control
+# @req COMP_REQ_RLCM_CONTROL: Rear Light Control
 @pytest.mark.asyncio
 async def test_turn_left(broker_client: BrokerClient):
     # 1. turn left
@@ -72,6 +75,9 @@ async def test_turn_left(broker_client: BrokerClient):
         )
 
 
+# @req COMP_REQ_BCM_TURN_RIGHT: Turn Signal Right Activation
+# @req COMP_REQ_FLCM_CONTROL: Front Light Control
+# @req COMP_REQ_RLCM_CONTROL: Rear Light Control
 @pytest.mark.asyncio
 async def test_turn_right(broker_client: BrokerClient):
     # 1. turn right
@@ -116,6 +122,9 @@ async def test_turn_right(broker_client: BrokerClient):
         )
 
 
+# @req COMP_REQ_BCM_HAZARD: Hazard Light Signal Processing
+# @req COMP_REQ_BCM_TURN_SM: Turn Signal State Machine
+# @req COMP_REQ_FLCM_CONTROL: Front Light Control
 @pytest.mark.asyncio
 async def test_hazard(broker_client: BrokerClient):
     await broker_client.restbus.update_signals(
@@ -174,6 +183,9 @@ async def test_hazard(broker_client: BrokerClient):
         )
 
 
+# @req COMP_REQ_BCM_BEAMS: Beam State Management
+# @req COMP_REQ_FLCM_CONTROL: Front Light Control
+# @req COMP_REQ_RLCM_CONTROL: Rear Light Control
 @pytest.mark.asyncio
 async def test_lights_on(broker_client: BrokerClient):
     # 1. turn light on
@@ -208,6 +220,9 @@ async def test_lights_on(broker_client: BrokerClient):
         )
 
 
+# @req COMP_REQ_BCM_BEAMS: Beam State Management
+# @req COMP_REQ_FLCM_CONTROL: Front Light Control
+# @req COMP_REQ_RLCM_CONTROL: Rear Light Control
 @pytest.mark.asyncio
 async def test_low_beams_on(broker_client: BrokerClient):
     # 1. turn daylight running lights on
@@ -291,6 +306,9 @@ async def set_operating_mode_emergency(broker_client: BrokerClient) -> AsyncIter
         await cc.send("BCM", ControlRequest(type="emergency_mode", argument="normal"))
 
 
+# @req COMP_REQ_BCM_TURN_SM: Turn Signal State Machine
+# @req COMP_REQ_FLCM_CONTROL: Front Light Control
+# @req COMP_REQ_RLCM_CONTROL: Rear Light Control
 @pytest.mark.asyncio
 async def test_emergency(set_operating_mode_emergency: BrokerClient):
     # We toggle using fixture, so we just need to validate that FLCM and RLCM are blinking

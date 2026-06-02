@@ -11,6 +11,7 @@ from remotivelabs.topology.namespaces.can import CanNamespace, RestbusConfig
 
 # This dataclass defines the behavioral logic for the BCM (Body Control Module).
 # It receives CAN frames and updates the state of turn signals based on input.
+# @req COMP_REQ_BCM_HAZARD: Hazard Light Signal Processing
 @dataclass
 class BCM:
     body_can_0: CanNamespace

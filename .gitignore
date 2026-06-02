@@ -70,6 +70,13 @@ instance/
 # Sphinx documentation
 docs/_build/
 
+# Pharaoh state — commit .pharaoh/project/ (tailoring), ignore the rest
+.papyrus/
+.pharaoh/runs/
+.pharaoh/plans/
+.pharaoh/session.json
+.pharaoh/cache/
+
 # PyBuilder
 .pybuilder/
 target/

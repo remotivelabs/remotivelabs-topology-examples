@@ -17,6 +17,7 @@ from sccm.target import Target
 logger = structlog.get_logger(__name__)
 
 
+# @req COMP_REQ_SCCM_INPUT: Steering Column Input Handling
 async def main(args: SteeringWheelArgs):
     logger.info("starting steering wheel", args=args)
     timeout_in_sec = args.timeout * 60

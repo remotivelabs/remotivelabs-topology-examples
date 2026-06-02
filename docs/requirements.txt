@@ -1,0 +1,6 @@
+sphinx>=8,<10
+sphinx-needs>=8,<9
+sphinxcontrib-mermaid>=1
+sphinxcontrib-plantuml>=0.27
+furo>=2024.5.6
+Pillow>=10

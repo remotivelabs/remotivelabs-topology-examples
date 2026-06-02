@@ -15,6 +15,7 @@ class LightModePosition(Enum):
     LOW = "low"
 
 
+# @req COMP_REQ_BCM_BEAMS: Beam State Management
 class BeamsStateMachine:
     state: str
     trigger: Callable[[str], None]

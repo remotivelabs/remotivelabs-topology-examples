@@ -28,6 +28,7 @@ class EvdevToTopologyMapper(Mapper):
             for mapping in device.button_mappings
         }
 
+    # @req COMP_REQ_SCCM_INPUT: Steering Column Input Handling
     def map_event(self, input_event: DeviceEvent) -> Signal | None:
         event_key = (input_event.device_name, input_event.event.type, input_event.event.code)
         if event_key not in self._keyed_mapping:

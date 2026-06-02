@@ -15,6 +15,7 @@ from .log import configure_logging
 logger = structlog.get_logger(__name__)
 
 
+# @req COMP_REQ_RLCM_CONTROL: Rear Light Control
 @dataclass
 class RLCM:
     ecu_name: str = "RLCM"
