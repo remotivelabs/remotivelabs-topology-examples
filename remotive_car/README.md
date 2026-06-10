@@ -12,10 +12,10 @@ remotive topology generate -f remotive_car/instances/hello_world/main.instance.y
 
 Start it
 ```bash
-docker compose -f remotive_car/build/remotive_car_hello_world/docker-compose.yml --profile jupyter --profile ui up --build
+docker compose -f remotive_car/build/remotive_car_hello_world/docker-compose.yml --profile jupyter up --build
 ```
 
-Browse to [http://localhost:8080](http://localhost:8080) and select the signals you like to monitor.
+Use [RemotiveStudio](https://docs.remotivelabs.com/docs/remotive-studio) to view signals.
 
 Browse to [http://localhost:8888/lab?token=remotivelabs](http://localhost:8888/lab?token=remotivelabs) to interact with the instance through a Jupyter notebook.
 

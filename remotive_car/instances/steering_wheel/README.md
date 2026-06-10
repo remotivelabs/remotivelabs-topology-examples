@@ -177,7 +177,7 @@ config:
 
 - `RemotiveTopology` <https://docs.remotivelabs.com/docs/remotive-topology/install>
 - `RemotiveBus` to enable CAN networks in Docker; see installation instructions [here](https://docs.remotivelabs.com/docs/remotive-bus/install).
-  Alternatively include [can_over_udp.instance.yaml](../../settings/can_over_udp.settings.instance.yaml) and [vlan_using_bridge.instance.yaml](../../settings/vlan_using_bridge.instance.yaml) in your instance, as shown in the examples below.
+  Alternatively include [can_over_udp.instance.yaml](../../settings/can_over_udp.settings.instance.yaml) and [vlan_using_bridge.settings.instance.yaml](../../settings/vlan_using_bridge.settings.instance.yaml) in your instance, as shown in the examples below.
 
 Note! Only runs on Linux as the physical steering wheel requires the Linux `evdev` kernel module.
 
@@ -206,8 +206,8 @@ You should then be able to reach the emulator by going to http://localhost:8085/
 
 ### Run
 ```bash
-# Run Jupyter notebook + webapp + remotivecar
-docker compose -f remotive_car/build/remotive_car_steering_wheel/docker-compose.yml --profile jupyter --profile ui --profile remotivecar up --build
+# Run Jupyter notebook + remotivecar
+docker compose -f remotive_car/build/remotive_car_steering_wheel/docker-compose.yml --profile jupyter --profile remotivecar up --build
 ```
 
 ## Configuration
@@ -216,7 +216,7 @@ All configuration is done using RemotiveTopology instance files:
 
 > :link: [Main instance](main.instance.yaml)<br>
 > :link: [CAN over UDP](../../settings/can_over_udp.settings.instance.yaml)
-> :link: [VLAN using bridge](../../settings/vlan_using_bridge.instance.yaml)
+> :link: [VLAN using bridge](../../settings/vlan_using_bridge.settings.instance.yaml)
 
 Notice how the main instance includes other instance configuration files and also the platform configuration
 RemotiveTopology is based around a modular approach to describe both platforms and different ways to instantiate them.
@@ -231,15 +231,9 @@ docker compose -f remotive_car/build/remotive_car_steering_wheel/docker-compose.
 
 and then browse to [http://localhost:8888/lab?token=remotivelabs](http://localhost:8888/lab?token=remotivelabs).
 
-### RemotiveBroker Webapp
+### RemotiveStudio
 
-All the traffic moving through the busses can be observed with the Webapp. To start Webapp include the `ui` profile, this profile is always added by RemotiveTopology.
-
-```bash
-docker compose -f remotive_car/build/remotive_car_steering_wheel/docker-compose.yml --profile ui up --build
-```
-
-Browse to [http://localhost:8080](http://localhost:8080) and select the signals you like to monitor.
+Use [RemotiveStudio](https://docs.remotivelabs.com/docs/remotive-studio) to view signals.
 
 ### RemotiveCar
 

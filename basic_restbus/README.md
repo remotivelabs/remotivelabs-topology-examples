@@ -61,7 +61,7 @@ The recordings can be used to replay an existing candump or csv log of frames/si
 remotive topology generate -f basic_restbus/instances/mock.instance.yaml build/
 
 # Start the restbus
-docker compose -f build/basic_restbus_mock/docker-compose.yml --profile ui up --build
+docker compose -f build/basic_restbus_mock/docker-compose.yml up --build
 
 # or
 cd basic_restbus/python
@@ -69,7 +69,7 @@ uv sync
 uv run -m update_restbus --signal SCCM-DriverCan0:SteeringAngle.SteeringAngle --value 123.45
 ```
 
-To see the signals being emitted by the restbus, visit <http://localhost:8080/> and select the `SteeringAngle` frame on the `topology-DriverCan0` namespace.
+Use [RemotiveStudio](https://docs.remotivelabs.com/docs/remotive-studio) to view signals and select the `SteeringAngle` frame on the `topology-DriverCan0` namespace.
 
 By adding subscriptions logic to this code, the ECU becomes bi-directional. Find more examples in the [models](../remotive_car/models) folder.
 
@@ -84,9 +84,9 @@ Instead of programmatically setting the values for the restbus it is also possib
 remotive topology generate -f basic_restbus/instances/recording.instance.yaml build/
 
 # Start the restbus
-docker compose -f build/basic_restbus_recording/docker-compose.yml --profile ui up --build
+docker compose -f build/basic_restbus_recording/docker-compose.yml up --build
 
-# Load the sample recording, set it to repeat and start it (this can also be managed from the web UI)
+# Load the sample recording, set it to repeat and start it (this can also be managed from RemotiveStudio)
 remotive broker playback open ./recordings/sample_csv.recordingsession.yaml --url http://localhost:50051
 remotive broker playback repeat ./recordings/sample_csv.recordingsession.yaml --url http://localhost:50051
 remotive broker playback play ./recordings/sample_csv.recordingsession.yaml --url http://localhost:50051

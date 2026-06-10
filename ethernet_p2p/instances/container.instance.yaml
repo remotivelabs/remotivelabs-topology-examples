@@ -1,0 +1,33 @@
+schema: remotive-topology-instance:0.17
+
+name: ethernet-p2p-container
+
+platform:
+  includes:
+    - ../platform/network.platform.yaml
+
+channels:
+  NET1:
+    type: ethernet
+    tap_config:
+      type: socket
+      mode: all
+  NET2:
+    type: ethernet
+    tap_config:
+      type: socket
+      mode: all
+
+ecus:
+  ECUA:
+    mock: {}
+
+  ECUB:
+    container:
+      image: python:3.11-slim
+      working_dir: /app
+      volumes:
+        - ../ecub_standalone:/app
+      command: ./ecub.py
+
+  ECUC: {}

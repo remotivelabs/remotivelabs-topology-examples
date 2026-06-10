@@ -18,10 +18,10 @@ remotive topology generate -f tesla/build/roundabout.instance.yaml -f tesla/sett
 
 Start it
 ```bash
-docker compose -f tesla/build/Roundabout/docker-compose.yml --profile ui up --build
+docker compose -f tesla/build/Roundabout/docker-compose.yml up --build
 ```
 
-Browse to [http://localhost:8080](http://localhost:8080) and start playback of `roundabout.recordingsession.yaml`.
+Use [RemotiveStudio](https://docs.remotivelabs.com/docs/remotive-studio) to view signals and start playback of `roundabout.recordingsession.yaml`.
 
 ## Credits
 

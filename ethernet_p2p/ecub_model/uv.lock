@@ -357,7 +357,7 @@ wheels = [
 ]
 
 [[package]]
-name = "remotivelabs-topology-remotive-car-gwm-behavioral-model-example"
+name = "remotivelabs-topology-ethernet-p2p-behavioral-model-example"
 version = "1.0.0"
 source = { editable = "." }
 dependencies = [

@@ -1,6 +1,6 @@
 [project]
-name = "remotivelabs-topology-remotive-car-rlcm-behavioral-model-example"
-description = "RemotiveTopology Remotive Car RLCM Behavioral Model example"
+name = "remotivelabs-topology-ethernet-p2p-behavioral-model-example"
+description = "RemotiveTopology Ethernet p2p Behavioral Model example"
 version = "1.0.0"
 
 requires-python = ">=3.10,<4.0"
@@ -12,7 +12,7 @@ dev = ["poethepoet>=0.34.0", "ruff>=0.11.10", "mypy>=1.14.1"]
 
 [tool.uv.build-backend]
 module-root = ""
-module-name = ["rlcm"]
+module-name = ["src"]
 
 [tool.poe.tasks]
 format = [{ cmd = "ruff format ." }, { cmd = "ruff check --fix ." }]
@@ -22,7 +22,7 @@ lint = ["ruff", "mypy"]
 test = { cmd = "echo no test in project" }
 
 [tool.ruff]
-extend = "../../../../ruff.toml"
+extend = "../../ruff.toml"
 
 [tool.mypy]
 python_version = "3.10"

@@ -229,9 +229,6 @@ settings:
     start_timeout: 60
   topology_broker:
     channels: {}
-  ui:
-    port: 8080
-    profile: ui
 platform:
   channels:
     BodyCan0:

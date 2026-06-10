@@ -1,0 +1,15 @@
+VERSION "0.0.0"
+
+BO_ 767 DummyFrame: 8 ECUA
+ SG_ A : 55|1@0+ (1,0) [0|1] "" ECUB
+ SG_ B : 7|16@0+ (1.0, 0.0) [0.0|65535.0] "NoUnit" ECUB
+ SG_ C : 23|16@0+ (1.0, 0.0) [0.0|65535.0] "NoUnit" ECUB
+ SG_ D : 39|16@0+ (1.0, 0.0) [0.0|65535.0] "NoUnit" ECUB
+
+BA_DEF_ SG_ "GenSigFuncType" ENUM "NoFunction","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a","CHK","CNTR","n/a","n/a","n/a","CNTR_AR_01","CRC_AR_01_BOTH","CRC_AR_01_ALT","CRC_AR_01_LOW","CRC_AR_01_NIBBLE","CNTR_AR_04","CRC_AR_04A","CNTR_AR_05","CRC_AR_05";
+BA_DEF_ SG_ "GenSigDataID" STRING;
+BA_DEF_ BO_ "GenMsgCycleTime" FLOAT 0 300000;
+
+BA_ "GenMsgCycleTime" BO_ 767 200;
+
+VAL_ 767 B 2 "Fast" 1 "Slow" 0 "Off";

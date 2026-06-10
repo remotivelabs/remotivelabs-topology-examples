@@ -228,7 +228,7 @@ You will need the following tools
 
 - `RemotiveCLI` <https://docs.remotivelabs.com/docs/remotive-cli/installation>
 - `RemotiveTopology` <https://docs.remotivelabs.com/docs/remotive-topology/install>
-- On Linux, this example requires that you run `RemotiveBus` service on your machine to enable CAN and VLAN networks in Docker, see installation instructions [here](https://docs.remotivelabs.com/docs/remotive-bus/install). Alternatively include [can_over_udp.instance.yaml](../../settings/can_over_udp.settings.instance.yaml) and [vlan_using_bridge.instance.yaml](../../settings/vlan_using_bridge.settings.instance.yaml) in your instance, as shown in the examples below.
+- On Linux, this example requires that you run `RemotiveBus` service on your machine to enable CAN and VLAN networks in Docker, see installation instructions [here](https://docs.remotivelabs.com/docs/remotive-bus/install). Alternatively include [can_over_udp.instance.yaml](../../settings/can_over_udp.settings.instance.yaml) and [vlan_using_bridge.settings.instance.yaml](../../settings/vlan_using_bridge.settings.instance.yaml) in your instance, as shown in the examples below.
 - `git lfs` <https://git-lfs.com/> make sure to do `git lfs pull` if `git lfs` wasn't installed during `git clone`. For Ubuntu `sudo apt install git-lfs`.
 - (Optional) `socat` [See Emulator on host](EMULATOR_ON_HOST.md)
 - (Optional) `Android-Studio` [See Emulator on host](EMULATOR_ON_HOST.md)
@@ -286,15 +286,14 @@ From the root of this repository run
 ```bash
 docker compose -f remotive_car/build/remotive_car_android/docker-compose.yml \
 -f remotive_car/instances/android/cuttlefish.compose.yaml \
---profile playback \
---profile ui up --build
+--profile playback up --build
 ```
 
 You should then be able to reach the Cuttlefish instance by going to <https://localhost:8443>. The first time it starts you will have to configure some settings and permission for the maps application. If using the Organic Map you will also have to download maps for the areas you are interested in.
 
 If you wish to completely reset the state of the cuttlefish container, remove everything in the `cuttlefish/state` folder except the .gitignore.
 
-You can also visit the RemotiveBroker Webapp at <http://localhost:8080> to observe the temperature signals being sent back from the Cuttlefish instance.
+Use [RemotiveStudio](https://docs.remotivelabs.com/docs/remotive-studio) to view signals and observe the temperature signals being sent back from the Cuttlefish instance.
 
 #### Tests
 
@@ -303,7 +302,6 @@ The Cuttlefish instance provides two tests located in `remotive_car/tests/pytest
 ```bash
 docker compose -f remotive_car/build/remotive_car_android/docker-compose.yml \
 -f remotive_car/instances/android/cuttlefish.compose.yaml \
---profile ui \
 --profile tester up --build --abort-on-container-exit
 ```
 
@@ -343,13 +341,12 @@ RemotiveTopology uses Docker compose to define the containers and networks of th
 
 ```bash
 docker compose -f remotive_car/build/remotive_car_android/docker-compose.yml \
---profile playback \
---profile ui up --build
+--profile playback up --build
 ```
 
 You should then be able to reach the emulator by going to <http://localhost:8085/vnc.html> and connecting. The first time it starts you will have to configure some settings and permission for the maps application.
 
-You can also visit the RemotiveBroker Webapp at <http://localhost:8080> to observe the temperature signals being send back from the Android Emulator.
+Use [RemotiveStudio](https://docs.remotivelabs.com/docs/remotive-studio) to view signals and observe the temperature signals being send back from the Android Emulator.
 
 ### With emulator on host
 
@@ -385,11 +382,10 @@ From the root of this repository run
 ```bash
 ANDROID_EMULATOR_AUTH=$(cat ~/.emulator_console_auth_token) \
 docker compose -f remotive_car/build/remotive_car_android/docker-compose.yml \
---profile playback \
---profile ui up --build
+--profile playback up --build
 ```
 
-You can also visit the RemotiveBroker Webapp at <http://localhost:8080> to observe the temperature signals being send back from the Android Emulator.
+Use [RemotiveStudio](https://docs.remotivelabs.com/docs/remotive-studio) to view signals and observe the temperature signals being send back from the Android Emulator.
 
 ### With playback from cloud
 
@@ -420,13 +416,12 @@ export CLOUD_AUTH=$(remotive cloud auth print-access-token)
 
 ```bash
 docker compose -f remotive_car/build/remotive_car_android/docker-compose.yml \
---profile playback \
---profile ui up --build
+--profile playback up --build
 ```
 
 You should then be able to reach the emulator by going to <http://localhost:8085/vnc.html> and connecting. The first time it starts you will have to configure some settings and permission for the maps application.
 
-You can also visit the RemotiveBroker Webapp at <http://localhost:8080> to observe the temperature signals being send back from the Android Emulator.
+Use [RemotiveStudio](https://docs.remotivelabs.com/docs/remotive-studio) to view signals and observe the temperature signals being send back from the Android Emulator.
 
 ### With VLAN networking
 

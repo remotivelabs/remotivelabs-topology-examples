@@ -659,38 +659,34 @@ wheels = [
 
 [[package]]
 name = "remotivelabs-broker"
-version = "0.13.7"
+version = "0.13.8"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "grpc-interceptor" },
     { name = "grpcio" },
     { name = "protobuf" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/19/08/1785aaa441ceb9ccb67843baa5180384eb172669f27ddfe7d93207087096/remotivelabs_broker-0.13.7.tar.gz", hash = "sha256:ac4ea0e0ead1b603d15ccbdf5b1332f9e3ce64ee1ab74669beb2b4dac26a2e11", size = 51953, upload-time = "2026-04-21T12:23:35.289Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/91/d7/887747e1c5026bdfd5de4334db64c57fbaee7a3b27e660d6636f7182eed9/remotivelabs_broker-0.13.8.tar.gz", hash = "sha256:05b3f4fc62a00a884df1350930b4f97738d933f2b778e78288dcada7307e41a6", size = 52665, upload-time = "2026-05-16T08:31:35.78Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/d9/51/d5e9e15a451a796960d00e5981c8ec479227b28de67db2d4e500fcf83f71/remotivelabs_broker-0.13.7-py3-none-any.whl", hash = "sha256:ac0ce5778e6338a04ca849207a6dbde8a62fb31be76da3499ce516732fedd4b3", size = 83352, upload-time = "2026-04-21T12:23:33.609Z" },
+    { url = "https://files.pythonhosted.org/packages/00/d8/08e8db2a4a241f7d1e7082294645f8b56655af41ee7437197573f161cf1a/remotivelabs_broker-0.13.8-py3-none-any.whl", hash = "sha256:44f6a9df9877d013c5b8fe06063bb6f10eff03e11f8826c8dd6c628ba8c47ab1", size = 83835, upload-time = "2026-05-16T08:31:33.745Z" },
 ]
 
 [[package]]
 name = "remotivelabs-topology"
-version = "0.17.0"
+version = "0.19.3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "pyhamcrest" },
-    { name = "remotivelabs-broker" },
-    { name = "typing-extensions" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/1c/df/db958f507a9f817ffaf98584bbfa3b84807392cbe04fa2820e5433d73cef/remotivelabs_topology-0.17.0.tar.gz", hash = "sha256:441ab0a14bf7657a442214ea6d79bd2b54517b7945faefc56b6cc503265310bc", size = 51880, upload-time = "2026-05-13T13:20:37.058Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/f2/0e/2c62b02ba97e9b7033e09a8efbc8dee7586ebc468d288258d79ccab3ad47/remotivelabs_topology-0.17.0-py3-none-any.whl", hash = "sha256:4586ee725868e823362371892fd24c35d8fbf095cc6ff52c0f118a7f767a6e1e", size = 91209, upload-time = "2026-05-13T13:20:35.58Z" },
-]
-
-[package.optional-dependencies]
-metrics = [
     { name = "opentelemetry-api" },
     { name = "opentelemetry-exporter-prometheus" },
     { name = "opentelemetry-sdk" },
     { name = "prometheus-client" },
+    { name = "pyhamcrest" },
+    { name = "remotivelabs-broker" },
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/ed/5f/2346be40041d0c29eb5ec59bb73756cc6163eec65f121e7824bff769c52c/remotivelabs_topology-0.19.3.tar.gz", hash = "sha256:d83373a5c7f933d81c8c108e439053b39a773a273bd5cb2f34c3e77b238504a1", size = 53084, upload-time = "2026-06-10T12:14:40.754Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/54/01/5f246f1d667380ee6e8420baa1b4c12eccc8bd258cf07bf3e7e64f346dd7/remotivelabs_topology-0.19.3-py3-none-any.whl", hash = "sha256:eaf5b556091bb09bd208f0f5e594840681441505a4f2cabfedc90bcb7ea836e3", size = 95631, upload-time = "2026-06-10T12:14:39.213Z" },
 ]
 
 [[package]]
@@ -703,7 +699,7 @@ dependencies = [
     { name = "gherkin-official" },
     { name = "pytest" },
     { name = "pytest-asyncio" },
-    { name = "remotivelabs-topology", extra = ["metrics"] },
+    { name = "remotivelabs-topology" },
 ]
 
 [package.dev-dependencies]
@@ -720,7 +716,7 @@ requires-dist = [
     { name = "gherkin-official", specifier = ">=30.0.4" },
     { name = "pytest", specifier = "==8.4.2" },
     { name = "pytest-asyncio", specifier = "==1.0.0" },
-    { name = "remotivelabs-topology", extras = ["metrics"], specifier = "~=0.17.0" },
+    { name = "remotivelabs-topology", specifier = "~=0.19.3" },
 ]
 
 [package.metadata.requires-dev]

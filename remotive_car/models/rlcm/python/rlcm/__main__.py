@@ -1,70 +1,66 @@
 from __future__ import annotations
 
 import asyncio
-from dataclasses import dataclass
+from typing import Final
 
 import structlog
 from remotivelabs.broker import BrokerClient, Frame, WriteSignal
 from remotivelabs.topology.behavioral_model import BehavioralModel
 from remotivelabs.topology.cli.behavioral_model import BehavioralModelArgs
 from remotivelabs.topology.namespaces import filters
-from remotivelabs.topology.namespaces.can import CanNamespace, GenericNamespace
+from remotivelabs.topology.namespaces.can import CanNamespace
+from remotivelabs.topology.namespaces.lin import LinNamespace
 
 from .log import configure_logging
 
-logger = structlog.get_logger(__name__)
+LOGGER = structlog.get_logger(__name__)
 
 
-@dataclass
-class RLCM:
-    ecu_name: str = "RLCM"
-    can_ns: str = "RLCM-BodyCan0"
-    lin_ns: str = "RLCM-RearLightLIN"
+class RLCM(BehavioralModel):
+    """
+    Rear Light Control Module (RLCM) ECU acting as a gateway between the body CAN bus and the rear light LIN bus.
 
-    left_turn_light_request: str = "TurnLightControl.LeftTurnLightRequest"
-    right_turn_light_request: str = "TurnLightControl.RightTurnLightRequest"
+    RLCM is a LIN master.
+    """
+
+    ecu_name: Final[str] = "RLCM"
+    can_ns: Final[str] = "RLCM-BodyCan0"
+    lin_ns: Final[str] = "RLCM-RearLightLIN"
+
+    can_turn_light_frame: Final[str] = "TurnLightControl"
+    can_left_turn_light_request: Final[str] = "TurnLightControl.LeftTurnLightRequest"
+    can_right_turn_light_request: Final[str] = "TurnLightControl.RightTurnLightRequest"
+
+    lin_master_frame: Final[str] = "DEVMLIN01Fr01"
+    lin_master_left_light_request: Final[str] = "DEVMLIN01Fr01.ReqLeft"
+    lin_master_right_light_request: Final[str] = "DEVMLIN01Fr01.ReqRight"
+    lin_master_counter: Final[str] = "DEVMLIN01Fr01.counter"
 
     # 2 bit unsigned int counter
-    counter = 0
+    counter: int = 0
 
-    def __init__(self, avp: BehavioralModelArgs) -> None:
-        self._broker_client = BrokerClient(avp.url, auth=avp.auth)
-        self.lin_bus = GenericNamespace(
-            RLCM.lin_ns,
-            broker_client=self._broker_client,
-        )
-        self.body_can_0 = CanNamespace(RLCM.can_ns, broker_client=self._broker_client)
-        self.bm = BehavioralModel(
+    def __init__(self, broker_client: BrokerClient) -> None:
+        self.lin_bus = LinNamespace(RLCM.lin_ns, broker_client=broker_client)
+        self.body_can_0 = CanNamespace(RLCM.can_ns, broker_client=broker_client)
+        super().__init__(
             RLCM.ecu_name,
             namespaces=[self.lin_bus, self.body_can_0],
-            broker_client=self._broker_client,
+            broker_client=broker_client,
             input_handlers=[
-                self.body_can_0.create_input_handler([filters.FrameFilter("TurnLightControl")], self.on_turn_req_frame),
-                self.lin_bus.create_input_handler([filters.FrameFilter("DEVMLIN01Fr01")], self.on_devmlin01fr01_frame),
+                self.body_can_0.create_input_handler([filters.FrameFilter(RLCM.can_turn_light_frame)], self.on_turn_req_frame),
+                self.lin_bus.create_input_handler([filters.FrameFilter(RLCM.lin_master_frame)], self.on_devmlin01fr01_frame),
             ],
         )
-
-    async def __aenter__(self):
-        await self._broker_client.connect()
-        await self.bm.start()
-        return self
-
-    async def __aexit__(self, exc_type, exc_val, exc_tb):
-        await self.bm.stop()
-        await self._broker_client.disconnect()
-
-    def __await__(self):
-        return self.bm.run_forever().__await__()
 
     async def on_turn_req_frame(self, frame: Frame) -> None:
         await self.lin_bus.publish(
             WriteSignal(
-                name="DEVMLIN01Fr01.ReqLeft",
-                value=frame.signals[self.left_turn_light_request],
+                name=RLCM.lin_master_left_light_request,
+                value=frame.signals[RLCM.can_left_turn_light_request],
             ),
             WriteSignal(
-                name="DEVMLIN01Fr01.ReqRight",
-                value=frame.signals[self.right_turn_light_request],
+                name=RLCM.lin_master_right_light_request,
+                value=frame.signals[RLCM.can_right_turn_light_request],
             ),
         )
 
@@ -72,16 +68,16 @@ class RLCM:
     # sent by itself. For slaves, the same thing can be accomplished by
     # listening to the header messages.
     async def on_devmlin01fr01_frame(self, _frame: Frame) -> None:
-        RLCM.counter = (RLCM.counter + 1) % 4
+        self.counter = (self.counter + 1) % 4
         await self.lin_bus.publish(
-            WriteSignal(name="DEVMLIN01Fr01.counter", value=RLCM.counter),
+            WriteSignal(name=RLCM.lin_master_counter, value=self.counter),
         )
 
 
 async def main(avp: BehavioralModelArgs):
-    logger.info("Starting RLCM ECU", args=avp)
-    async with RLCM(avp) as rlcm:
-        await rlcm
+    LOGGER.info("Starting RLCM ECU", args=avp)
+    async with BrokerClient(avp.url, auth=avp.auth) as broker, RLCM(broker) as rlcm:
+        await rlcm.run_forever()
 
 
 if __name__ == "__main__":
