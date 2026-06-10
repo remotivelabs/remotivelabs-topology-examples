@@ -168,7 +168,7 @@ config:
 
 ## Host setup
 - `RemotiveTopology` <https://docs.remotivelabs.com/docs/remotive-topology/install>
-- On Linux, this example requires that you run `RemotiveBus` service on your machine to enable CAN and VLAN networks in Docker, see installation instructions [here](https://docs.remotivelabs.com/docs/remotive-bus/install). Alternatively include [can_over_udp.instance.yaml](../../settings/can_over_udp.settings.instance.yaml) and [vlan_using_bridge.instance.yaml](../../settings/vlan_using_bridge.instance.yaml) in your instance, as shown in the examples below.
+- On Linux, this example requires that you run `RemotiveBus` service on your machine to enable CAN and VLAN networks in Docker, see installation instructions [here](https://docs.remotivelabs.com/docs/remotive-bus/install). Alternatively include [can_over_udp.instance.yaml](../../settings/can_over_udp.settings.instance.yaml) and [vlan_using_bridge.instance.yaml](../../settings/vlan_using_bridge.settings.instance.yaml) in your instance, as shown in the examples below.
 
 ## Getting started
 In order to run the commands in the sections below, first navigate to the root of this repository.
@@ -180,7 +180,7 @@ Run one of the commands below, depending on your setup.
 remotive topology generate -f remotive_car/instances/hello_world/main.instance.yaml remotive_car/build
 
 # Windows/MacOS CAN over UDP
-remotive topology generate -f remotive_car/instances/hello_world/main.instance.yaml -f remotive_car/settings/can_over_udp.settings.instance.yaml -f remotive_car/settings/vlan_using_bridge.instance.yaml remotive_car/build
+remotive topology generate -f remotive_car/instances/hello_world/main.instance.yaml -f remotive_car/settings/can_over_udp.settings.instance.yaml -f remotive_car/settings/vlan_using_bridge.settings.instance.yaml remotive_car/build
 ```
 
 RemotiveTopology uses Docker compose to define the containers and networks of the topology. Once generated, by following the steps in this section, it can be found [here](../../build/remotive_car_hello_world/docker-compose.yml).
