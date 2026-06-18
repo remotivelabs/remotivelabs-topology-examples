@@ -1,0 +1,126 @@
+- import_playbook: topology-down.yaml
+
+- hosts: remote
+  gather_facts: true
+  vars_files:
+    - "../topologies/{{ topology }}.yaml"
+  pre_tasks:
+    - name: Get access token using remotive-cli
+      delegate_to: localhost
+      run_once: true
+      shell: remotive cloud auth print-access-token
+      register: access_token
+
+    - name: Get default cloud organization
+      delegate_to: localhost
+      run_once: true
+      shell: remotive cloud organizations default --get
+      register: cloud_org
+
+    - name: Resolve organization value (the CLI prints it on stderr)
+      set_fact:
+        cloud_organization: "{{ (cloud_org.stdout | trim) or (cloud_org.stderr | trim) }}"
+
+    - name: Ensure authenticated and an organization is selected
+      run_once: true
+      assert:
+        that:
+          - access_token.stdout | trim | length > 0
+          - cloud_organization | length > 0
+        fail_msg: |
+          Not authenticated, or no default organization selected. Run these locally first:
+            remotive cloud auth activate          # or: remotive cloud auth login
+            remotive cloud organizations default
+
+    - name: Resolve paths
+      # examples_root is the examples/ dir (the published repo root); remote-deployment
+      # and the referenced topologies (e.g. remotive_car) are siblings under it.
+      set_fact:
+        examples_root: "{{ playbook_dir }}/../../../.."
+        base_folder: "~/.remotive/work"
+        project_name: "{{ topology_dir | basename }}"
+        project_path: "~/.remotive/work/{{ topology_dir | basename }}"
+
+    # topology-down (imported above) already stopped THIS topology, so anything
+    # still running belongs to a different one. Refuse rather than collide on ports.
+    - name: Check for an already-running topology
+      shell: |
+        docker ps --filter label=com.docker.compose.project \
+          --format '{% raw %}{{ .Label "com.docker.compose.project" }}{% endraw %}' | sort -u
+      register: running_projects
+      changed_when: false
+
+    - name: Refuse to start while another topology is running
+      fail:
+        msg: |
+          Another topology is already running on this host: {{ running_projects.stdout_lines | join(', ') }}
+          Bring it down first, e.g.:
+            ansible-playbook -K -e topology=<that-topology> playbooks/topology-down.yaml
+      when: running_projects.stdout | trim | length > 0
+
+  tasks:
+    # Persist the cloud token + org as env vars on the host (no ~/.config/remotive
+    # copy). Brokers, the build, and later manual commands read them from here.
+    - name: Set cloud auth env on the host
+      include_role:
+        name: remotive_cloud_env
+      vars:
+        cloud_token: "{{ access_token.stdout }}"
+        cloud_org: "{{ cloud_organization }}"
+
+    - name: Synchronize topology project to the VM
+      synchronize:
+        src: "{{ examples_root }}/{{ topology_dir }}/"
+        dest: "{{ project_path }}/"
+        recursive: true
+        delete: true
+        rsync_opts:
+          - "--exclude=build"
+          - "--exclude=.git"
+          - "--exclude=**/cuttlefish/state/*"
+
+    - name: Drop extra composition instance files into the project
+      synchronize:
+        src: "{{ examples_root }}/{{ item }}"
+        dest: "{{ project_path }}/{{ item | basename }}"
+      loop: "{{ extra_instances | default([]) }}"
+
+    - name: Build topology on the VM
+      # "script" is used to run the command with a tty (needed by docker run -it)
+      shell: |
+        cd {{ project_path }}
+        rm -rf build
+        script -e -q -c \
+          "remotive topology build \
+            {{ topology_instances | map('regex_replace', '^', '-f ') | join(' ') }} \
+            {{ '--with-metrics' if with_metrics | default(true) else '' }} \
+            build" /dev/null
+      environment:
+        REMOTIVE_CLOUD_AUTH_TOKEN: "{{ access_token.stdout }}"
+        REMOTIVE_CLOUD_ORGANIZATION: "{{ cloud_organization }}"
+
+    - name: Locate generated docker-compose.yml
+      shell: |
+        find {{ project_path }}/build -maxdepth 2 -name docker-compose.yml | head -n1
+      register: generated_compose
+
+    - name: Fail if no topology was generated
+      fail:
+        msg: "No docker-compose.yml found under {{ project_path }}/build"
+      when: generated_compose.stdout == ""
+
+    - name: Load modules
+      become: true
+      shell: |
+        sudo modprobe vhost_vsock vhost_net
+
+    - name: Start docker compose
+      shell: |
+        docker compose \
+          -f {{ generated_compose.stdout }} \
+          {% for overlay in compose_overlays | default([]) %}-f {{ project_path }}/{{ overlay }} {% endfor %} \
+          {% for profile in compose_profiles | default([]) %}--profile {{ profile }} {% endfor %} \
+          up --build -d
+      environment:
+        REMOTIVE_CLOUD_AUTH_TOKEN: "{{ access_token.stdout }}"
+        REMOTIVE_CLOUD_ORGANIZATION: "{{ cloud_organization }}"

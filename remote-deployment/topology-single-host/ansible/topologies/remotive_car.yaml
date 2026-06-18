@@ -1,0 +1,20 @@
+# remotive_car Android (Cuttlefish) stack from the monorepo examples.
+# Runs on x86 with nested virtualization (terraform topologies/remotive_car.tfvars).
+topology_dir: remotive_car                           # relative to the examples/ dir
+
+# Built by layering the example's own Android instance files (-f order matters):
+#   main           -> bcm, gwm, ihu.bm, HVAC, platform
+#   cuttlefish     -> overlays the Cuttlefish IHU + cuttlefish container
+#   local_playback -> TCU/ABS/SCCM + playback
+topology_instances:
+  - instances/android/main.instance.yaml
+  - instances/android/cuttlefish.instance.yaml
+  - instances/android/local_playback.instance.yaml
+
+compose_overlays:
+  - instances/android/cuttlefish.compose.yaml
+
+compose_profiles: [playback]
+with_metrics: true
+
+forward_ports: [8080, 8443, 50051, 3000]

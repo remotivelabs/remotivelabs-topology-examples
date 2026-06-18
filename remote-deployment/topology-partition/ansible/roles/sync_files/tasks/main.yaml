@@ -1,0 +1,24 @@
+---
+- name: Create examples directory
+  when: ansible_connection != "local"
+  file:
+    path: "~/.remotive/work/examples"
+    state: directory
+
+- name: Synchronize examples files
+  when: ansible_connection != "local"
+  synchronize:
+    src: ../../../../remotive_car
+    dest: "~/.remotive/work/examples"
+    recursive: true
+    delete: true
+    rsync_opts:
+      - "--exclude=**/cuttlefish/state/*"
+
+- name: Synchronize build files
+  when: ansible_connection != "local"
+  synchronize:
+    src: ../../../../build
+    dest: "~/.remotive/work"
+    recursive: true
+    delete: true

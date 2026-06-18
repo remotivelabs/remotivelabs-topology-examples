@@ -7,7 +7,7 @@ requires-python = ">=3.10,<4.0"
 
 dependencies = [
   "structlog==25.4.0",
-  "remotivelabs-topology~=0.19.3",
+  "remotivelabs-topology~=0.19.0",
   "requests==2.32.5",
 ]
 

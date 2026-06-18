@@ -1,0 +1,22 @@
+ansible_python_interpreter: /usr/bin/python3
+
+# ---- Shared WireGuard config ----
+wg_iface: wg0
+wg_port: 51820
+wg_local_addr: "10.8.0.1"
+wg_remote_addr: "10.8.0.2"
+
+# ---- VXLAN config ----
+vxlan_id: 10
+vxlan_mtu: 1410
+vxlan_name: vxlan10
+bridge_name: someip
+
+can_interface_name: bodycan0
+
+# ---- Packages ----
+apt_packages:
+  - wireguard
+  - wireguard-tools
+  - iproute2
+  - rsync

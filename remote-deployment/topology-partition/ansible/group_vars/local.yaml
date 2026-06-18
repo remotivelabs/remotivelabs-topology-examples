@@ -1,0 +1,12 @@
+wireguard_role: client
+wg_this_addr: "{{ wg_local_addr }}"
+wg_peer_addr: "{{ wg_remote_addr }}"
+
+# works with both host and ansible_host= in inventory file
+wg_endpoint: >-
+  {{
+    hostvars.get(groups['remote'][0], {})
+      .get('ansible_host', groups['remote'][0])
+  }}:{{ wg_port }}
+
+wg_keepalive: 25

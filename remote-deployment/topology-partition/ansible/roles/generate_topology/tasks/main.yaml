@@ -1,0 +1,42 @@
+---
+- name: Generate main topology
+  delegate_to: localhost
+  run_once: true
+  # "script" is used to run command with a tty (needed by docker run -it)"
+  # {{ playbook_dir }}/../../../.. is the examples/ dir (the published repo root).
+  shell: |
+    cd {{ playbook_dir }}/../../../..
+    if script --version >/dev/null 2>&1; then
+      # Linux util-linux script
+      script -e -q -c "remotive topology generate -f remote-deployment/topology-partition/instance/partition-main.instance.yaml build" /dev/null
+    else
+      # macOS BSD script
+      script /dev/null sh -c "remotive topology generate -f remote-deployment/topology-partition/instance/partition-main.instance.yaml build"
+    fi
+
+- name: Generate ihu topology
+  delegate_to: localhost
+  run_once: true
+  # "script" is used to run command with a tty (needed by docker run -it)"
+  shell: |
+    cd {{ playbook_dir }}/../../../..
+
+    if script --version >/dev/null 2>&1; then
+      # Linux util-linux script
+      script -e -q -c \
+        "remotive topology generate \
+          -f remote-deployment/topology-partition/instance/partition-ihu.instance.yaml \
+          build" /dev/null
+    else
+      # macOS BSD script
+      script /dev/null sh -c \
+        "remotive topology generate \
+          -f remote-deployment/topology-partition/instance/partition-ihu.instance.yaml \
+          build"
+    fi
+
+- name: Copy compose files
+  delegate_to: localhost
+  run_once: true
+  shell: |
+    cp {{ playbook_dir }}/../../instance/*.compose.yaml {{ playbook_dir }}/../../../../build/

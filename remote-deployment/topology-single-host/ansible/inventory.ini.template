@@ -1,0 +1,9 @@
+#
+#  Template file, update with the public IP of your GCP VM and store as inventory.ini
+#
+#  The single host MUST be in the 'remote' group (the shared sync_files role keys
+#  off a non-local connection to rsync the topology over to the VM).
+#
+
+[remote]
+203.0.113.10   # replace with your GCP VM public IP

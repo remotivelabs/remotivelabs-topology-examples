@@ -1,0 +1,104 @@
+- import_playbook: topology-down.yaml
+
+- hosts: all
+  become: true
+  gather_facts: true
+  pre_tasks:
+    - name: Get access token using remotive-cli
+      become: false
+      delegate_to: localhost
+      run_once: true
+      shell: remotive cloud auth print-access-token
+      register: access_token
+
+    - name: Get default cloud organization
+      become: false
+      delegate_to: localhost
+      run_once: true
+      shell: remotive cloud organizations default --get
+      register: cloud_org
+
+    - name: Resolve organization value (the CLI prints it on stderr)
+      become: false
+      set_fact:
+        cloud_organization: "{{ (cloud_org.stdout | trim) or (cloud_org.stderr | trim) }}"
+
+    - name: Ensure authenticated and an organization is selected
+      become: false
+      run_once: true
+      assert:
+        that:
+          - access_token.stdout | trim | length > 0
+          - cloud_organization | length > 0
+        fail_msg: |
+          Not authenticated, or no default organization selected. Run these locally first:
+            remotive cloud auth activate          # or: remotive cloud auth login
+            remotive cloud organizations default
+
+    - name: Set base folder
+      set_fact:
+        base_folder: "{{ '~/.remotive/work' if ansible_connection != 'local' else playbook_dir + '/../../../..' }}"
+
+  roles:
+    - { role: vxlan, become: true }
+    - { role: generate_topology, become: false }
+    - { role: sync_files, become: false }
+
+- hosts: remote
+  tasks:
+    - name: Set cloud auth env on the host
+      include_role:
+        name: remotive_cloud_env
+      vars:
+        cloud_token: "{{ access_token.stdout }}"
+        cloud_org: "{{ cloud_organization }}"
+
+    - name: Load modules
+      become: true
+      shell: |
+        sudo modprobe vhost_vsock vhost_net
+
+    - name: Start docker compose ihu
+      shell: |
+        docker compose \
+          -f {{ base_folder }}/build/remotive_car_android_partition_ihu/docker-compose.yml \
+          -f {{ base_folder }}/examples/remotive_car/instances/android/cuttlefish.compose.yaml \
+          -f {{ base_folder }}/build/networks.compose.yaml \
+          up --build -d
+      environment:
+        REMOTIVE_CLOUD_AUTH_TOKEN: "{{ access_token.stdout }}"
+        REMOTIVE_CLOUD_ORGANIZATION: "{{ cloud_organization }}"
+
+    - name: Socat CAN
+      become: true
+      shell: |
+        socat INTERFACE:{{ can_interface_name }},pf=29,type=3,prototype=1 UDP4-LISTEN:20000,reuseaddr,fork &
+
+
+- hosts: local
+  tasks:
+    - name: Set cloud auth env on the host
+      include_role:
+        name: remotive_cloud_env
+      vars:
+        cloud_token: "{{ access_token.stdout }}"
+        cloud_org: "{{ cloud_organization }}"
+
+    - name: Start docker compose main
+      shell: |
+        docker compose \
+          -f {{ base_folder }}/build/remotive_car_android_partition_main/docker-compose.yml \
+          -f {{ base_folder }}/build/networks.compose.yaml \
+          --profile playback \
+          up --build -d
+      environment:
+        REMOTIVE_CLOUD_AUTH_TOKEN: "{{ access_token.stdout }}"
+        REMOTIVE_CLOUD_ORGANIZATION: "{{ cloud_organization }}"
+        CLOUD_AUTH: "{{ access_token.stdout }}"
+        CLOUD_URL: "{{ lookup('env', 'CLOUD_URL') }}"
+
+    - name: Socat CAN
+      become: true
+      shell: |
+        socat INTERFACE:{{ can_interface_name }},pf=29,type=3,prototype=1 UDP4:10.8.0.2:20000 &
+

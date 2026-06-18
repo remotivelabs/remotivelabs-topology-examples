@@ -1,0 +1,12 @@
+#
+#  Template file, update with your specific details and store as inventory.ini
+#
+# Group names MUST be remote and local
+#
+
+[remote]
+203.0.113.10   # replace with your GCP VM public IP
+
+[local]
+192.0.2.10 ansible_user=user_name ansible_ssh_private_key_file=~/.ssh/localvm
+# localhost ansible_connection=local # when running on localhost

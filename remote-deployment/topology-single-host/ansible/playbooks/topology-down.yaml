@@ -1,0 +1,23 @@
+- hosts: remote
+  vars_files:
+    - "../topologies/{{ topology }}.yaml"
+  tasks:
+    - name: Resolve paths
+      set_fact:
+        project_path: "~/.remotive/work/{{ topology_dir | basename }}"
+
+    - name: Locate generated docker-compose.yml
+      shell: |
+        find {{ project_path }}/build -maxdepth 2 -name docker-compose.yml 2>/dev/null | head -n1
+      register: generated_compose
+      changed_when: false
+      failed_when: false
+
+    - name: Stop docker compose
+      when: generated_compose.stdout | default('') != ""
+      shell: |
+        docker compose \
+          -f {{ generated_compose.stdout }} \
+          {% for overlay in compose_overlays | default([]) %}-f {{ project_path }}/{{ overlay }} {% endfor %} \
+          {% for profile in compose_profiles | default([]) %}--profile {{ profile }} {% endfor %} \
+          down --remove-orphans || true

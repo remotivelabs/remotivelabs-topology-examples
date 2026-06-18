@@ -1,0 +1,37 @@
+- hosts: all
+  tasks:
+    - name: Set base folder
+      set_fact:
+        base_folder: "{{ '~/.remotive/work' if ansible_connection != 'local' else playbook_dir + '/../../../..' }}"
+
+- hosts: remote
+  tasks:
+    - name: Stop docker compose ihu
+      shell: |
+        docker compose \
+          -f {{ base_folder }}/build/remotive_car_android_partition_ihu/docker-compose.yml \
+          -f {{ base_folder }}/examples/remotive_car/instances/android/cuttlefish.compose.yaml \
+          -f {{ base_folder }}/build/networks.compose.yaml \
+          down --remove-orphans || true
+
+- hosts: local
+  tasks:
+    - name: Stop docker compose main
+      shell: |
+        docker compose \
+          -f {{ base_folder }}/build/remotive_car_android_partition_main/docker-compose.yml \
+          -f {{ base_folder }}/build/networks.compose.yaml \
+          --profile playback \
+          down --remove-orphans || true
+
+- hosts: all
+  become: true
+  tasks:
+    - name: Kill socat
+      shell: |
+        killall socat || true
+
+    - name: Remove interfaces
+      shell: |
+        ip link del {{ bridge_name }} || true
+        ip link del {{ vxlan_name }} || true

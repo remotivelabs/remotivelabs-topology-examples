@@ -1,0 +1,19 @@
+---
+- name: Add RemotiveLabs apt signing key
+  ansible.builtin.shell: |
+    curl -fsSL https://packages.remotivelabs.com/apt-repo-signing-key.gpg \
+      | gpg --dearmor -o /usr/share/keyrings/remotivelabs-apt.gpg
+  args:
+    creates: /usr/share/keyrings/remotivelabs-apt.gpg
+
+- name: Add RemotiveLabs apt repository
+  ansible.builtin.apt_repository:
+    repo: "deb [signed-by=/usr/share/keyrings/remotivelabs-apt.gpg] https://packages.remotivelabs.com remotivelabs-apt main"
+    filename: remotivelabs
+    state: present
+
+- name: Install remotive CLI
+  ansible.builtin.apt:
+    name: remotivelabs-cli
+    state: present
+    update_cache: true

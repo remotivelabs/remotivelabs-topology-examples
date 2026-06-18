@@ -1,0 +1,16 @@
+google_compute_engine
+tf_outputs.json
+*.ini
+
+# Local .terraform directories
+**/.terraform/*
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+
+*.auto.tfvars
+*.backend.hcl
+
+!example.auto.tfvars
+!example.backend.hcl

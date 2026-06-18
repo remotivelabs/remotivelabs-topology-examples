@@ -1,0 +1,38 @@
+---
+- name: Ensure required packages are installed
+  apt:
+    name:
+      - make
+      - can-utils
+      - socat
+    state: present
+    update_cache: true
+
+- name: Check if vcan module can be loaded
+  command: modprobe vcan
+  register: modprobe_vcan_result
+  ignore_errors: true
+  changed_when: false
+
+
+- name: Ensure linux-modules-extra installed if modprobe vcan fails
+  apt:
+    name:
+      - linux-modules-extra-{{ ansible_facts['kernel'] }}
+    state: present
+    update_cache: true
+  when: modprobe_vcan_result.rc != 0
+
+- name: Install remotivebus
+  shell: |
+    curl -fsSL \
+      https://packages.remotivelabs.com/apt-repo-signing-key.gpg \
+      | sudo gpg --dearmor -o /usr/share/keyrings/remotivelabs-apt.gpg
+
+    echo "deb [signed-by=/usr/share/keyrings/remotivelabs-apt.gpg] \
+      https://packages.remotivelabs.com remotivelabs-apt main" \
+      | sudo tee -a /etc/apt/sources.list.d/remotivelabs.list
+
+    sudo apt update
+    sudo apt install -y remotivebusd
+

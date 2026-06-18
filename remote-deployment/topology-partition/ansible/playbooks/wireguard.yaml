@@ -1,0 +1,50 @@
+- hosts: localhost
+  gather_facts: false
+  tasks:
+
+    - name: Check if WireGuard is installed
+      ansible.builtin.command: which wg
+      register: wg_check
+      ignore_errors: true
+
+    - name: Stop play if WireGuard is missing
+      ansible.builtin.fail:
+        msg: "WireGuard is not installed on this host"
+      when: wg_check.rc != 0
+
+
+    - name: Generate local WireGuard private key
+      command: wg genkey
+      register: local_private_key
+      changed_when: false
+
+    - name: Generate local WireGuard public key
+      command: /bin/bash -c "echo '{{ local_private_key.stdout }}' | wg pubkey"
+      register: local_public_key
+      changed_when: false
+
+    - name: Generate remote WireGuard private key
+      command: wg genkey
+      register: remote_private_key
+      changed_when: false
+
+    - name: Generate remote WireGuard public key
+      command: /bin/bash -c "echo '{{ remote_private_key.stdout }}' | wg pubkey"
+      register: remote_public_key
+      changed_when: false
+
+    - name: Set WireGuard keys as facts for all hosts
+      set_fact:
+        wireguard_keys:
+          local_private: "{{ local_private_key.stdout }}"
+          local_public: "{{ local_public_key.stdout }}"
+          remote_private: "{{ remote_private_key.stdout }}"
+          remote_public: "{{ remote_public_key.stdout }}"
+      run_once: true
+
+- hosts: all
+  become: true
+  gather_facts: true
+
+  roles:
+    - role: wireguard
