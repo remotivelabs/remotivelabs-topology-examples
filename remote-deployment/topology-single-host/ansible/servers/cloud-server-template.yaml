@@ -1,0 +1,28 @@
+# Per-server inventory + config. This one file is everything a run needs to target a
+# server: its VM, its cloud account, and the SSH keys allowed in.
+#
+# Copy it to ansible/servers/<server>.yaml (one file per server, named to match its
+# terraform/<server> dir) and fill in the values below. Select it at run time with -i:
+#   ansible-playbook -i servers/$SERVER.yaml playbooks/prepare-server.yaml
+#   ansible-playbook -i servers/$SERVER.yaml -e topology=$TOPOLOGY playbooks/topology-up.yaml
+#
+# The host MUST be in the 'remote' group (the shared sync_files role keys off a non-local
+# connection to rsync the topology over to the VM).
+remote:
+  hosts:
+    # Replace with this server's GCP VM public IP:
+    #   terraform output -raw node_ip
+    # It is a reserved address, stable while the server exists.
+    203.0.113.10:
+  vars:
+    # REQUIRED — this example deploys as a dedicated, revocable RemotiveCloud service account,
+    # never your personal credentials. Create one (see the README "Create a service account"),
+    # then put its email here. Its token must already exist locally — list accounts with
+    # `remotive cloud auth list`. Rationale: ../SECURITY.md.
+    account_email: my-service-account@example.com
+
+    # PUBLIC SSH keys allowed to log in as `topology-user` on this server. This list is
+    # the SOURCE OF TRUTH: add a key and re-run topology-user.yaml to grant access; remove
+    # one and re-run to revoke it. Public keys only; access is ONLY as topology-user.
+    topology_user_authorized_keys:
+      - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAA... user@host"

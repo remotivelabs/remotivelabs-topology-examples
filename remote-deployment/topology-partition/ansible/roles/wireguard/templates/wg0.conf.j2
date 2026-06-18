@@ -1,0 +1,18 @@
+[Interface]
+Address = {{ wg_this_addr }}/24
+ListenPort = {{ wg_port }}
+{% if wireguard_role == 'server' %}
+PrivateKey = {{ hostvars['localhost'].wireguard_keys.remote_private }}
+
+[Peer]
+PublicKey = {{ hostvars['localhost'].wireguard_keys.local_public }}
+AllowedIPs = {{ wg_peer_addr | regex_replace('/\\d+','') }}/32
+{% else %}
+PrivateKey = {{ hostvars['localhost'].wireguard_keys.local_private }}
+
+[Peer]
+PublicKey = {{ hostvars['localhost'].wireguard_keys.remote_public }}
+AllowedIPs = {{ wg_peer_addr | regex_replace('/\\d+','') }}/32
+Endpoint = {{ wg_endpoint }}
+PersistentKeepalive = {{ wg_keepalive }}
+{% endif %}

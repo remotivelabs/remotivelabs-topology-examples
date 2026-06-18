@@ -427,7 +427,7 @@ wheels = [
 
 [[package]]
 name = "remotivelabs-topology"
-version = "0.19.3"
+version = "0.20.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "opentelemetry-api" },
@@ -438,9 +438,9 @@ dependencies = [
     { name = "remotivelabs-broker" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/ed/5f/2346be40041d0c29eb5ec59bb73756cc6163eec65f121e7824bff769c52c/remotivelabs_topology-0.19.3.tar.gz", hash = "sha256:d83373a5c7f933d81c8c108e439053b39a773a273bd5cb2f34c3e77b238504a1", size = 53084, upload-time = "2026-06-10T12:14:40.754Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/e8/d6/0135027ae3f8f7e1f1aeea96d98954e6407d1ba3fba4a1f73b2790b2db95/remotivelabs_topology-0.20.0.tar.gz", hash = "sha256:f61fa59277e97d9ef21e7bec9abebc3e8682488ee173c3506e62f69bf6336394", size = 53517, upload-time = "2026-06-15T14:46:35.446Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/54/01/5f246f1d667380ee6e8420baa1b4c12eccc8bd258cf07bf3e7e64f346dd7/remotivelabs_topology-0.19.3-py3-none-any.whl", hash = "sha256:eaf5b556091bb09bd208f0f5e594840681441505a4f2cabfedc90bcb7ea836e3", size = 95631, upload-time = "2026-06-10T12:14:39.213Z" },
+    { url = "https://files.pythonhosted.org/packages/46/4c/c9750fe79b6abb39a018531f99e96e4c2091ac8202fe391e9900e337baaa/remotivelabs_topology-0.20.0-py3-none-any.whl", hash = "sha256:9df3029459cebc640eb2659fa46be39a3e29a082b4f3a0dad0d2e1365f84c179", size = 95874, upload-time = "2026-06-15T14:46:34.195Z" },
 ]
 
 [[package]]
@@ -464,7 +464,7 @@ dev = [
 requires-dist = [
     { name = "pytest", specifier = "==8.4.2" },
     { name = "pytest-asyncio", specifier = "==1.0.0" },
-    { name = "remotivelabs-topology", specifier = "~=0.19.3" },
+    { name = "remotivelabs-topology", specifier = "~=0.20.0" },
 ]
 
 [package.metadata.requires-dev]

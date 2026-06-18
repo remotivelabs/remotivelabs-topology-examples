@@ -1,0 +1,261 @@
+{
+  "$defs": {
+    "type-feat": {
+      "properties": { "type": { "const": "feat" } }
+    },
+    "type-sysreq": {
+      "properties": { "type": { "const": "sysreq" } }
+    },
+    "type-comp-req": {
+      "properties": { "type": { "const": "comp_req" } }
+    },
+    "type-tc": {
+      "properties": { "type": { "const": "tc" } }
+    },
+    "type-fmea": {
+      "properties": { "type": { "const": "fmea" } }
+    },
+    "type-channel": {
+      "properties": { "type": { "const": "channel" } }
+    },
+    "type-ecu": {
+      "properties": { "type": { "const": "ecu" } }
+    },
+    "safety-relevant": {
+      "properties": {
+        "asil": { "enum": ["A", "B", "C", "D"] }
+      },
+      "required": ["asil"]
+    },
+    "safe-sysreq": {
+      "allOf": [
+        { "$ref": "#/$defs/type-sysreq" },
+        { "$ref": "#/$defs/safety-relevant" }
+      ]
+    }
+  },
+
+  "schemas": [
+    {
+      "id": "sysreq-needs-asil",
+      "severity": "warning",
+      "message": "System requirements should have an ASIL rating for ISO 26262 traceability",
+      "select": {
+        "$ref": "#/$defs/type-sysreq"
+      },
+      "validate": {
+        "local": {
+          "required": ["asil"]
+        }
+      }
+    },
+
+    {
+      "id": "sysreq-asil-valid-value",
+      "severity": "violation",
+      "message": "ASIL rating must be one of: QM, A, B, C, D (ISO 26262)",
+      "select": {
+        "allOf": [
+          { "$ref": "#/$defs/type-sysreq" },
+          { "required": ["asil"] }
+        ]
+      },
+      "validate": {
+        "local": {
+          "properties": {
+            "asil": { "enum": ["QM", "A", "B", "C", "D"] }
+          }
+        }
+      }
+    },
+
+    {
+      "id": "comp-req-needs-asil",
+      "severity": "warning",
+      "message": "Component requirements should have an ASIL rating for ISO 26262 traceability",
+      "select": {
+        "$ref": "#/$defs/type-comp-req"
+      },
+      "validate": {
+        "local": {
+          "required": ["asil"]
+        }
+      }
+    },
+
+    {
+      "id": "comp-req-asil-valid-value",
+      "severity": "violation",
+      "message": "ASIL rating must be one of: QM, A, B, C, D (ISO 26262)",
+      "select": {
+        "allOf": [
+          { "$ref": "#/$defs/type-comp-req" },
+          { "required": ["asil"] }
+        ]
+      },
+      "validate": {
+        "local": {
+          "properties": {
+            "asil": { "enum": ["QM", "A", "B", "C", "D"] }
+          }
+        }
+      }
+    },
+
+    {
+      "id": "sysreq-must-satisfy-feature",
+      "severity": "warning",
+      "message": "System requirements should trace up to at least one feature via 'satisfies'",
+      "select": {
+        "$ref": "#/$defs/type-sysreq"
+      },
+      "validate": {
+        "local": {
+          "properties": {
+            "satisfies": { "minItems": 1 }
+          },
+          "required": ["satisfies"]
+        }
+      }
+    },
+
+    {
+      "id": "comp-req-must-satisfy-sysreq",
+      "severity": "warning",
+      "message": "Component requirements should trace up to at least one system requirement via 'satisfies'",
+      "select": {
+        "$ref": "#/$defs/type-comp-req"
+      },
+      "validate": {
+        "local": {
+          "properties": {
+            "satisfies": { "minItems": 1 }
+          },
+          "required": ["satisfies"]
+        }
+      }
+    },
+
+    {
+      "id": "comp-req-satisfies-sysreq-type",
+      "severity": "violation",
+      "message": "Component requirements must satisfy needs of type 'sysreq' (not other types)",
+      "select": {
+        "$ref": "#/$defs/type-comp-req"
+      },
+      "validate": {
+        "network": {
+          "satisfies": {
+            "items": {
+              "local": {
+                "properties": {
+                  "type": { "enum": ["sysreq", "feat"] }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    {
+      "id": "tc-must-verify-something",
+      "severity": "warning",
+      "message": "Test cases should verify at least one requirement via 'verifies'",
+      "select": {
+        "$ref": "#/$defs/type-tc"
+      },
+      "validate": {
+        "local": {
+          "properties": {
+            "verifies": { "minItems": 1 }
+          },
+          "required": ["verifies"]
+        }
+      }
+    },
+
+    {
+      "id": "tc-must-have-verification-method",
+      "severity": "warning",
+      "message": "Test cases should specify a verification method (test, review, analysis, inspection)",
+      "select": {
+        "$ref": "#/$defs/type-tc"
+      },
+      "validate": {
+        "local": {
+          "required": ["verification_method"]
+        }
+      }
+    },
+
+    {
+      "id": "fmea-must-have-ratings",
+      "severity": "violation",
+      "message": "FMEA entries must have severity, occurrence, and detection ratings",
+      "select": {
+        "$ref": "#/$defs/type-fmea"
+      },
+      "validate": {
+        "local": {
+          "required": ["severity", "occurrence", "detection"]
+        }
+      }
+    },
+
+    {
+      "id": "fmea-must-mitigate",
+      "severity": "warning",
+      "message": "FMEA entries should mitigate at least one requirement via 'mitigates'",
+      "select": {
+        "$ref": "#/$defs/type-fmea"
+      },
+      "validate": {
+        "local": {
+          "properties": {
+            "mitigates": { "minItems": 1 }
+          },
+          "required": ["mitigates"]
+        }
+      }
+    },
+
+    {
+      "id": "safety-comp-req-traces-to-safe-sysreq",
+      "severity": "violation",
+      "message": "Safety-relevant component requirements (ASIL A-D) must trace to at least one safety-relevant system requirement",
+      "select": {
+        "allOf": [
+          { "$ref": "#/$defs/type-comp-req" },
+          { "$ref": "#/$defs/safety-relevant" }
+        ]
+      },
+      "validate": {
+        "network": {
+          "satisfies": {
+            "contains": {
+              "local": {
+                "$ref": "#/$defs/safe-sysreq"
+              }
+            },
+            "minContains": 1
+          }
+        }
+      }
+    },
+
+    {
+      "id": "channel-must-have-protocol",
+      "severity": "warning",
+      "message": "Communication channels should specify their protocol (CAN, LIN, SOME/IP)",
+      "select": {
+        "$ref": "#/$defs/type-channel"
+      },
+      "validate": {
+        "local": {
+          "required": ["protocol"]
+        }
+      }
+    }
+  ]
+}

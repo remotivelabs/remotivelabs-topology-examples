@@ -1,0 +1,24 @@
+---
+- name: Ensure required packages are installed
+  apt:
+    name:
+      - iproute2
+    state: present
+    update_cache: true
+
+- name: Clean up any old interfaces
+  shell: |
+    ip link del {{ vxlan_name }} 2>/dev/null || true
+    ip link del {{ bridge_name }} 2>/dev/null || true
+
+- name: Create VXLAN interface
+  shell: |
+    ip link add {{ vxlan_name }} type vxlan id {{ vxlan_id }} dev {{ wg_iface }} remote {{ wg_peer_addr }} dstport 4789
+    ip link set {{ vxlan_name }} up
+
+- name: Create bridge and attach VXLAN
+  shell: |
+    ip link add {{ bridge_name }} type bridge
+    ip link set {{ vxlan_name }} master {{ bridge_name }}
+    ip link set {{ bridge_name }} up
+

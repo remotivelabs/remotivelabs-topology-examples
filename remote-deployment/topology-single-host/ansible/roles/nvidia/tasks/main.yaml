@@ -1,0 +1,85 @@
+---
+# Install the NVIDIA driver + Container Toolkit so Docker containers can use an
+# attached GPU. Runs only when a GPU is detected (see dependencies.yaml). The play
+# is already become: true.
+#
+# NB: use the FULL driver (not `ubuntu-drivers install --gpgpu`). The headless
+# `--gpgpu` variant omits nvidia-smi AND nvidia-persistenced; the latter's socket
+# (/run/nvidia-persistenced/socket) is required by the container runtime.
+- name: Install ubuntu-drivers tooling
+  apt:
+    name: ubuntu-drivers-common
+    state: present
+    update_cache: true
+
+- name: Install the recommended NVIDIA driver (full; includes nvidia-smi + persistenced)
+  command: ubuntu-drivers install
+  register: nvidia_driver_install
+  changed_when: "'already installed' not in (nvidia_driver_install.stdout | lower)"
+
+- name: Add the NVIDIA Container Toolkit apt repository
+  shell: |
+    curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey \
+      | gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
+    curl -fsSL https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list \
+      | sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' \
+      > /etc/apt/sources.list.d/nvidia-container-toolkit.list
+  args:
+    creates: /etc/apt/sources.list.d/nvidia-container-toolkit.list
+
+- name: Install the NVIDIA Container Toolkit
+  apt:
+    name: nvidia-container-toolkit
+    state: present
+    update_cache: true
+
+- name: Configure Docker to use the NVIDIA runtime
+  command: nvidia-ctk runtime configure --runtime=docker
+  changed_when: true
+
+- name: Restart Docker
+  service:
+    name: docker
+    state: restarted
+
+# Provides /run/nvidia-persistenced/socket that the container runtime mounts.
+# May not start until the driver module is loaded (post-reboot); enabled=true
+# ensures it comes up on boot regardless.
+- name: Enable nvidia-persistenced
+  systemd:
+    name: nvidia-persistenced
+    enabled: true
+    state: started
+  failed_when: false
+
+- name: Check whether nvidia-smi works (driver/library versions match)
+  command: nvidia-smi
+  register: nvidia_smi
+  failed_when: false
+  changed_when: false
+
+# Non-zero rc here means the kernel module isn't loaded yet (fresh install) or
+# mismatches the userspace libs; a reboot loads the matching module and starts
+# nvidia-persistenced cleanly.
+- name: Reboot once to load the matching NVIDIA kernel module
+  reboot:
+    reboot_timeout: 600
+  when: nvidia_smi.rc != 0
+
+- name: Re-check nvidia-smi after the reboot
+  command: nvidia-smi
+  register: nvidia_smi_post
+  failed_when: false
+  changed_when: false
+  when: nvidia_smi.rc != 0
+
+# Docker resolves `gpus: all` (and CDI device requests) by reading a CDI spec from
+# /etc/cdi. The container toolkit configures the runtime but does NOT generate this
+# spec, so without it `docker compose up` fails with
+# "failed to discover GPU vendor from CDI: no known GPU vendor found". Generate it
+# once the driver is live so the GPU compose overlay can actually claim the card.
+- name: Generate the NVIDIA CDI spec
+  command: nvidia-ctk cdi generate --output=/etc/cdi/nvidia.yaml
+  args:
+    creates: /etc/cdi/nvidia.yaml
+  when: (nvidia_smi.rc == 0) or ((nvidia_smi_post.rc | default(1)) == 0)

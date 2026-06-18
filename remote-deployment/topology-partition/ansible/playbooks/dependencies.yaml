@@ -1,0 +1,39 @@
+- hosts: all
+  become: true
+  gather_facts: true
+
+  pre_tasks:
+    - name: Disable SSH password authentication (enforce key-only login)
+      ansible.builtin.copy:
+        dest: /etc/ssh/sshd_config.d/99-disable-passwords.conf
+        content: |
+          PasswordAuthentication no
+          ChallengeResponseAuthentication no
+        owner: root
+        group: root
+        mode: "0644"
+      notify: Restart ssh
+
+    - name: Update APT cache and install dependencies
+      apt:
+        name: "{{ apt_packages }}"
+        state: present
+        update_cache: true
+
+    - name: Check if docker command exists
+      ansible.builtin.command: which docker
+      register: docker_check
+      ignore_errors: true
+
+  handlers:
+    - name: Restart ssh
+      ansible.builtin.service:
+        name: ssh
+        state: restarted
+
+  roles:
+    - role: docker
+      # Do not touch docker installation if already installed. We cannot know the origin of docker
+      when: docker_check.rc != 0
+
+    - role: remotivebus

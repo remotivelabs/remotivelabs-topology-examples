@@ -1,0 +1,14 @@
+---
+# Prepare a server end to end, in one step:
+#   1. dependencies.yaml  — Docker, CAN utilities, remotivebus, remotive CLI (+ NVIDIA if a GPU)
+#   2. topology-user.yaml — the unprivileged `topology-user` account that owns and runs the topology
+#
+# Both sub-playbooks are idempotent, so this is safe to re-run (e.g. to add/revoke a
+# topology-user key). They can also be run on their own — this just chains them so a
+# single command prepares the whole server. Run BEFORE topology-up.yaml.
+#
+# Requires topology_user_authorized_keys to be set in the server's inventory file
+# (topology-user.yaml asserts at least one key). Set it before running this.
+#   ansible-playbook -i servers/<server>.yaml playbooks/prepare-server.yaml
+- import_playbook: dependencies.yaml
+- import_playbook: topology-user.yaml

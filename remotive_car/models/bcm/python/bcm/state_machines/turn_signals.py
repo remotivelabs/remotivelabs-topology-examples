@@ -17,6 +17,7 @@ class TurnStalkPosition(Enum):
     OFF = "turn_off"
 
 
+# @req COMP_REQ_BCM_TURN_SM: Turn Signal State Machine
 class TurnSignalsStateMachine:
     state: str
     trigger: Callable[[str], None]

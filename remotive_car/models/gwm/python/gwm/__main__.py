@@ -16,6 +16,7 @@ from .log import configure_logging
 logger = structlog.get_logger(__name__)
 
 
+# @req COMP_REQ_GWM_FORWARD: Cross-Network Signal Forwarding
 @dataclass
 class GWM:
     ecu_name: str = "GWM"

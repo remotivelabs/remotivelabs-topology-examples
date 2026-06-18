@@ -16,6 +16,7 @@ from .log import configure_logging
 LOGGER = structlog.get_logger(__name__)
 
 
+# @req COMP_REQ_RLCM_CONTROL: Rear Light Control
 class RLCM(BehavioralModel):
     """
     Rear Light Control Module (RLCM) ECU acting as a gateway between the body CAN bus and the rear light LIN bus.
@@ -40,7 +41,7 @@ class RLCM(BehavioralModel):
     counter: int = 0
 
     def __init__(self, broker_client: BrokerClient) -> None:
-        self.lin_bus = LinNamespace(RLCM.lin_ns, broker_client=broker_client)
+        self.lin_bus = LinNamespace(RLCM.lin_ns, broker_client=broker_client, cache_config=self.ecu_name)
         self.body_can_0 = CanNamespace(RLCM.can_ns, broker_client=broker_client)
         super().__init__(
             RLCM.ecu_name,

@@ -1,0 +1,187 @@
+- import_playbook: topology-down.yaml
+
+- hosts: remote
+  gather_facts: true
+  vars_files:
+    - "../topologies/{{ topology }}.yaml"
+  pre_tasks:
+    # This example deploys as a dedicated, revocable RemotiveCloud service account — never
+    # your personal credentials. account_email is REQUIRED: set it in the server's inventory
+    # file (servers/<server>.yaml), and the account's token must already exist locally
+    # (remotive cloud auth list). See README "Create a service account".
+    - name: Require a service-account email (account_email)
+      run_once: true
+      assert:
+        that:
+          - account_email is defined
+          - account_email | default('') | trim | length > 0
+        fail_msg: |
+          account_email is required. This example deploys as a RemotiveCloud service account,
+          not your personal credentials. Set account_email in the server's inventory file
+          (servers/<server>.yaml) — see README "Create a service account".
+
+    - name: Build the --account argument
+      delegate_to: localhost
+      run_once: true
+      set_fact:
+        account_arg: "--account {{ account_email | trim }}"
+
+    - name: Get access token using remotive-cli
+      delegate_to: localhost
+      run_once: true
+      shell: "remotive cloud auth print-access-token {{ account_arg }}"
+      register: access_token
+
+    - name: Get cloud organization
+      delegate_to: localhost
+      run_once: true
+      shell: "remotive cloud auth organization print {{ account_arg }}"
+      register: cloud_org
+
+    - name: Resolve organization value
+      set_fact:
+        cloud_organization: "{{ cloud_org.stdout | trim }}"
+
+    - name: Ensure the service account has a token and an organization
+      run_once: true
+      assert:
+        that:
+          - access_token.stdout | trim | length > 0
+          - cloud_organization | length > 0
+        fail_msg: |
+          Could not get a token + organization for {{ account_email }}. Its token must exist
+          locally and it must have a default organization set while it is the active account
+          (`--account` only prints — it cannot set the org):
+            remotive cloud auth activate <service-account-token-file>
+            remotive cloud auth organization set --it
+          See README "Create a service account".
+
+    - name: Resolve examples root
+      # examples_root is the examples/ dir (the published repo root); remote-deployment
+      # and the referenced topologies (e.g. remotive_car) are siblings under it.
+      set_fact:
+        examples_root: "{{ playbook_dir }}/../../../.."
+
+    # Sets deploy_user / run_become / base_folder / project_path: always deploy under
+    # <deploy-user>/projects/<topology> — as topology-user when that account exists,
+    # otherwise as the ubuntu connection user (~/projects).
+    # topology-down (imported above) is label-driven and already stopped whatever was
+    # running on this host — including a stack started by a different user — so we deploy
+    # onto a clean host without colliding on ports.
+    - name: Resolve deploy user and workspace path
+      include_tasks: tasks/resolve-deploy-target.yaml
+
+  tasks:
+    # Persist the cloud token + org as env vars on the host (no ~/.config/remotive
+    # copy). Brokers, the build, and later manual commands read them from here.
+    - name: Set cloud auth env on the host
+      include_role:
+        name: remotive_cloud_env
+      vars:
+        cloud_token: "{{ access_token.stdout }}"
+        cloud_org: "{{ cloud_organization }}"
+
+    - name: Ensure the project directory exists on the VM
+      # Owned by deploy_user so the synchronize below (which writes as deploy_user via
+      # --rsync-path) can populate it inside the 0750 topology-user home.
+      become: "{{ run_become }}"
+      become_user: "{{ deploy_user }}"
+      file:
+        path: "{{ project_path }}"
+        state: directory
+
+    - name: Synchronize topology project to the VM
+      # rsync runs over the (ubuntu) connection but writes remote files as deploy_user via
+      # `rsync_path: sudo -u <user> rsync`, so the project is owned by whoever runs the
+      # topology. Omitted when deploy_user is ubuntu (the fallback). Use the dedicated
+      # rsync_path param — putting it in rsync_opts makes Ansible word-split the value.
+      synchronize:
+        src: "{{ examples_root }}/{{ topology_dir }}/"
+        dest: "{{ project_path }}/"
+        recursive: true
+        delete: true
+        rsync_path: "{{ ('sudo -u ' ~ deploy_user ~ ' rsync') if run_become | bool else omit }}"
+        rsync_opts:
+          - "--exclude=build"
+          - "--exclude=.git"
+          - "--exclude=**/cuttlefish/state/*"
+
+    - name: Drop extra composition instance files into the project
+      synchronize:
+        src: "{{ examples_root }}/{{ item }}"
+        dest: "{{ project_path }}/{{ item | basename }}"
+        rsync_path: "{{ ('sudo -u ' ~ deploy_user ~ ' rsync') if run_become | bool else omit }}"
+      loop: "{{ extra_instances | default([]) }}"
+
+    - name: Initialize a remotive workspace under projects/ (enables build caching)
+      # The workspace lives at base_folder (~/projects), the PARENT of the synced project,
+      # so the project's rsync (delete: true) and `rm -rf build` never wipe its marker.
+      become: "{{ run_become }}"
+      become_user: "{{ deploy_user }}"
+      ansible.builtin.command:
+        cmd: remotive topology workspace init --force
+        chdir: "{{ base_folder }}"
+      environment:
+        REMOTIVE_CLOUD_AUTH_TOKEN: "{{ access_token.stdout }}"
+        REMOTIVE_CLOUD_ORGANIZATION: "{{ cloud_organization }}"
+
+    - name: Build topology on the VM
+      # "script" is used to run the command with a tty (needed by docker run -it)
+      become: "{{ run_become }}"
+      become_user: "{{ deploy_user }}"
+      shell: |
+        cd {{ project_path }}
+        rm -rf build
+        script -e -q -c \
+          "remotive topology build \
+            {{ topology_instances | map('regex_replace', '^', '-f ') | join(' ') }} \
+            {{ '--with-metrics' if with_metrics | default(true) else '' }} \
+            build" /dev/null
+      environment:
+        REMOTIVE_CLOUD_AUTH_TOKEN: "{{ access_token.stdout }}"
+        REMOTIVE_CLOUD_ORGANIZATION: "{{ cloud_organization }}"
+
+    - name: Locate generated docker-compose.yml
+      become: "{{ run_become }}"
+      become_user: "{{ deploy_user }}"
+      shell: |
+        find {{ project_path }}/build -maxdepth 2 -name docker-compose.yml | head -n1
+      register: generated_compose
+
+    - name: Fail if no topology was generated
+      fail:
+        msg: "No docker-compose.yml found under {{ project_path }}/build"
+      when: generated_compose.stdout == ""
+
+    - name: Load modules
+      become: true
+      shell: |
+        sudo modprobe vhost_vsock vhost_net
+
+    - name: Detect an attached NVIDIA GPU
+      # Gate the GPU compose overlays: a `gpus: all` request fails on a host without a
+      # GPU ("failed to discover GPU vendor from CDI"), so only layer them in when a
+      # card is present. Without them Cuttlefish falls back to software rendering.
+      ansible.builtin.shell: lspci | grep -i nvidia
+      register: gpu_present
+      failed_when: false
+      changed_when: false
+
+    - name: Resolve active compose overlays (add GPU overlays only when a GPU is present)
+      set_fact:
+        active_compose_overlays: >-
+          {{ (compose_overlays | default([]))
+             + ((gpu_compose_overlays | default([])) if gpu_present.rc == 0 else []) }}
+
+    - name: Start docker compose
+      become: "{{ run_become }}"
+      become_user: "{{ deploy_user }}"
+      shell: |
+        docker compose \
+          -f {{ generated_compose.stdout }} \
+          {% for overlay in active_compose_overlays | default([]) %}-f {{ project_path }}/{{ overlay }} {% endfor %} \
+          {% for profile in compose_profiles | default([]) %}--profile {{ profile }} {% endfor %} \
+          up --build -d
+      environment:
+        REMOTIVE_CLOUD_AUTH_TOKEN: "{{ access_token.stdout }}"
+        REMOTIVE_CLOUD_ORGANIZATION: "{{ cloud_organization }}"

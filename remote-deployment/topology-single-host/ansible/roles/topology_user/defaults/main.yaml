@@ -1,0 +1,9 @@
+---
+# Name of the service account that owns and runs the topology.
+topology_user_name: topology-user
+
+# PUBLIC SSH keys allowed to log in as topology-user. This list is the source of
+# truth — remove a key and re-run to revoke it. (Public keys; not secret.)
+# Set per server in the server's inventory file ansible/servers/<server>.yaml (selected
+# with -i), not here.
+topology_user_authorized_keys: []

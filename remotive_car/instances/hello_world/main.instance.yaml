@@ -6,6 +6,7 @@ includes:
   - ./../../models/bcm_gwm_ihu.instance.yaml
   - ./../../models/rl_rlcm.instance.yaml
   - ./../../common/jupyter/jupyter.instance.yaml
+  - ./../../common/3d_car/3d_car.instance.yaml
   - ./../../tests/tester.instance.yaml
 
 platform:

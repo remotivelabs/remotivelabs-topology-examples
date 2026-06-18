@@ -1,0 +1,22 @@
+---
+# Create/refresh the `topology-user` account on ONE server's VM. When this user exists,
+# topology-up/topology-down deploy the topology into ~topology-user/projects/<topology> and
+# run it as this user (otherwise: ubuntu). Normally run as part of prepare-server.yaml
+# (dependencies.yaml then this); run it standalone to add/revoke a key after the server is up.
+# Needs the docker group from dependencies.yaml, and must run before topology-up.yaml.
+# Keys are PER SERVER: they come from the server's inventory file
+# (ansible/servers/<server>.yaml, the topology_user_authorized_keys list), so just select it with -i.
+#   ansible-playbook -i servers/<server>.yaml playbooks/topology-user.yaml
+- hosts: remote
+  become: true
+  gather_facts: false
+  pre_tasks:
+    - name: Require at least one topology-user key
+      ansible.builtin.assert:
+        that:
+          - topology_user_authorized_keys | default([]) | length > 0
+        fail_msg: |
+          No topology_user_authorized_keys set. Add at least one public key to the server's
+          inventory file (ansible/servers/<server>.yaml) and select it with -i.
+  roles:
+    - role: topology_user

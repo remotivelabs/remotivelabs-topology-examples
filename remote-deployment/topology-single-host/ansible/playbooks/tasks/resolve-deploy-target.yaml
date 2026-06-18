@@ -1,0 +1,35 @@
+---
+# Resolve WHO runs the topology and WHERE its workspace lives, shared by
+# topology-up.yaml and topology-down.yaml.
+#
+# The workspace ALWAYS lives at <deploy-user-home>/projects/<topology>. By default the
+# deploy user is `topology-user` if that service account exists (created via
+# playbooks/topology-user.yaml), otherwise the `ubuntu` connection user — override with
+# `-e deploy_user=<name>`. The sync/build/compose tasks run as that user (become unless
+# it's ubuntu). Either way: ~/projects, never elsewhere. The home is resolved absolutely
+# via getent (no `~`, and no fact gathering required — topology-down does not gather facts).
+
+- name: Detect the optional topology-user service account
+  ansible.builtin.command: "getent passwd {{ topology_user_name | default('topology-user') }}"
+  register: _topology_user_passwd
+  changed_when: false
+  failed_when: false
+
+- name: Resolve the deploy user (override with -e deploy_user=<name>)
+  ansible.builtin.set_fact:
+    deploy_user: "{{ deploy_user | default((topology_user_name | default('topology-user')) if _topology_user_passwd.rc == 0 else 'ubuntu', true) }}"
+
+- name: Decide whether to become the deploy user
+  ansible.builtin.set_fact:
+    run_become: "{{ deploy_user != 'ubuntu' }}"
+
+- name: Look up the deploy user's home directory
+  ansible.builtin.command: "getent passwd {{ deploy_user }}"
+  register: _deploy_user_passwd
+  changed_when: false
+
+- name: Resolve the workspace paths (always <home>/projects/<topology>)
+  ansible.builtin.set_fact:
+    project_name: "{{ topology_dir | basename }}"
+    base_folder: "{{ _deploy_user_passwd.stdout.split(':')[5] }}/projects"
+    project_path: "{{ _deploy_user_passwd.stdout.split(':')[5] }}/projects/{{ topology_dir | basename }}"

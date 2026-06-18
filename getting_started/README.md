@@ -351,10 +351,10 @@ Notice:
 - Since in this case you are testing a behavioral model and not real ECU software or hardware, you can use CAN emulation.
 - You can easily run the same tests using real hardware simply by replacing the `bcm` instance and configuring CAN devices instead of emulation.
 
-To run the topology generate the runtime environment:
+To run the topology, build the runtime environment and then run using docker:
 
 ```sh
-$ remotive topology generate -f getting_started/instances/main.instance.yaml -f getting_started/settings/can_over_udp.settings.instance.yaml --name getting_started build
+$ remotive topology build -f getting_started/instances/main.instance.yaml -f getting_started/settings/can_over_udp.settings.instance.yaml --name getting_started build
 Generated topology at: build/getting_started
 $ docker compose -f build/getting_started/docker-compose.yml --profile tester up --abort-on-container-exit --build
 ```

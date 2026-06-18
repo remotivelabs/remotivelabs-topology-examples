@@ -7,7 +7,7 @@ You will need to install `RemotiveTopology`, follow the instructions here <https
 ## Getting started
 Generate the instance
 ```bash
-remotive topology generate -f remotive_car/instances/hello_world/main.instance.yaml -f remotive_car/settings/can_over_udp.settings.instance.yaml remotive_car/build
+remotive topology build -f remotive_car/instances/hello_world/main.instance.yaml -f remotive_car/settings/can_over_udp.settings.instance.yaml remotive_car/build
 ```
 
 Start it
@@ -20,4 +20,8 @@ Use [RemotiveStudio](https://docs.remotivelabs.com/docs/remotive-studio) to view
 Browse to [http://localhost:8888/lab?token=remotivelabs](http://localhost:8888/lab?token=remotivelabs) to interact with the instance through a Jupyter notebook.
 
 ## Documentation
-Further documentation can be found [here](DOCS.md).
+Detailed documentation is available here:
+
+- [Overview](./DOCS.md) - Platform and file structure
+- [Example usecases](../USECASES.md) - The usecases this example is showing
+

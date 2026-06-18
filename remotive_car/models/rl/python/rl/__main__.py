@@ -25,7 +25,7 @@ class RL(BehavioralModel):
     RL_counter_times_2: str = "DEVS1LIN01Fr1.counter_times_2"
 
     def __init__(self, broker_client: BrokerClient) -> None:
-        self.lin_bus = LinNamespace(RL.lin_ns, broker_client=broker_client)
+        self.lin_bus = LinNamespace(RL.lin_ns, broker_client=broker_client, cache_config=self.ecu_name)
         super().__init__(
             RL.ecu_name,
             namespaces=[self.lin_bus],

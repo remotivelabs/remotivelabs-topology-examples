@@ -6,6 +6,8 @@ includes:
   - ../../models/bcm.bm.instance.yaml
   - ../../models/gwm.bm.instance.yaml
   - ../../models/ihu.bm.instance.yaml
+  - ../../common/3d_car/3d_car.instance.yaml
+  - ./local_playback.instance.yaml
 
 platform:
   includes:

@@ -21,6 +21,7 @@ On Linux, this example requires that you run `RemotiveBus` service on your machi
 Below is an overview of the project's directory layout and its main components:
 ```
 common/
+docs/
 instances/
 models/
 platform/
@@ -29,6 +30,9 @@ tests/
 
 ### Common
 The [common](common) directory contains shared components that can be used across different instances.
+
+### Docs 
+The [docs](docs) directory contains **Sphinx-Needs** documentation that adds ISO 26262-style traceability to this example. Notice that this is just a limited sample of what the full documentation would look like.
 
 #### Jupyter notebook
 Jupyter allows you to interact with the input ECUs using a graphical interface. In this example we include it in the main instance and start it by adding `--profile jupyter` as argument to docker compose. See more about how it is instantiated [here](instances/hello_world/README.md).
@@ -41,7 +45,6 @@ These instances serve as the input sources from which the final system setup is 
 The example contains three main instances
 > :link: [RemotiveCar Hello World instance](instances/hello_world/README.md)<br>
 > :link: [Instance with android emulator](instances/android/README.md)<br>
-> :link: [Instance with physical steering wheel](instances/steering_wheel/README.md)<br>
 
 The hello world instance is the most suitable starting point and the instance with android emulator shows how to integrate a topology with the android emulator.
 There is also an instance that integrates with a physical steering wheel, replacing the `SCCM` mock with a behavioral model.
@@ -195,11 +198,5 @@ config:
 ### Tests
 The test suite is implemented using the RemotiveLabs ECU framework. The [tester.instance.yaml](tests/tester.instance.yaml) instance may be included by other main.instance.yaml files. It includes scenario based tests using Behave + Gherkin and test cases using pytest.
 
-Example usage is shown in [instances/hello_world/README.md](instances/hello_world/README.md)
-
-
-## Available instances
-Start an instance of the platform using RemotiveTopology. Here is a list of available instances
-> :link: [Simple interactive instance](instances/hello_world/README.md)<br>
-> :link: [Instance with android emulator](instances/android/README.md)<br>
-> :link: [Instance with physical steering wheel](instances/steering_wheel/README.md)<br>
+## Use cases
+To understand how you can use RemotiveTopology, this example includes a number of different use cases, see [USECASES.md](../USECASES.md).

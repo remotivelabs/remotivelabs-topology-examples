@@ -1,0 +1,19 @@
+# Stop the running topology on this host. Label-driven: it tears down whatever docker
+# compose project is running, regardless of which user started it or where its files
+# live — so it always works. (Also imported by topology-up.yaml as the pre-clean step,
+# which is what lets you switch the deploy user without the stale stack being orphaned.)
+- hosts: remote
+  become: true # root can always drive docker; no user/group guessing
+  gather_facts: false
+  tasks:
+    - name: Find the running compose project(s)
+      ansible.builtin.shell: |
+        docker ps --filter label=com.docker.compose.project \
+          --format '{% raw %}{{ .Label "com.docker.compose.project" }}{% endraw %}' | sort -u
+      register: running_projects
+      changed_when: false
+
+    - name: Stop each running topology (independent of who started it / where)
+      ansible.builtin.command: "docker compose -p {{ item }} down --remove-orphans"
+      loop: "{{ running_projects.stdout_lines }}"
+      when: item | trim | length > 0

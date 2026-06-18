@@ -1,0 +1,22 @@
+google_compute_engine
+tf_outputs.json
+*.ini
+
+# Local .terraform directories
+**/.terraform/*
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+
+# Per-server config is gitignored (it holds real project/bucket); only the committed
+# cloud-server-template ships with placeholders.
+*.auto.tfvars
+*.backend.hcl
+
+!terraform/cloud-server-template/
+!terraform/cloud-server-template/**
+
+# Per-server topology-user keys: ignore all but the committed sample.
+ansible/servers/*
+!ansible/servers/cloud-server-template.yaml

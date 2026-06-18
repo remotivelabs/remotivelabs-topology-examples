@@ -1,0 +1,28 @@
+---
+# Persist the cloud auth token + organization in /etc/environment so EVERY login
+# session picks them up — interactive terminals AND non-interactive ssh (e.g. an
+# Electron app running `ssh host "<cmd>"`). ~/.bashrc only covers interactive
+# shells (Ubuntu's even returns early for non-interactive), so it's not enough.
+# Inputs: cloud_token, cloud_org (fetched locally before this runs).
+#
+# Security note: /etc/environment is world-readable and pam_env injects it into
+# every session, so the token is readable by anyone with shell access to the VM.
+# This is an accepted limitation: because the demo allows interactive TTY SSH and
+# `remotive`/`docker compose` need the token in the environment, it cannot be
+# meaningfully hidden from a logged-in user (they could read it from their own
+# env or /proc regardless). The mitigation is to limit blast radius — deploy with
+# a dedicated, revocable RemotiveCloud service-account token (least privilege),
+# never your personal credentials, and revoke it after the demo. See the README.
+- name: Set Remotive cloud env vars in /etc/environment
+  become: true
+  no_log: true            # don't echo the access token
+  ansible.builtin.lineinfile:
+    path: /etc/environment
+    regexp: "^{{ item.key }}="
+    line: "{{ item.key }}={{ item.value }}"
+    create: true
+  loop:
+    - { key: "REMOTIVE_CLOUD_AUTH_TOKEN", value: "{{ cloud_token }}" }
+    - { key: "REMOTIVE_CLOUD_ORGANIZATION", value: "{{ cloud_org }}" }
+  loop_control:
+    label: "{{ item.key }}"

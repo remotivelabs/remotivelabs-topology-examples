@@ -14,6 +14,7 @@ class GearPositionChange(Enum):
     Down = "down"
 
 
+# @req COMP_REQ_BCM_GEARS: Gear State Tracking
 class GearsStateMachine:
     state: str
     trigger: Callable[[str], None]

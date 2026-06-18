@@ -1,0 +1,75 @@
+schema: remotive-topology-mapping:0.1
+
+# Runtime signal mapping for the RemotiveCar 3D app.
+
+mappings:
+  # Brake lights
+  - source: { type: broker, signal: BrakeLightControl.LeftBrakeLightRequest, channel: topology-BodyCan0 }
+    target: { type: 3dcar, signal: LeftBrakeIndicator }
+  - source: { type: broker, signal: BrakeLightControl.RightBrakeLightRequest, channel: topology-BodyCan0 }
+    target: { type: 3dcar, signal: RightBrakeIndicator }
+
+  # Daytime running lights 
+  - source:
+      { type: broker, signal: DaylightRunningLightControl.LeftDaylightRunningLightRequest, channel: topology-BodyCan0 }
+    target: { type: 3dcar, signal: LeftFrontDaytimeRunningLightIndicator }
+  - source:
+      { type: broker, signal: DaylightRunningLightControl.LeftDaylightRunningLightRequest, channel: topology-BodyCan0 }
+    target: { type: 3dcar, signal: LeftRearDaytimeRunningLightIndicator }
+  - source:
+      { type: broker, signal: DaylightRunningLightControl.RightDaylightRunningLightRequest, channel: topology-BodyCan0 }
+    target: { type: 3dcar, signal: RightFrontDaytimeRunningLightIndicator }
+  - source:
+      { type: broker, signal: DaylightRunningLightControl.RightDaylightRunningLightRequest, channel: topology-BodyCan0 }
+    target: { type: 3dcar, signal: RightRearDaytimeRunningLightIndicator }
+
+  # Low beam
+  - source: { type: broker, signal: LowBeamLightControl.LeftLowBeamLightRequest, channel: topology-BodyCan0 }
+    target: { type: 3dcar, signal: LeftFrontLowBeamIndicator }
+  - source: { type: broker, signal: LowBeamLightControl.RightLowBeamLightRequest, channel: topology-BodyCan0 }
+    target: { type: 3dcar, signal: RightFrontLowBeamIndicator }
+
+  # High beam
+  - source: { type: broker, signal: HighBeamLightControl.LeftHighBeamLightRequest, channel: topology-BodyCan0 }
+    target: { type: 3dcar, signal: LeftHighBeamIndicator }
+  - source: { type: broker, signal: HighBeamLightControl.RightHighBeamLightRequest, channel: topology-BodyCan0 }
+    target: { type: 3dcar, signal: RightHighBeamIndicator }
+
+  # Turn signals 
+  - source: { type: broker, signal: TurnLightControl.LeftTurnLightRequest, channel: topology-BodyCan0 }
+    target: { type: 3dcar, signal: LeftFrontDirectionIndicator }
+  - source: { type: broker, signal: TurnLightControl.LeftTurnLightRequest, channel: topology-BodyCan0 }
+    target: { type: 3dcar, signal: LeftRearDirectionIndicator }
+  - source: { type: broker, signal: TurnLightControl.LeftTurnLightRequest, channel: topology-BodyCan0 }
+    target: { type: 3dcar, signal: LeftDirectionButtonIndicator }
+  - source: { type: broker, signal: TurnLightControl.RightTurnLightRequest, channel: topology-BodyCan0 }
+    target: { type: 3dcar, signal: RightFrontDirectionIndicator }
+  - source: { type: broker, signal: TurnLightControl.RightTurnLightRequest, channel: topology-BodyCan0 }
+    target: { type: 3dcar, signal: RightRearDirectionIndicator }
+  - source: { type: broker, signal: TurnLightControl.RightTurnLightRequest, channel: topology-BodyCan0 }
+    target: { type: 3dcar, signal: RightDirectionButtonIndicator }
+
+  # Gear
+  - source: { type: broker, signal: GearInfo.GearLeverPosition, channel: topology-BodyCan0 }
+    target: { type: 3dcar, signal: Gear }
+
+  # Drivetrain / vehicle state
+  - source: { type: broker, signal: UISpeedFrame.uispeed, channel: topology-ChassisCan0 }
+    target: { type: 3dcar, signal: Speed }
+
+  # Driver inputs
+  - source: { type: broker, signal: SteeringAngle.SteeringAngle, channel: topology-DriverCan0 }
+    target: { type: 3dcar, signal: SteeringAngle }
+  - source: { type: broker, signal: BrakePedalPositionSensor.BrakePedalPosition, channel: topology-DriverCan0 }
+    target: { type: 3dcar, signal: Brake }
+  - source:
+      { type: broker, signal: AcceleratorPedalPositionSensor.AcceleratorPedalPosition, channel: topology-DriverCan0 }
+    target: { type: 3dcar, signal: Throttle }
+  - source: { type: broker, signal: HazardLightButton.HazardLightButton, channel: topology-DriverCan0 }
+    target: { type: 3dcar, signal: HazardButtonIndicator }
+  - source: { type: broker, signal: TurnStalk.TurnSignal, channel: topology-DriverCan0 }
+    target: { type: 3dcar, signal: TurnStalkPosition }
+  - source: { type: broker, signal: LightStalk.LightMode, channel: topology-DriverCan0 }
+    target: { type: 3dcar, signal: LowBeamButtonIndicator }
+  - source: { type: broker, signal: LightStalk.HighBeam, channel: topology-DriverCan0 }
+    target: { type: 3dcar, signal: AutoBeamButtonIndicator }

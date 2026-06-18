@@ -1,0 +1,55 @@
+---
+# Optional service account that OWNS and RUNS the topology. When this user exists,
+# topology-up/topology-down deploy into ~/projects/<topology> and run the sync/build/
+# compose steps as this user (see playbooks/tasks/resolve-deploy-target.yaml).
+#
+# It is an isolated, unprivileged account: no sudo, its home is 0750 (other non-root
+# users cannot enter), SSH-key login only. It IS in the `docker` group because the
+# `remotive` CLI drives docker under the hood — note that docker socket access is
+# effectively root on the box. NOT part of dependencies/topology-up; run via
+# playbooks/topology-user.yaml (after dependencies.yaml, before topology-up.yaml).
+
+- name: Create topology-user (normal shell, docker group, no sudo, locked password)
+  ansible.builtin.user:
+    name: "{{ topology_user_name }}"
+    shell: /bin/bash
+    groups: [docker]    # docker so it can run the topology; NOT sudo
+    append: false
+    create_home: true
+    password_lock: true
+
+- name: Own and lock down the home to the user (isolate from other non-root users)
+  ansible.builtin.file:
+    path: "/home/{{ topology_user_name }}"
+    state: directory
+    owner: "{{ topology_user_name }}"
+    group: "{{ topology_user_name }}"
+    mode: "0750"
+
+- name: Create the projects workspace dir (topology-up deploys into ~/projects/<topology>)
+  ansible.builtin.file:
+    path: "/home/{{ topology_user_name }}/projects"
+    state: directory
+    owner: "{{ topology_user_name }}"
+    group: "{{ topology_user_name }}"
+    mode: "0750"
+
+- name: Ensure .ssh dir (user-owned, for authorized_keys)
+  ansible.builtin.file:
+    path: "/home/{{ topology_user_name }}/.ssh"
+    state: directory
+    owner: "{{ topology_user_name }}"
+    group: "{{ topology_user_name }}"
+    mode: "0700"
+
+- name: Install authorized_keys (exclusive — this list is the source of truth)
+  ansible.builtin.copy:
+    dest: "/home/{{ topology_user_name }}/.ssh/authorized_keys"
+    owner: "{{ topology_user_name }}"
+    group: "{{ topology_user_name }}"
+    mode: "0600"
+    content: |
+      # Managed by the topology_user role — edit topology_user_authorized_keys and re-run.
+      {% for key in topology_user_authorized_keys %}
+      {{ key }}
+      {% endfor %}
