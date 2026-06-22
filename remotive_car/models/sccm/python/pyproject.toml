@@ -13,7 +13,7 @@ dependencies = [
   "pydantic >=2.10.4",
   "aiostream >=0.6.4",
   "pyyaml >=6.0.2",
-  "remotivelabs-topology~=0.19.3",
+  "remotivelabs-topology~=0.20.0",
 ]
 
 [dependency-groups]

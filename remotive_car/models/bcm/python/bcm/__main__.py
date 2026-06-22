@@ -171,6 +171,8 @@ class BCM:
             (BCM.right_high_beam_signal, high_beams),
         )
 
+    # @req COMP_REQ_BCM_TURN_LEFT: Turn Signal Left Activation
+    # @req COMP_REQ_BCM_TURN_RIGHT: Turn Signal Right Activation
     async def on_turn_stalk(self, frame: Frame) -> None:
         """Handle turn stalk position change"""
         signal = frame.signals["TurnStalk.TurnSignal"]
@@ -203,6 +205,7 @@ class BCM:
 
         return ControlResponse(status="ok")
 
+    # @req COMP_REQ_BCM_HAZARD: Hazard Light Signal Processing
     async def on_hazard_button(self, frame: Frame) -> None:
         """
         Incoming hazard button signal.

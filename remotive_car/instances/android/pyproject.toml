@@ -14,7 +14,7 @@ dependencies = [
   "pillow >=11.1.0",
   "gherkin-official >=30.0.4",
   "behave >=1.2.6",
-  "remotivelabs-topology~=0.19.3",
+  "remotivelabs-topology~=0.20.0",
 ]
 
 

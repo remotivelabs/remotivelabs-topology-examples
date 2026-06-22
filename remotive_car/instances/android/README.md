@@ -255,7 +255,7 @@ The example is pre-configured with a Cuttlefish docker image that works with the
 
 #### Generate
 
-From the root of this repository run, one of the commands below, depending on your setup.
+From the root of this repository run, one of the commands below, depending on your setup. Including [3d_car.instance.yaml](../../common/3d_car/3d_car.instance.yaml) is optional and adds the 3D car visualization described in [3D car visualization](#3d-car-visualization) below — drop that line if you don't want it.
 
 ```bash
 # With RemotiveBus
@@ -263,6 +263,7 @@ remotive topology generate \
 -f remotive_car/instances/android/main.instance.yaml \
 -f remotive_car/instances/android/local_playback.instance.yaml \
 -f remotive_car/instances/android/cuttlefish.instance.yaml \
+-f remotive_car/common/3d_car/3d_car.instance.yaml \
 remotive_car/build
 ```
 
@@ -272,6 +273,7 @@ remotive topology generate \
 -f remotive_car/instances/android/main.instance.yaml \
 -f remotive_car/instances/android/local_playback.instance.yaml \
 -f remotive_car/instances/android/cuttlefish.instance.yaml \
+-f remotive_car/common/3d_car/3d_car.instance.yaml \
 -f remotive_car/settings/can_over_udp.settings.instance.yaml \
 -f remotive_car/settings/vlan_using_bridge.settings.instance.yaml \
 remotive_car/build
@@ -291,6 +293,8 @@ docker compose -f remotive_car/build/remotive_car_android/docker-compose.yml \
 
 You should then be able to reach the Cuttlefish instance by going to <https://localhost:8443>. The first time it starts you will have to configure some settings and permission for the maps application. If using the Organic Map you will also have to download maps for the areas you are interested in.
 
+If you included [3d_car.instance.yaml](../../common/3d_car/3d_car.instance.yaml) when generating, you can also reach the 3D car visualization at <http://localhost:3000>. See [3D car visualization](#3d-car-visualization) for details.
+
 If you wish to completely reset the state of the cuttlefish container, remove everything in the `cuttlefish/state` folder except the .gitignore.
 
 Use [RemotiveStudio](https://docs.remotivelabs.com/docs/remotive-studio) to view signals and observe the temperature signals being sent back from the Cuttlefish instance.
@@ -306,6 +310,18 @@ docker compose -f remotive_car/build/remotive_car_android/docker-compose.yml \
 ```
 
 The tests can also be run manually if you navigate to `remotive_car/tests/pytest` and run `uv run pytest -m android`.
+
+### 3D car visualization
+
+Including [3d_car.instance.yaml](../../common/3d_car/3d_car.instance.yaml) when generating adds a `3d-car` container that serves a 3D model of the vehicle, reachable at <http://localhost:3000>. The model reacts in real time to signals on the topology and also proxies the Cuttlefish display so the Android screen and the 3D car can be viewed together.
+
+The signals driving the visualization are configured in [3d_car_mapping.yaml](../../common/3d_car/3d_car_mapping.yaml), which maps broker signals to 3D car inputs. The current mapping covers:
+
+- Exterior lighting — brake lights, daytime running lights, low/high beam and turn signals
+- Driver inputs — steering angle, accelerator and brake pedal positions, turn stalk, light stalk and hazard button
+- Vehicle state — gear lever position and speed
+
+To change which signals are reflected in the model, edit `3d_car_mapping.yaml` and regenerate.
 
 ### With emulator within Docker
 

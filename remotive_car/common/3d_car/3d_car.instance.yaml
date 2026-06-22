@@ -1,0 +1,11 @@
+schema: remotive-topology-instance:0.17
+
+containers:
+  3d-car:
+    image: remotivelabs/3d-car:latest
+    ports:
+      - "3000:80"
+    environment:
+      - CUTTLEFISH_PROXY_TARGET=https://cuttlefish:8443
+    volumes:
+      - ./3d_car_mapping.yaml:/config/mapping.yaml:ro
