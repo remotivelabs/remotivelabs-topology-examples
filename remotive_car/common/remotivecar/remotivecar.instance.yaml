@@ -1,8 +1,0 @@
-schema: remotive-topology-instance:0.17
-
-containers:
-  remotivecar:
-    profiles: [remotivecar]
-    image: remotivelabs/remotive-car:sha-41731cf
-    ports:
-      - 8082:80

@@ -631,7 +631,7 @@ wheels = [
 
 [[package]]
 name = "remotivelabs-topology"
-version = "0.20.0"
+version = "0.21.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "opentelemetry-api" },
@@ -642,9 +642,9 @@ dependencies = [
     { name = "remotivelabs-broker" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/e8/d6/0135027ae3f8f7e1f1aeea96d98954e6407d1ba3fba4a1f73b2790b2db95/remotivelabs_topology-0.20.0.tar.gz", hash = "sha256:f61fa59277e97d9ef21e7bec9abebc3e8682488ee173c3506e62f69bf6336394", size = 53517, upload-time = "2026-06-15T14:46:35.446Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/78/c6/d12c519b30625419d3a323bb72b341afd20700847952cc4b8e08992bd0a0/remotivelabs_topology-0.21.0.tar.gz", hash = "sha256:b34774b21195e193647233f3e8dfa4b247e7f449bd243c9fa1b8ca895a5de22f", size = 53534, upload-time = "2026-07-03T06:23:10.121Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/46/4c/c9750fe79b6abb39a018531f99e96e4c2091ac8202fe391e9900e337baaa/remotivelabs_topology-0.20.0-py3-none-any.whl", hash = "sha256:9df3029459cebc640eb2659fa46be39a3e29a082b4f3a0dad0d2e1365f84c179", size = 95874, upload-time = "2026-06-15T14:46:34.195Z" },
+    { url = "https://files.pythonhosted.org/packages/97/87/827fd3ff8b8152ecb69718763cf87bbfbfa4ffdf6dbd40fd53180f970778/remotivelabs_topology-0.21.0-py3-none-any.whl", hash = "sha256:9112bc558d675401d6fc1ca6ec6c8a7498257356c469bee374a2365d460633f2", size = 95903, upload-time = "2026-07-03T06:23:08.611Z" },
 ]
 
 [[package]]
@@ -677,7 +677,7 @@ requires-dist = [
     { name = "evdev", marker = "sys_platform == 'linux'", specifier = ">=1.7.1" },
     { name = "pydantic", specifier = ">=2.10.4" },
     { name = "pyyaml", specifier = ">=6.0.2" },
-    { name = "remotivelabs-topology", specifier = "~=0.20.0" },
+    { name = "remotivelabs-topology", specifier = "~=0.21.0" },
     { name = "structlog", specifier = ">=25.1.0" },
     { name = "typer", specifier = ">=0.14.0" },
     { name = "typing-extensions", specifier = "~=4.13" },

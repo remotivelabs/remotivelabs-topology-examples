@@ -2,6 +2,8 @@ schema: remotive-topology-instance:0.17
 
 containers:
   3d-car:
+    profiles:
+      - 3dcar
     image: remotivelabs/3d-car:latest
     ports:
       - "3000:80"

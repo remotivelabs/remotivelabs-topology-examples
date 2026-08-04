@@ -45,7 +45,6 @@ These instances serve as the input sources from which the final system setup is 
 The example contains three main instances
 > :link: [RemotiveCar Hello World instance](instances/hello_world/README.md)<br>
 > :link: [Instance with android emulator](instances/android/README.md)<br>
-> :link: [Instance with physical steering wheel](instances/steering_wheel/README.md)<br>
 
 The hello world instance is the most suitable starting point and the instance with android emulator shows how to integrate a topology with the android emulator.
 There is also an instance that integrates with a physical steering wheel, replacing the `SCCM` mock with a behavioral model.
@@ -199,11 +198,5 @@ config:
 ### Tests
 The test suite is implemented using the RemotiveLabs ECU framework. The [tester.instance.yaml](tests/tester.instance.yaml) instance may be included by other main.instance.yaml files. It includes scenario based tests using Behave + Gherkin and test cases using pytest.
 
-Example usage is shown in [instances/hello_world/README.md](instances/hello_world/README.md)
-
-
-## Available instances
-Start an instance of the platform using RemotiveTopology. Here is a list of available instances
-> :link: [Simple interactive instance](instances/hello_world/README.md)<br>
-> :link: [Instance with android emulator](instances/android/README.md)<br>
-> :link: [Instance with physical steering wheel](instances/steering_wheel/README.md)<br>
+## Use cases
+To understand how you can use RemotiveTopology, this example includes a number of different use cases, see [USECASES.md](../USECASES.md).

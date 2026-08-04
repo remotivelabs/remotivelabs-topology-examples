@@ -146,19 +146,19 @@ This ensures that when the topology starts, the Linux network stack is configure
 
 ## Running the example
 
-### Generate and start
+### Build and start
 
 Pick one of the three instance files and generate the runtime environment:
 
 ```sh
 # model
-remotive topology generate -f ethernet_p2p/instances/model.instance.yaml build
+remotive topology build -f ethernet_p2p/instances/model.instance.yaml build
 
 # container
-remotive topology generate -f ethernet_p2p/instances/container.instance.yaml build
+remotive topology build -f ethernet_p2p/instances/container.instance.yaml build
 
 # external
-remotive topology generate -f ethernet_p2p/instances/external.instance.yaml build
+remotive topology build -f ethernet_p2p/instances/external.instance.yaml build
 ```
 
 Then start the topology:

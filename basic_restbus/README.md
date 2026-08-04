@@ -57,8 +57,8 @@ The recordings can be used to replay an existing candump or csv log of frames/si
 ### Programmatically update restbus values
 
 ```bash
-# Generate the topology configuration
-remotive topology generate -f basic_restbus/instances/mock.instance.yaml build/
+# Build the topology configuration
+remotive topology build -f basic_restbus/instances/mock.instance.yaml build/
 
 # Start the restbus
 docker compose -f build/basic_restbus_mock/docker-compose.yml up --build
@@ -80,8 +80,8 @@ By adding subscriptions logic to this code, the ECU becomes bi-directional. Find
 Instead of programmatically setting the values for the restbus it is also possible to load data from a recording like a csv or candump. This example includes minimal csv file with a single signal, `SteeringAngle.SteeringAngle`, and a candump with all frames present in the database.
 
 ```bash
-# Generate the topology configuration
-remotive topology generate -f basic_restbus/instances/recording.instance.yaml build/
+# Build the topology configuration
+remotive topology build -f basic_restbus/instances/recording.instance.yaml build/
 
 # Start the restbus
 docker compose -f build/basic_restbus_recording/docker-compose.yml up --build
@@ -99,7 +99,7 @@ remotive broker playback play ./recordings/sample_csv.recordingsession.yaml --ur
 The restbus will connect to a virtual CAN bus by default but in can be configured to use a physical device on the host by including the `hardware.instance.yaml` when generating.
 
 ```bash
-remotive topology generate \
+remotive topology build \
   -f basic_restbus/instances/mock.instance.yaml \
   -f basic_restbus/instances/hardware.instance.yaml \
   build/
