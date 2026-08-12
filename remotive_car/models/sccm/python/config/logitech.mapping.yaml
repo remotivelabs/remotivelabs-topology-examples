@@ -1,0 +1,33 @@
+# yaml-language-server: $schema=https://releases.remotivelabs.com/schemas/remotive-topology-mapping/remotive-topology-mapping-0.1.schema.json
+schema: https://releases.remotivelabs.com/schemas/remotive-topology-mapping/remotive-topology-mapping-0.1.schema.json
+
+# SCCM input mapper: Logitech G29 Racing Wheel (evdev) -> CAN signals.
+# Custom source type "custom.evdev"; device/source_type/source_code are read from
+# entry.source.model_extra at runtime. axis -> linear, multi-value button -> lookup, plain button -> passthrough.
+mappings:
+  # --- Logitech G29 Driving Force Racing Wheel ---
+  - source: { type: custom.evdev, signal: ABS_X, device: "Logitech G29 Driving Force Racing Wheel", source_type: 3, source_code: 0 }
+    target: { type: can, frame: SteeringAngle, signal: SteeringAngle.SteeringAngle, channel: DriverCan0 }
+    transform: { type: linear, factor: 0.0134, offset: -440 }
+
+  - source: { type: custom.evdev, signal: ABS_RZ, device: "Logitech G29 Driving Force Racing Wheel", source_type: 3, source_code: 5 }
+    target: { type: can, frame: BrakePedalPositionSensor, signal: BrakePedalPositionSensor.BrakePedalPosition, channel: DriverCan0 }
+    transform: { type: linear, factor: -1.0, offset: 255 }
+
+  - source: { type: custom.evdev, signal: KEY_712, device: "Logitech G29 Driving Force Racing Wheel", source_type: 1, source_code: 712 }
+    target: { type: can, frame: LightStalk, signal: LightStalk.LightMode, channel: DriverCan0 }
+    transform: { type: lookup, mapping: { 0: 0, 1: 2 } }
+
+  - source: { type: custom.evdev, signal: KEY_293, device: "Logitech G29 Driving Force Racing Wheel", source_type: 1, source_code: 293 }
+    target: { type: can, frame: LightControl, signal: LightControl.HighBeam, channel: DriverCan0 }
+
+  - source: { type: custom.evdev, signal: KEY_295, device: "Logitech G29 Driving Force Racing Wheel", source_type: 1, source_code: 295 }
+    target: { type: can, frame: TurnStalk, signal: TurnStalk.TurnSignal, channel: DriverCan0 }
+    transform: { type: lookup, mapping: { 0: 0, 1: 1 } }
+
+  - source: { type: custom.evdev, signal: KEY_294, device: "Logitech G29 Driving Force Racing Wheel", source_type: 1, source_code: 294 }
+    target: { type: can, frame: TurnStalk, signal: TurnStalk.TurnSignal, channel: DriverCan0 }
+    transform: { type: lookup, mapping: { 0: 0, 1: 2 } }
+
+  - source: { type: custom.evdev, signal: KEY_711, device: "Logitech G29 Driving Force Racing Wheel", source_type: 1, source_code: 711 }
+    target: { type: can, frame: HazardLightButton, signal: HazardLightButton.HazardLightButton, channel: DriverCan0 }

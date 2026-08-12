@@ -200,3 +200,11 @@ The test suite is implemented using the RemotiveLabs ECU framework. The [tester.
 
 ## Use cases
 To understand how you can use RemotiveTopology, this example includes a number of different use cases, see [USECASES.md](../USECASES.md).
+
+<!--
+TODO: Add a proper scripted-namespace example demonstrating a broker scripted namespace
+(e.g. VSS translation via simple_mapping/Lua). Cover both shapes, mirroring the CAN/SOME-IP
+examples: a standalone subscribe loop and a BehavioralModel using ScriptedNamespace +
+create_input_handler. Pair it with framework snippets scripted_namespace.py /
+scripted_namespace_bm.py in remotivelabs-topology (currently missing).
+-->

@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=https://releases.remotivelabs.com/schemas/remotive-topology-mapping/remotive-topology-mapping-0.1.schema.json
+schema: https://releases.remotivelabs.com/schemas/remotive-topology-mapping/remotive-topology-mapping-0.1.schema.json
+
+# SCCM input mapper: Google LLC Stadia Controller rev. A (evdev) -> CAN signals.
+# Custom source type "custom.evdev"; device/source_type/source_code are read from
+# entry.source.model_extra at runtime. axis -> linear, multi-value button -> lookup, plain button -> passthrough.
+mappings:
+  # --- Google LLC Stadia Controller rev. A ---
+  - source: { type: custom.evdev, signal: ABS_BRAKE, device: "Google LLC Stadia Controller rev. A", source_type: 3, source_code: 10 }
+    target: { type: can, frame: BrakePedalPositionSensor, signal: BrakePedalPositionSensor.BrakePedalPosition, channel: DriverCan0 }
+    transform: { type: linear, factor: 1.0, offset: 0 }
+
+  - source: { type: custom.evdev, signal: BTN_X, device: "Google LLC Stadia Controller rev. A", source_type: 1, source_code: 307 }
+    target: { type: can, frame: TurnStalk, signal: TurnStalk.TurnSignal, channel: DriverCan0 }
+    transform: { type: lookup, mapping: { 0: 0, 1: 1 } }
+
+  - source: { type: custom.evdev, signal: BTN_B, device: "Google LLC Stadia Controller rev. A", source_type: 1, source_code: 305 }
+    target: { type: can, frame: TurnStalk, signal: TurnStalk.TurnSignal, channel: DriverCan0 }
+    transform: { type: lookup, mapping: { 0: 0, 1: 2 } }
+
+  - source: { type: custom.evdev, signal: BTN_MODE, device: "Google LLC Stadia Controller rev. A", source_type: 1, source_code: 316 }
+    target: { type: can, frame: HazardLightButton, signal: HazardLightButton.HazardLightButton, channel: DriverCan0 }

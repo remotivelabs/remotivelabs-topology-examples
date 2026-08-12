@@ -1,0 +1,48 @@
+# yaml-language-server: $schema=https://releases.remotivelabs.com/schemas/remotive-topology-mapping/remotive-topology-mapping-0.1.schema.json
+schema: https://releases.remotivelabs.com/schemas/remotive-topology-mapping/remotive-topology-mapping-0.1.schema.json
+
+# SCCM input mapper: Gudsen R3 Racing Wheel (evdev) -> CAN signals.
+# Custom source type "custom.evdev"; device/source_type/source_code are read from
+# entry.source.model_extra at runtime. axis -> linear, multi-value button -> lookup, plain button -> passthrough.
+mappings:
+  # --- Gudsen R3 Racing Wheel and Pedals ---
+  - source: { type: custom.evdev, signal: ABS_X, device: "Gudsen R3 Racing Wheel and Pedals", source_type: 3, source_code: 0 }
+    target: { type: can, frame: SteeringAngle, signal: SteeringAngle.SteeringAngle, channel: DriverCan0 }
+    transform: { type: linear, factor: 0.01345, offset: -440, min: -440, max: 440 }
+
+  - source: { type: custom.evdev, signal: ABS_RZ, device: "Gudsen R3 Racing Wheel and Pedals", source_type: 3, source_code: 5 }
+    target: { type: can, frame: BrakePedalPositionSensor, signal: BrakePedalPositionSensor.BrakePedalPosition, channel: DriverCan0 }
+    transform: { type: linear, factor: 0.003899, offset: 120, min: 0, max: 255 }
+
+  - source: { type: custom.evdev, signal: ABS_Z, device: "Gudsen R3 Racing Wheel and Pedals", source_type: 3, source_code: 2 }
+    target: { type: can, frame: AcceleratorPedalPositionSensor, signal: AcceleratorPedalPositionSensor.AcceleratorPedalPosition, channel: DriverCan0 }
+    transform: { type: linear, factor: 0.003899, offset: 120, min: 0, max: 255 }
+
+  - source: { type: custom.evdev, signal: BTN_TRIGGER_HAPPY20, device: "Gudsen R3 Racing Wheel and Pedals", source_type: 1, source_code: 643 }
+    target: { type: can, frame: HazardLightButton, signal: HazardLightButton.HazardLightButton, channel: DriverCan0 }
+
+  - source: { type: custom.evdev, signal: PADDLE_RIGHT, device: "Gudsen R3 Racing Wheel and Pedals", source_type: 1, source_code: 301 }
+    target: { type: can, frame: GearShiftPaddles, signal: GearShiftPaddles.GearShiftUp, channel: DriverCan0 }
+
+  - source: { type: custom.evdev, signal: PADDLE_LEFT, device: "Gudsen R3 Racing Wheel and Pedals", source_type: 1, source_code: 300 }
+    target: { type: can, frame: GearShiftPaddles, signal: GearShiftPaddles.GearShiftDown, channel: DriverCan0 }
+
+  # --- Gudsen MOZA Multi-function Stalk ---
+  - source: { type: custom.evdev, signal: BTN_JOYSTICK, device: "Gudsen MOZA Multi-function Stalk", source_type: 1, source_code: 288 }
+    target: { type: can, frame: LightStalk, signal: LightStalk.LightMode, channel: DriverCan0 }
+    transform: { type: lookup, mapping: { 1: 0 } }
+
+  - source: { type: custom.evdev, signal: BTN_THUMB, device: "Gudsen MOZA Multi-function Stalk", source_type: 1, source_code: 289 }
+    target: { type: can, frame: LightStalk, signal: LightStalk.LightMode, channel: DriverCan0 }
+    transform: { type: lookup, mapping: { 1: 1 } }
+
+  - source: { type: custom.evdev, signal: BTN_THUMB2, device: "Gudsen MOZA Multi-function Stalk", source_type: 1, source_code: 290 }
+    target: { type: can, frame: LightStalk, signal: LightStalk.LightMode, channel: DriverCan0 }
+    transform: { type: lookup, mapping: { 1: 2 } }
+
+  - source: { type: custom.evdev, signal: BTN_PINKIE, device: "Gudsen MOZA Multi-function Stalk", source_type: 1, source_code: 293 }
+    target: { type: can, frame: LightStalk, signal: LightStalk.HighBeam, channel: DriverCan0 }
+
+  - source: { type: custom.evdev, signal: EV_MSC, device: "Gudsen MOZA Multi-function Stalk", source_type: 4, source_code: 4 }
+    target: { type: can, frame: TurnStalk, signal: TurnStalk.TurnSignal, channel: DriverCan0 }
+    transform: { type: lookup, mapping: { 589832: 2, 589833: 0, 589834: 1 } }

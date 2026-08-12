@@ -10,10 +10,8 @@ dependencies = [
   "typing-extensions~=4.13",
   "evdev >=1.7.1 ; sys_platform == 'linux'",
   "typer >=0.14.0",
-  "pydantic >=2.10.4",
   "aiostream >=0.6.4",
-  "pyyaml >=6.0.2",
-  "remotivelabs-topology~=0.21.0",
+  "remotivelabs-topology[mapping]~=0.22.0",
 ]
 
 [dependency-groups]

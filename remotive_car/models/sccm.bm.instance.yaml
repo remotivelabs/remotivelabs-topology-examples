@@ -17,4 +17,4 @@ ecus:
             dockerfile: ../Dockerfile
           devices:
             - /dev/input
-          command: python -m sccm -c config/moza.json
+          command: python -m sccm -m config/moza.mapping.yaml
