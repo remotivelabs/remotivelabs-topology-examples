@@ -12,7 +12,6 @@ from remotivelabs.topology.cli.behavioral_model import BehavioralModelArgs
 from remotivelabs.topology.namespaces import filters
 from remotivelabs.topology.namespaces.some_ip import SomeIPEvent, SomeIPNamespace
 
-from .broker_to_cuttlefish import BrokerToCuttlefish
 from .broker_to_emulator import BrokerToEmulator
 from .log import configure_logging
 
@@ -28,19 +27,11 @@ class IHU:
         # capture the running loop (must be created inside a running asyncio loop)
         self._loop = asyncio.get_running_loop()
         self.br_emulator = None
-        self.br_cuttlefish = None
         virtual_device_type = os.getenv("VIRTUAL_DEVICE_TYPE") or "none"
 
         if virtual_device_type == "android_emulator":
             emulator_name = os.getenv("ANDROID_EMULATOR_NAME") or "emulator-5554"
             self.br_emulator = BrokerToEmulator(emulator_name=emulator_name, vhal_callback=self._vhal_callback)
-
-        if virtual_device_type == "cuttlefish":
-            cuttlefish_gnss_url = os.getenv("CUTTLEFISH_GNSS_URL") or "https://localhost:1443/devices/cvd-1"
-            cuttlefish_vhal_url = os.getenv("CUTTLEFISH_VHAL_URL") or "localhost:9300"
-            self.br_cuttlefish = BrokerToCuttlefish(
-                cuttlefish_gnss_url=cuttlefish_gnss_url, cuttlefish_vhal_url=cuttlefish_vhal_url, vhal_callback=self._vhal_callback
-            )
 
         self._broker_client = BrokerClient(url=avp.url, auth=avp.auth)
         self._some_ip_eth = SomeIPNamespace(IHU.someip_ns, client_id=3, broker_client=self._broker_client)
@@ -101,25 +92,18 @@ class IHU:
     async def _handle_location_event(self, event: SomeIPEvent):
         lon = float(event.parameters.get("Longitude") or 0)
         lat = float(event.parameters.get("Latitude") or 0)
-        heading = float(event.parameters.get("Heading") or 0)
         if self.br_emulator is not None:
             self.br_emulator.redirect_location_signals_to_emulator(lon, lat)
-        if self.br_cuttlefish:
-            self.br_cuttlefish.redirect_location_signals_to_cuttlefish(lon, lat, heading)
 
     async def _handle_speed_event(self, event: SomeIPEvent):
         speed = float(event.parameters.get("Speed") or 0)
         if self.br_emulator is not None:
             self.br_emulator.update_speed_property(speed)
-        if self.br_cuttlefish:
-            self.br_cuttlefish.update_speed_property(speed)
 
     async def _handle_gear_event(self, event: SomeIPEvent):
         gear = int(event.parameters.get("Gear") or 0)
         if self.br_emulator is not None:
             self.br_emulator.update_gear_property(gear)
-        if self.br_cuttlefish:
-            self.br_cuttlefish.update_gear_property(gear)
 
     async def _send_someip_event(self, name, service_instance_name, parameters) -> None:
         await self._some_ip_eth.notify(SomeIPEvent(name=name, service_instance_name=service_instance_name, parameters=parameters))

@@ -27,7 +27,7 @@ test = { cmd = "echo no test in project" }
 
 [tool.ruff]
 extend = "../../../../ruff.toml"
-exclude = ["ihu/libs/emulator/vhal", "ihu/libs/cuttlefish/vhal"]
+exclude = ["ihu/libs/emulator/vhal"]
 
 [tool.mypy]
 python_version = "3.10"
@@ -36,7 +36,7 @@ check_untyped_defs = true
 warn_return_any = true
 warn_unused_ignores = true
 hide_error_codes = false
-exclude = ["^ihu/libs/emulator/vhal(/.*)?$", "^ihu/libs/cuttlefish/vhal(/.*)?$"]
+exclude = ["^ihu/libs/emulator/vhal(/.*)?$"]
 
 [build-system]
 requires = ["uv_build>=0.9.0,<0.10.0"]

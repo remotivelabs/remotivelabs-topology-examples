@@ -9,8 +9,6 @@ import pytest_asyncio
 from adb_shell.adb_device import AdbDevice, AdbDeviceTcp
 from hamcrest import equal_to
 from remotivelabs.broker import BrokerClient, RestbusSignalConfig
-from remotivelabs.topology.behavioral_model import PingRequest
-from remotivelabs.topology.control.client import ControlClient
 from remotivelabs.topology.testing.hamcrest import await_at_most
 
 import pytest
@@ -19,8 +17,7 @@ import pytest
 @pytest_asyncio.fixture()
 async def broker_client(request: pytest.FixtureRequest) -> AsyncIterator[BrokerClient]:
     url = request.config.getoption("broker_url")
-    async with BrokerClient(url=url) as broker_client, ControlClient(broker_client) as control_client:
-        await control_client.send(target_ecu="IHU", request=PingRequest(), timeout=1, retries=10)
+    async with BrokerClient(url=url) as broker_client:
         yield broker_client
 
         await broker_client.restbus.update_signals(

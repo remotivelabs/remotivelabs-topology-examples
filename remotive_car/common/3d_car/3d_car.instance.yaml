@@ -8,6 +8,6 @@ containers:
     ports:
       - "3000:80"
     environment:
-      - CUTTLEFISH_PROXY_TARGET=https://cuttlefish:8443
+      - CUTTLEFISH_PROXY_TARGET=https://ihu:8443
     volumes:
       - ./3d_car_mapping.yaml:/config/mapping.yaml:ro

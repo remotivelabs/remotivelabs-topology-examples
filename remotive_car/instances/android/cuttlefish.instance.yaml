@@ -1,19 +1,17 @@
 schema: remotive-topology-instance:0.17
 
 includes:
-  - ../../models/ihu.cuttlefish.instance.yaml
   - ../../tests/pytest/android/cuttlefish.instance.yaml
 
-containers:
-  cuttlefish:
-    image: remotivelabs/remotivelabs-cuttlefish:15.0.0-4
-    environment:
-      - CUTTLEFISH_MEMORY_MB=2048
-    ports:
-      - "1443:1443"
-      - "6520:6520"
-      - "8443:8443"
-      - "9300:9300"
-    volumes:
-      - ./cuttlefish/apks:/root/apks
-      - ./cuttlefish/state:/root/state
+ecus:
+  IHU:
+    container:
+      image: remotivelabs/remotivelabs-cuttlefish:16.0.0_r4-1
+      environment:
+        - CUTTLEFISH_MEMORY_MB=2048
+      ports:
+        - "6520:6520"
+        - "8443:8443"
+      volumes:
+        - ./cuttlefish/apks:/root/apks
+        - ./cuttlefish/state:/root/state
