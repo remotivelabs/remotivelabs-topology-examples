@@ -3,6 +3,7 @@
 The purpose of the example is to show a somewhat realistic topology where multiple ECUs communicate over CAN, LIN and a SOME/IP network. This includes:
 
 - `BehavioralModel` in python
+- `BehavioralModel` from an FMU
 - `ECUMock`
 - Testcases with pytest
 - Testcases with behave
@@ -42,16 +43,19 @@ The [instances](instances) directory contains different deployment configuration
 
 These instances serve as the input sources from which the final system setup is generated. They are commonly called `main.instance.yaml`.
 
-The example contains three main instances
+The example contains four main instances
 > :link: [RemotiveCar Hello World instance](instances/hello_world/README.md)<br>
+> :link: [RemotiveCar FMU instance](instances/fmu/README.md)<br>
 > :link: [Instance with android emulator](instances/android/README.md)<br>
 
-The hello world instance is the most suitable starting point and the instance with android emulator shows how to integrate a topology with the android emulator.
+The hello world instance is the most suitable starting point, the FMU instance is the same topology with the `BCM` implemented as an FMU instead of a python model, and the instance with android emulator shows how to integrate a topology with the android emulator.
 There is also an instance that integrates with a physical steering wheel, replacing the `SCCM` mock with a behavioral model.
 Note that running the steering wheel example requires hardware.
 
 ### Models (ECU implementation)
 The [models](models) directory contains multiple implementations of ECUs. The most simple instance bundles all Python behavioral models using [bcm_gwm_ihu.instance.yaml](models/bcm_gwm_ihu.instance.yaml) and [rl_rlcm.instance.yaml](models/rl_rlcm.instance.yaml).
+
+An ECU can have more than one implementation. The `BCM` has both a [python behavioral model](models/bcm/python/bcm) and an [FMU](models/bcm/fmu/bcm), selected by including either [bcm.bm.instance.yaml](models/bcm.bm.instance.yaml) or [bcm.fmu.instance.yaml](models/bcm.fmu.instance.yaml).
 
 Each model specifies how it should be instantiated from the main instance, and these definitions are used to generate the final output.
 
@@ -124,6 +128,12 @@ config:
     class ABS {
     }
 
+    class BMS {
+    }
+
+    class PCM {
+    }
+
     class IHU {
     }
 
@@ -156,6 +166,10 @@ config:
 
     ABS -- ChassisCan0
 
+    BMS -- ChassisCan0
+
+    PCM -- ChassisCan0
+
     DIM -- BodyCan0
 
     FLCM -- BodyCan0
@@ -183,6 +197,7 @@ config:
 | ---- | ------------------------------ | ------------------------------------------------------- |
 | ABS | Anti-lock Braking System        | Provides speed                                   |
 | BCM  | Body Control Module            | Controls vehicle body electronics (lights, locks, etc.) |
+| BMS  | Battery Management System      | Provides battery state of charge and pack current       |
 | DEVS2  | | |
 | DIM  | Driver Information Module      | Manages instrument cluster and driver displays          |
 | FLCM | Front Light Control Module     | Controls front lighting system                          |
@@ -190,6 +205,7 @@ config:
 | HVAC | Heating, Ventilation, and Air Conditioning | Receives temperature control from Android infotainment.   |
 | IHU  | Infotainment Head Unit         | Manages infotainment and user interface systems         |
 | PAM | Parking Assistant Module | Provides access to proximity sensor values |
+| PCM | Powertrain Control Module | Provides motor speed and torque |
 | RL | Rear Light       | Provides access to the rear light                                   |
 | RLCM | Rear Light Control Module      | Controls rear lighting system                           |
 | SCCM | Steering Column Control Module | Receives input from steering wheel, pedals and buttons  |

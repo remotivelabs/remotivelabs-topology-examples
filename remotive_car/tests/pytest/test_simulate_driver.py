@@ -307,6 +307,8 @@ async def set_operating_mode_emergency(broker_client: BrokerClient) -> AsyncIter
 # @req COMP_REQ_BCM_TURN_SM: Turn Signal State Machine
 # @req COMP_REQ_FLCM_CONTROL: Front Light Control
 # @req COMP_REQ_RLCM_CONTROL: Rear Light Control
+# Only the python BCM implements the emergency_mode control request, so the FMU instance deselects
+# this test, see remotive_car/tests/tester_fmu.instance.yaml
 @pytest.mark.asyncio
 async def test_emergency(set_operating_mode_emergency: BrokerClient):
     # We toggle using fixture, so we just need to validate that FLCM and RLCM are blinking

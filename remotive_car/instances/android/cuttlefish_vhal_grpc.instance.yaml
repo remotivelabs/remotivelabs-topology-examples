@@ -1,0 +1,23 @@
+schema: remotive-topology-instance:0.17
+
+# VHAL gRPC Cuttlefish setup: Android 15 image with VHAL gRPC support
+# This is a good starting point for an initial integration, since it requires no changes to the Android build.
+# The IHU behavioral model bridges SOME/IP events to Cuttlefish over the VHAL gRPC
+# server (port 9300) and the GNSS gRPC proxy (port 1443).
+
+includes:
+  - ../../models/ihu.cuttlefish.instance.yaml
+
+containers:
+  cuttlefish:
+    image: remotivelabs/remotivelabs-cuttlefish:15.0.0-4
+    environment:
+      - CUTTLEFISH_MEMORY_MB=${CUTTLEFISH_MEMORY_MB:-2048}
+    ports:
+      - "1443:1443"
+      - "6520:6520"
+      - "8443:8443"
+      - "9300:9300"
+    volumes:
+      - ./cuttlefish/apks:/root/apks
+      - ./cuttlefish/state:/root/state

@@ -8,7 +8,9 @@ ecus:
     container:
       image: remotivelabs/remotivelabs-cuttlefish:16.0.0_r4-1
       environment:
-        - CUTTLEFISH_MEMORY_MB=2048
+        - CUTTLEFISH_CPUS=${CUTTLEFISH_CPUS:-4}
+        - CUTTLEFISH_MEMORY_MB=${CUTTLEFISH_MEMORY_MB:-4096}
+        - CUTTLEFISH_DISPLAY_MAIN=width=1600,height=1280,dpi=160,refersh_rate_hz=60
       ports:
         - "6520:6520"
         - "8443:8443"

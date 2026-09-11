@@ -1,11 +1,11 @@
 schema: remotive-recording-session:0.2
 
 name: Tesla M Drive 2025-07-30 full
-start_time: 1753865213743274us
-end_time: 1753865614000006us
+start_time: 1788354316454411us
+end_time: 1788354716711143us
 
 files:
-  - location: ./m_drive_2025-07-30/log.csv
+  - location: ./m_drive_2025-07-30/log_vss_6.0.csv
     type: recording
     default_device: VSS
 

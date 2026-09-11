@@ -1,0 +1,26 @@
+schema: remotive-topology-instance:0.17
+
+platform:
+  includes:
+    - ../platform/remotive-car.platform.yaml
+
+ecus:
+  BMS:
+    models:
+      bms:
+        type: container
+        container:
+          build:
+            args:
+              - MODEL_PATH=bms/python
+            target: model
+            dockerfile: ../Dockerfile
+          command: python -m bms
+          environment:
+            # State of charge the battery simulation starts from once motor data
+            # arrives. Unset: the BMS reports SNA, and Error if motor data comes
+            # in with no state of charge to compute from. Invalid: always Error.
+            - INITIAL_STATE_OF_CHARGE=80
+            # Seconds without MotorInfo frames before the derived values fall
+            # back to SNA; StateOfCharge stays at its last value (default 5)
+            - SNA_ON_MISSING_INPUT_TIMEOUT=3

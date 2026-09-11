@@ -19,6 +19,8 @@ Use [RemotiveStudio](https://docs.remotivelabs.com/docs/remotive-studio) to view
 
 Browse to [http://localhost:8888/lab?token=remotivelabs](http://localhost:8888/lab?token=remotivelabs) to interact with the instance through a Jupyter notebook.
 
+The `BCM` of this example is also available as an FMU, see the [FMU instance](./instances/fmu/README.md).
+
 ## Documentation
 Detailed documentation is available here:
 

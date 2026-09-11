@@ -2,7 +2,7 @@ schema: remotive-topology-platform:0.17
 channels:
   VSS:
     type: can
-    database: ./databases/vss_rel_4.2.yaml
+    database: ./databases/vss_6.0_extract.yaml
 
 ecus:
   TCU:
@@ -12,5 +12,11 @@ ecus:
     channels:
       VSS:
   SCCM:
+    channels:
+      VSS:
+  BMS:
+    channels:
+      VSS:
+  PCM:
     channels:
       VSS:

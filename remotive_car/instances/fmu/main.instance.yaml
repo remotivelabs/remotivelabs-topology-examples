@@ -1,0 +1,32 @@
+schema: remotive-topology-instance:0.17
+
+name: remotive_car_fmu
+
+includes:
+  - ./../../models/bcm_fmu_gwm_ihu.instance.yaml
+  - ./../../models/rl_rlcm.instance.yaml
+  - ./../../common/jupyter/jupyter.instance.yaml
+  - ./../../common/3d_car/3d_car.instance.yaml
+  - ./../../tests/tester_fmu.instance.yaml
+
+platform:
+  includes:
+    - ../../platform/remotive-car.platform.yaml
+
+ecus:
+  SCCM:
+    mock: {}
+  DIM: {}
+  FLCM: {}
+  RL: {}
+  PAM:
+    mock: {}
+  TCU:
+    mock: {}
+  ABS:
+    mock: {}
+  BMS:
+    mock: {}
+  PCM:
+    mock: {}
+  HVAC: {}

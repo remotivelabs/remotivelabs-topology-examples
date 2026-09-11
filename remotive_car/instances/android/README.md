@@ -233,7 +233,7 @@ You will need the following tools
 
 ## Getting started
 
-The example can be run either using an Android emulator or a Cuttlefish instance. The emulator can be run either on the host machine or within docker and the Cuttlefish instance can be run within the docker environment. The easiest way to get started is by running the emulator within docker as it requires far less setup. For running the emulator on the host the instructions will differ based on your platform.
+The example can be run either using an Android emulator or a Cuttlefish instance. The emulator can be run either on the host machine or within docker and the Cuttlefish instance can be run within the docker environment. Cuttlefish comes in two variants: [cuttlefish.instance.yaml](cuttlefish.instance.yaml) uses an Android 16 image with built-in SOME/IP support where the Cuttlefish container is the IHU ECU, and [cuttlefish_vhal_grpc.instance.yaml](cuttlefish_vhal_grpc.instance.yaml) uses an Android 15 image where the IHU behavioral model bridges SOME/IP to Cuttlefish over VHAL gRPC, which needs no changes to the Android build. The easiest way to get started is by running the emulator within docker as it requires far less setup. For running the emulator on the host the instructions will differ based on your platform.
 
 > :warning: When running Cuttlefish or the emulator within Docker it requires hardware virtualization using KVM to achieve any reasonable performance. This means that running the example in this configuration is limited to Linux only using x86_64 architecture.
 
@@ -245,7 +245,7 @@ All configuration is done using RemotiveTopology instance files:
 > :link: [CAN over UDP](../../settings/can_over_udp.settings.instance.yaml)<br>
 > :link: [VLAN using bridge](../../settings/vlan_using_bridge.settings.instance.yaml)<br>
 
-Notice how the main instance includes other instance configuration files and also the platform configuration. RemotiveTopology is based around a modular approach to describe both platforms and different ways to instantiate them. For example in this example you can see how the IHU model is specifically built for this example, as it integrates towards android, by including [android.instance.yaml](../../models/ihu/android.instance.yaml).
+Notice how the main instance includes other instance configuration files and also the platform configuration. RemotiveTopology is based around a modular approach to describe both platforms and different ways to instantiate them. For example in this example you can see how the IHU model is specifically built for this example, as it integrates towards android, by including [ihu.android_emulator.instance.yaml](../../models/ihu.android_emulator.instance.yaml) or [ihu.cuttlefish.instance.yaml](../../models/ihu.cuttlefish.instance.yaml).
 
 ### Use cases
 

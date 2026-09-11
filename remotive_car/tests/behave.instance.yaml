@@ -12,6 +12,8 @@ containers:
     command: "behave --define broker_url=http://topology-broker.com:50051"
     depends_on:
       - sccm-mock
+      - bms
+      - pcm-mock
       - bcm
       - DIM-broker.com
       - FLCM-broker.com

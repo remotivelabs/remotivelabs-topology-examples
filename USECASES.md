@@ -4,9 +4,10 @@ This document describe a number of different things you typically want to do whe
 
 This repository includes the following use cases:
 - [3D visualization](./usecases/3D.md) - Viewing the vehicle in 3D provides an immersive way to see the current state of the vehicle.
-- [Android Cuttlefish](./usecases/ANDROID_CUTTLEFISH.md) - Using Cuttlefish is useful when you are developing applications for your custom Android build or when customizing the Android build.
+- [Android Cuttlefish](./usecases/ANDROID_CUTTLEFISH.md) - Using Cuttlefish is useful when you are developing applications for your custom Android build or when customizing the Android build. Covers both a Cuttlefish image driven over VHAL gRPC by a behavioral model and an image with built-in SOME/IP support.
 - [Android Emulator](./usecases/ANDROID_EMULATOR.md) - Using Android Emulator is useful if you are developing Android applications.
 - [Behavioral models in python](./usecases/BEHAVIORAL_MODELS.md) - Writing behavioral models in python is a very simple way of creating models for ECUs that don't yet exist.
+- [FMU models](./usecases/FMU_MODELS.md) - Using Functional Mock-up Units (FMUs) allows you to integrate standardized simulation models as ECU behavior.
 - [Jupyter notebook](./usecases/JUPYTER.md) - Using RemotiveTopology framework from Jupyter notebook allows you to interact with a running instance and easily create custom user interfaces.
 - [Playback signals](./usecases/PLAYBACK_SIGNALS.md) - Using playback of recorded signals can be useful to test longer scenarios.
 - [Playback of raw recordings](./usecases/PLAYBACK_RAW.md) - Using playback of raw recordings can be useful when testing user interfaces.

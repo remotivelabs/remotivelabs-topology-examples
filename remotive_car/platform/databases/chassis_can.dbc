@@ -1,5 +1,5 @@
 VERSION ""
-NS_ : 
+NS_ :
     NS_DESC_
     CM_
     BA_DEF_
@@ -29,10 +29,51 @@ NS_ :
     BU_BO_REL_
     SG_MUL_VAL_
 
+BU_: ABS BMS PCM GWM DIM
 
 BO_ 123 UISpeedFrame: 8   ABS
- SG_ uispeed : 0|16@1+ (0.01,0) [0|250] "m/s" GWM  
+ SG_ uispeed : 0|16@1+ (0.01,0) [0|250] "m/s" GWM
+
+BO_ 140 BatteryMeasurement: 8 BMS
+ SG_ BatteryVoltage : 0|16@1+ (0.01,0) [0|655.33] "V"  GWM, DIM
+ SG_ BatteryCurrent : 16|16@1+ (0.1,-3276.8) [-3276.8|3276.5] "A"  GWM, DIM
+
+BO_ 141 BatteryStatus: 8 BMS
+ SG_ StateOfCharge : 0|10@1+ (0.1,0) [0|100] "%"  GWM, DIM
+ SG_ BatteryPower : 16|16@1+ (0.1,-3276.8) [-3276.8|3276.5] "kW"  GWM, DIM
+
+BO_ 150 MotorInfo: 8 PCM
+ SG_ MotorSpeed : 0|16@1+ (0.25,-8192) [-8192|8191.25] "rpm"  GWM, DIM, BMS
+ SG_ MotorTorque : 16|16@1+ (0.1,-3276.8) [-3276.8|3276.5] "Nm"  GWM, DIM, BMS
+
+CM_ BO_ 140 "Raw high-voltage battery sensor measurements from the Battery Management System";
+CM_ SG_ 140 BatteryVoltage "Voltage across the high-voltage battery pack terminals. Sags under load, rises under regen/charging. Reserved values: 65534 = Error (value known to be wrong), 65535 = SNA (signal not available); reported as these raw numbers, not scaled";
+CM_ SG_ 140 BatteryCurrent "Current flowing out of the high-voltage battery pack. Positive = discharging (power being drawn to drive the car; high at high speed or hard acceleration), negative = charging or regenerative braking. Multiply by pack voltage for power. Reserved values: 65534 = Error (value known to be wrong), 65535 = SNA (signal not available); reported as these raw numbers, not scaled";
+CM_ BO_ 141 "Derived battery state estimated by the Battery Management System from the raw measurements";
+CM_ SG_ 141 StateOfCharge "Remaining usable energy in the high-voltage battery as a percentage of full, as shown to the driver (100 = full, 0 = empty). Answers 'how much is left'. Estimated (no sensor measures SOC directly). Reserved values: 1022 = Error (value known to be wrong), 1023 = SNA (signal not available); reported as these raw numbers, not scaled";
+CM_ SG_ 141 BatteryPower "Electrical power flowing out of the high-voltage battery (pack voltage x current). Positive = discharging (high at high speed or hard acceleration), negative = charging or regenerative braking. This is what a driver-facing power meter shows. Reserved values: 65534 = Error (value known to be wrong), 65535 = SNA (signal not available); reported as these raw numbers, not scaled";
+CM_ BO_ 150 "Electric drive unit status from the Powertrain Control Module";
+CM_ SG_ 150 MotorSpeed "Rotational speed of the electric drive motor shaft (the EV equivalent of engine rpm). Proportional to vehicle speed via the fixed gear reduction; 0 when stationary, negative when reversing. Reserved values: 65534 = Error (value known to be wrong), 65535 = SNA (signal not available); reported as these raw numbers, not scaled";
+CM_ SG_ 150 MotorTorque "Torque delivered by the electric drive motor at the shaft. Positive = driving (accelerating/propelling), negative = regenerative braking (motor acting as generator, charging the battery). Reserved values: 65534 = Error (value known to be wrong), 65535 = SNA (signal not available); reported as these raw numbers, not scaled";
+
+VAL_ 140 BatteryVoltage 65534 "Error" 65535 "SNA";
+VAL_ 140 BatteryCurrent 65534 "Error" 65535 "SNA";
+VAL_ 141 StateOfCharge 1022 "Error" 1023 "SNA";
+VAL_ 141 BatteryPower 65534 "Error" 65535 "SNA";
+VAL_ 150 MotorSpeed 65534 "Error" 65535 "SNA";
+VAL_ 150 MotorTorque 65534 "Error" 65535 "SNA";
 
 BA_DEF_ BO_ "GenMsgCycleTime" FLOAT 0 10000;
+BA_DEF_ SG_ "GenSigStartValue" FLOAT 0 0;
 
 BA_ "GenMsgCycleTime" BO_ 123 200;
+BA_ "GenMsgCycleTime" BO_ 140 20;
+BA_ "GenMsgCycleTime" BO_ 141 100;
+BA_ "GenMsgCycleTime" BO_ 150 20;
+
+BA_ "GenSigStartValue" SG_ 140 BatteryVoltage 65535;
+BA_ "GenSigStartValue" SG_ 140 BatteryCurrent 65535;
+BA_ "GenSigStartValue" SG_ 141 StateOfCharge 1023;
+BA_ "GenSigStartValue" SG_ 141 BatteryPower 65535;
+BA_ "GenSigStartValue" SG_ 150 MotorSpeed 65535;
+BA_ "GenSigStartValue" SG_ 150 MotorTorque 65535;

@@ -24,6 +24,7 @@ Signals {
 	counter_times_2: 14, 0, RL, RLCM;
 	SomeQf: 2, 3, RL, RLCM;
 	ErrRespDEVS1: 1, 0, RL, RLCM;
+	ErrRespDEVS2: 1, 0, DEVS2, RLCM;
 }
 
 Diagnostic_signals {

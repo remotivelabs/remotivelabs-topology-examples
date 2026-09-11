@@ -13,7 +13,7 @@ async def broker_url(request: pytest.FixtureRequest) -> AsyncIterator[str]:
     yield request.config.getoption("broker_url")
 
 
-@pytest.mark.parametrize("ecu", ["SCCM", "BCM", "GWM", "IHU"])
+@pytest.mark.parametrize("ecu", ["SCCM", "BCM", "GWM", "IHU", "BMS", "PCM"])
 @pytest.mark.asyncio
 async def test_ping_topology(broker_url: str, ecu: str):
     async with (

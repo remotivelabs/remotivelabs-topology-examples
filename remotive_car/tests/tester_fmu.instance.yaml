@@ -1,0 +1,28 @@
+schema: remotive-topology-instance:0.17
+
+includes:
+  - ./behave.instance.yaml
+
+containers:
+  tester:
+    profiles: [tester]
+    build:
+      target: tester
+      dockerfile: ../Dockerfile
+    volumes:
+      - .:/app
+    working_dir: /app
+    # Deselect the tests that require a BCM feature the FMU does not implement,
+    # see instances/fmu/README.md
+    command: "pytest --broker_url=http://topology-broker.com:50051 -s -vv --deselect pytest/test_simulate_driver.py::test_emergency"
+    depends_on:
+      - sccm-mock
+      - bms-mock
+      - pcm-mock
+      - bcm
+      - DIM-broker.com
+      - FLCM-broker.com
+      - RLCM-broker.com
+      - gwm
+      - ihu
+      - RL-broker.com

@@ -1,0 +1,99 @@
+Vehicle.Body.Lights.DirectionIndicator.Left.IsSignaling:
+  datatype: boolean
+  description: Indicates if light is signaling or off. True = signaling. False = Off.
+  type: actuator
+
+Vehicle.Body.Lights.DirectionIndicator.Right.IsSignaling:
+  datatype: boolean
+  description: Indicates if light is signaling or off. True = signaling. False = Off.
+  type: actuator
+
+Vehicle.Chassis.Accelerator.PedalPosition:
+  datatype: uint8
+  description: Accelerator pedal position as percent. 0 = Not depressed. 100 = Fully depressed.
+  max: 100
+  min: 0
+  type: sensor
+  unit: percent
+
+Vehicle.Chassis.Brake.PedalPosition:
+  datatype: uint8
+  description: Brake pedal position as percent. 0 = Not depressed. 100 = Fully depressed.
+  max: 100
+  min: 0
+  type: sensor
+  unit: percent
+
+Vehicle.Chassis.SteeringWheel.Angle:
+  datatype: int16
+  description: Steering wheel angle. Positive = degrees to the left. Negative = degrees to the right.
+  type: sensor
+  unit: degrees
+
+Vehicle.CurrentLocation.Heading:
+  datatype: double
+  description: Current heading relative to geographic north. 0 = North, 90 = East, 180 = South, 270 = West.
+  max: 360
+  min: 0
+  type: sensor
+  unit: degrees
+
+Vehicle.CurrentLocation.Latitude:
+  datatype: double
+  description: Current latitude of vehicle in WGS 84 geodetic coordinates, as measured at the position of GNSS receiver antenna.
+  max: 90
+  min: -90
+  type: sensor
+  unit: degrees
+
+Vehicle.CurrentLocation.Longitude:
+  datatype: double
+  description: Current longitude of vehicle in WGS 84 geodetic coordinates, as measured at the position of GNSS receiver antenna.
+  max: 180
+  min: -180
+  type: sensor
+  unit: degrees
+
+Vehicle.Powertrain.ElectricMotor.Speed:
+  datatype: float
+  description: Motor rotational speed measured as rotations per minute. Negative values indicate reverse driving mode.
+  type: sensor
+  unit: rpm
+
+Vehicle.Powertrain.ElectricMotor.Torque:
+  datatype: int16
+  description: Current motor torque. Negative values indicate regen mode.
+  type: sensor
+  unit: Nm
+
+Vehicle.Powertrain.TractionBattery.CurrentCurrent:
+  datatype: float
+  description: Current current flowing in/out of battery. Positive = Current flowing in to battery, e.g. during charging. Negative = Current flowing out of battery, e.g. during driving.
+  type: sensor
+  unit: A
+
+Vehicle.Powertrain.TractionBattery.CurrentPower:
+  datatype: float
+  description: Current electrical energy flowing in/out of battery. Positive = Energy flowing in to battery, e.g. during charging. Negative = Energy flowing out of battery, e.g. during driving.
+  type: sensor
+  unit: W
+
+Vehicle.Powertrain.TractionBattery.CurrentVoltage:
+  datatype: float
+  description: Current Voltage of the battery.
+  type: sensor
+  unit: V
+
+Vehicle.Powertrain.TractionBattery.StateOfCharge.Displayed:
+  datatype: float
+  description: State of charge displayed to the customer.
+  max: 100.0
+  min: 0
+  type: sensor
+  unit: percent
+
+Vehicle.Speed:
+  datatype: float
+  description: Vehicle speed.
+  type: sensor
+  unit: km/h

@@ -1,0 +1,12 @@
+services:
+  cuttlefish:
+    privileged: true
+    healthcheck:
+      test: ss -ltn | grep -q "$(hostname -i):9300"
+      start_period: 10m
+      start_interval: 5s
+
+  ihu:
+    depends_on:
+      cuttlefish:
+        condition: service_healthy

@@ -9,7 +9,7 @@ mappings:
   - source: { type: broker, signal: BrakeLightControl.RightBrakeLightRequest, channel: topology-BodyCan0 }
     target: { type: 3dcar, signal: RightBrakeIndicator }
 
-  # Daytime running lights 
+  # Daytime running lights (fan-out: front + rear)
   - source:
       { type: broker, signal: DaylightRunningLightControl.LeftDaylightRunningLightRequest, channel: topology-BodyCan0 }
     target: { type: 3dcar, signal: LeftFrontDaytimeRunningLightIndicator }
@@ -35,7 +35,7 @@ mappings:
   - source: { type: broker, signal: HighBeamLightControl.RightHighBeamLightRequest, channel: topology-BodyCan0 }
     target: { type: 3dcar, signal: RightHighBeamIndicator }
 
-  # Turn signals 
+  # Turn signals (fan-out: front + rear + dashboard button)
   - source: { type: broker, signal: TurnLightControl.LeftTurnLightRequest, channel: topology-BodyCan0 }
     target: { type: 3dcar, signal: LeftFrontDirectionIndicator }
   - source: { type: broker, signal: TurnLightControl.LeftTurnLightRequest, channel: topology-BodyCan0 }
@@ -56,6 +56,12 @@ mappings:
   # Drivetrain / vehicle state
   - source: { type: broker, signal: UISpeedFrame.uispeed, channel: topology-ChassisCan0 }
     target: { type: 3dcar, signal: Speed }
+  # BatteryPower is encoded over +/-3276 kW; the transform's min/max set a usable power-bar range.
+  - source: { type: broker, signal: BatteryStatus.BatteryPower, channel: topology-ChassisCan0 }
+    target: { type: 3dcar, signal: MotorPower }
+    transform: { type: linear, factor: 1.0, min: -100.0, max: 200.0 }
+  - source: { type: broker, signal: BatteryStatus.StateOfCharge, channel: topology-ChassisCan0 }
+    target: { type: 3dcar, signal: BatterySoC }
 
   # Driver inputs
   - source: { type: broker, signal: SteeringAngle.SteeringAngle, channel: topology-DriverCan0 }

@@ -41,5 +41,29 @@ ecus:
             dockerfile: Dockerfile
           command: python -m playback.local.sccm
 
+  BMS:
+    models:
+      bms:
+        type: container
+        container:
+          build:
+            dockerfile: Dockerfile
+          command: python -m playback.local.bms
+          environment:
+            # Seconds without VSS input before falling back to SNA (default 5)
+            - SNA_ON_MISSING_INPUT_TIMEOUT=3
+
+  PCM:
+    models:
+      pcm:
+        type: container
+        container:
+          build:
+            dockerfile: Dockerfile
+          command: python -m playback.local.pcm
+          environment:
+            # Seconds without VSS input before falling back to SNA (default 5)
+            - SNA_ON_MISSING_INPUT_TIMEOUT=3
+
 settings:
   recordings: ../../recordings/

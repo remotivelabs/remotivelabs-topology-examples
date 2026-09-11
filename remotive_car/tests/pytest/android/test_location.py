@@ -48,7 +48,7 @@ async def adb_device(request: pytest.FixtureRequest) -> AsyncIterator[AdbDevice]
     """
 
     # Dismiss initial popup if there
-    device.shell("input tap 1028 333")
+    device.shell("input tap 1200 650")
 
     # Grant permissions to the location test app
     device.shell("pm grant --user 10 com.google.android.car.adaslocation android.permission.ACCESS_COARSE_LOCATION")
@@ -57,7 +57,7 @@ async def adb_device(request: pytest.FixtureRequest) -> AsyncIterator[AdbDevice]
     # Start location test app
     device.shell("am start -n com.google.android.car.adaslocation/com.google.android.car.adaslocation.AdasLocationActivity")
     if performance_level == "low":
-        await asyncio.sleep(10)
+        await asyncio.sleep(20)
     else:
         await asyncio.sleep(1)
     yield device
@@ -68,7 +68,7 @@ async def adb_device(request: pytest.FixtureRequest) -> AsyncIterator[AdbDevice]
 
 async def get_location(adb_device: AdbDevice):
     # Push button to trigger new location fetch from providers
-    adb_device.shell("input tap 387 478")
+    adb_device.shell("input tap 400 500")
     await asyncio.sleep(2)
     location_dump = str(adb_device.shell("dumpsys location"))
 
@@ -94,7 +94,7 @@ async def test_feed_location_to_android(broker_client: BrokerClient, adb_device:
         )
     )
 
-    await await_at_most(seconds=10).until(
+    await await_at_most(seconds=20).until(
         partial(get_location, adb_device),
         equal_to((69.059967, 20.548735)),
     )

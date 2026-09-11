@@ -14,6 +14,11 @@ config:
         class RemotiveBroker_ABS
     }
 
+    namespace BMS {
+        class Behavioral_Model_BMS
+        class RemotiveBroker_BMS
+    }
+
     namespace BCM {
         class Behavioral_Model_BCM
         class RemotiveBroker_BCM
@@ -44,6 +49,11 @@ config:
     namespace PAM {
         class ECU_Mock_PAM
         class RemotiveBroker_PAM
+    }
+
+    namespace PCM {
+        class ECU_Mock_PCM
+        class RemotiveBroker_PCM
     }
 
     namespace RL {
@@ -94,6 +104,8 @@ config:
 
     RemotiveBroker_ABS -- ChassisCan0
 
+    RemotiveBroker_BMS -- ChassisCan0
+
     RemotiveBroker_BCM -- BodyCan0
     RemotiveBroker_BCM -- DriverCan0
 
@@ -111,6 +123,8 @@ config:
 
     RemotiveBroker_PAM -- BodyCan0
 
+    RemotiveBroker_PCM -- ChassisCan0
+
     RemotiveBroker_RL -- RearLightLIN
 
     RemotiveBroker_RLCM -- BodyCan0
@@ -124,7 +138,9 @@ config:
     Behavioral_Model_IHU -- RemotiveBroker_IHU
     Behavioral_Model_RLCM -- RemotiveBroker_RLCM
     ECU_Mock_ABS -- RemotiveBroker_ABS
+    Behavioral_Model_BMS -- RemotiveBroker_BMS
     ECU_Mock_PAM -- RemotiveBroker_PAM
+    ECU_Mock_PCM -- RemotiveBroker_PCM
     ECU_Mock_SCCM -- RemotiveBroker_SCCM
     ECU_Mock_TCU -- RemotiveBroker_TCU
 
@@ -135,12 +151,14 @@ config:
 
     TopologyBroker .. RemotiveBroker_ABS
     TopologyBroker .. RemotiveBroker_BCM
+    TopologyBroker .. RemotiveBroker_BMS
     TopologyBroker .. RemotiveBroker_DIM
     TopologyBroker .. RemotiveBroker_FLCM
     TopologyBroker .. RemotiveBroker_GWM
     TopologyBroker .. RemotiveBroker_HVAC
     TopologyBroker .. RemotiveBroker_IHU
     TopologyBroker .. RemotiveBroker_PAM
+    TopologyBroker .. RemotiveBroker_PCM
     TopologyBroker .. RemotiveBroker_RL
     TopologyBroker .. RemotiveBroker_RLCM
     TopologyBroker .. RemotiveBroker_SCCM
@@ -148,7 +166,7 @@ config:
 ```
 
 #### Brief description of the setup
-- There are a total of 12 ECUs, 3 CAN buses, 1 LIN bus, 1 SOME/IP network and 1 control network.
+- There are a total of 14 ECUs, 3 CAN buses, 1 LIN bus, 1 SOME/IP network and 1 control network.
 - The business logic is centralized in the `BCM` ECU, using state machines to control the behavior of the lights.
 - Inputs can either be simulated using a test suite, or by using a Jupyter notebook.
 - Inputs:

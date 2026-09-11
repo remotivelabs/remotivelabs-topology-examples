@@ -1,0 +1,49 @@
+[project]
+name = "remotivelabs-topology-remotive-car-bcm-fmu-model-example"
+description = "RemotiveTopology Remotive Car BCM FMU model example"
+version = "1.0.0"
+
+requires-python = ">=3.10,<4.0"
+
+dependencies = ["structlog==25.4.0", "remotivelabs-topology[fmu]~=0.22.0"]
+
+[dependency-groups]
+dev = ["poethepoet>=0.34.0", "ruff>=0.11.10", "mypy>=1.14.1"]
+
+[tool.uv.build-backend]
+module-root = ""
+module-name = ["bcm"]
+
+[tool.poe.tasks]
+format = [{ cmd = "ruff format ." }, { cmd = "ruff check --fix ." }]
+ruff = [{ cmd = "ruff check ." }, { cmd = "ruff format --check --diff ." }]
+mypy = [{ cmd = "mypy ." }]
+lint = ["ruff", "mypy"]
+test = { cmd = "echo no test in project" }
+
+[tool.ruff]
+extend = "../../../../ruff.toml"
+
+[tool.mypy]
+python_version = "3.10"
+disallow_untyped_calls = false
+check_untyped_defs = true
+warn_return_any = true
+warn_unused_ignores = true
+hide_error_codes = false
+
+
+# fmpy, pulled in by the fmu extra, is untyped. numpy comes along with fmpy and recent
+# numpy stubs use syntax that mypy rejects while checking against python 3.10.
+[[tool.mypy.overrides]]
+module = ["fmpy.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["numpy", "numpy.*"]
+follow_imports = "skip"
+follow_imports_for_stubs = true
+
+[build-system]
+requires = ["uv_build>=0.9.0,<0.10.0"]
+build-backend = "uv_build"
