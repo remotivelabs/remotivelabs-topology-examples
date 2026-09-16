@@ -76,14 +76,16 @@ class BMS:
 
     async def __aenter__(self):
         await self._broker_client.connect()
-        await self.bm.start()
+        # Initialise watchdog state before starting the model: bm.start() subscribes to
+        # VSS, so an input frame can reach _forward()/_mark_input() immediately.
         self._input_timeout_s = self._read_input_timeout()
         self._last_input = time.monotonic()
         self._sna_sent = False
         self._last_values: dict[str, float] = {}
+        await self.bm.start()
         self._watchdog_task = asyncio.create_task(self._watchdog())
         return self
-
+    
     async def __aexit__(self, exc_type, exc_val, exc_tb):
         self._watchdog_task.cancel()
         await self.bm.stop()
