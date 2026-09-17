@@ -9,6 +9,9 @@ containers:
     volumes:
       - car.ipynb:/app/car.ipynb
       - images:/app/images
+      # Relaxes Jupyter's default `frame-ancestors 'self'` so the notebook can
+      # be embedded in a RemotiveStudio web page panel.
+      - jupyter_server_config.py:/etc/jupyter/jupyter_server_config.py
     working_dir: /app
     ports:
       - "8888:8888"
