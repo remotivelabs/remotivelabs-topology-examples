@@ -4,7 +4,7 @@ containers:
   3d-car:
     profiles:
       - 3dcar
-    image: remotivelabs/3d-car:latest
+    image: remotivelabs/3d-car:sha-007fe7f
     ports:
       - "3000:80"
     environment:
