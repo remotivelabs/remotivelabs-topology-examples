@@ -1,5 +1,5 @@
-# yaml-language-server: $schema=https://releases.remotivelabs.com/schemas/remotive-topology-mapping/remotive-topology-mapping-0.1.schema.json
-schema: https://releases.remotivelabs.com/schemas/remotive-topology-mapping/remotive-topology-mapping-0.1.schema.json
+# yaml-language-server: $schema=https://files.remotivelabs.com/schemas/remotive-topology-mapping/remotive-topology-mapping-0.1.schema.json
+schema: https://files.remotivelabs.com/schemas/remotive-topology-mapping/remotive-topology-mapping-0.1.schema.json
 
 # SCCM input mapper: Google LLC Stadia Controller rev. A (evdev) -> CAN signals.
 # Custom source type "custom.evdev"; device/source_type/source_code are read from
