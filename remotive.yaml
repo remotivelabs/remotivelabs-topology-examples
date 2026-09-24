@@ -1,3 +1,3 @@
-# yaml-language-server: $schema=https://files.remotivelabs.com/schemas/remotive-topology-workspace/remotive-topology-workspace-0.1.schema.json
-schema: https://files.remotivelabs.com/schemas/remotive-topology-workspace/remotive-topology-workspace-0.1.schema.json
+# yaml-language-server: $schema=https://releases.remotivelabs.com/schemas/remotive-topology-workspace/remotive-topology-workspace-0.1.schema.json
+schema: https://releases.remotivelabs.com/schemas/remotive-topology-workspace/remotive-topology-workspace-0.1.schema.json
 name: examples
