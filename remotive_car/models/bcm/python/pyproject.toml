@@ -2,6 +2,7 @@
 name = "remotivelabs-topology-remotive-car-bcm-behavioral-model-example"
 description = "RemotiveTopology Remotive Car BCM Behavioral Model example"
 version = "1.0.0"
+license = "MIT"
 
 requires-python = ">=3.10,<4.0"
 

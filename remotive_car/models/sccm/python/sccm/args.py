@@ -8,7 +8,7 @@ from pathlib import Path
 from remotivelabs.broker.auth import AuthMethod
 from remotivelabs.topology.cli.args import add_broker_args, add_loglevel_arg, broker_auth
 
-_DEFAULT_MAPPING = Path(__file__).parent.parent / "config" / "moza.mapping.yaml"
+_DEFAULT_MAPPING = Path(__file__).parent.parent / "config" / "moza.gateway-mapping.yaml"
 
 
 @dataclass(frozen=True)
@@ -19,7 +19,7 @@ class SteeringWheelArgs:
     Attributes:
         url: RemotiveBroker URL.
         auth: Auth method to use for RemotiveBroker.
-        mapping: Path to the remotive-topology-mapping YAML file.
+        mapping: Path to the gateway-mapping YAML file.
         loglevel: Logging level.
     """
 
@@ -39,7 +39,7 @@ class SteeringWheelArgs:
             type=Path,
             default=Path(os.environ.get("REMOTIVE_WHEELS_CONFIG_PATH", _DEFAULT_MAPPING)),
             metavar="PATH",
-            help="Path to the mapping file to use. Defaults to <project_root>/config/moza.mapping.yaml",
+            help="Path to the mapping file to use. Defaults to <project_root>/config/moza.gateway-mapping.yaml",
         )
         p, _ = parser.parse_known_args()
         return SteeringWheelArgs(url=p.url, auth=broker_auth(p.x_api_key), mapping=p.mapping, loglevel=p.loglevel)

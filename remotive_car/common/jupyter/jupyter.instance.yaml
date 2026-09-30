@@ -9,6 +9,7 @@ containers:
     volumes:
       - car.ipynb:/app/car.ipynb
       - images:/app/images
+      - jupyter_server_config.py:/etc/jupyter/jupyter_server_config.py
     working_dir: /app
     ports:
       - "8888:8888"

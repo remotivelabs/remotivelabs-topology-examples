@@ -1,18 +1,23 @@
 from __future__ import annotations
 
 import asyncio
-from typing import AsyncIterator
+from typing import TYPE_CHECKING, AsyncIterator
 
-import evdev
 import structlog
 from remotivelabs.broker import SignalValue
 from remotivelabs.topology.mapping.models import SignalAddress
+
+if TYPE_CHECKING:
+    import evdev  # noqa: PLC0415
 
 logger = structlog.get_logger(__name__)
 
 
 def _find_device(name: str) -> evdev.InputDevice | None:
     """Return the connected evdev device with this name, or None if not present."""
+    # imported lazily: evdev is Linux-only, and the rest of this module is usable (and tested) without it
+    import evdev  # noqa: PLC0415
+
     for path in evdev.list_devices():
         try:
             device = evdev.InputDevice(path)

@@ -2,6 +2,7 @@
 name = "remotivelabs-topology-getting-started-example"
 description = "RemotiveTopology Getting Started example"
 version = "1.0.0"
+license = "MIT"
 readme = "README.md"
 license-files = ["LICENSE"]
 

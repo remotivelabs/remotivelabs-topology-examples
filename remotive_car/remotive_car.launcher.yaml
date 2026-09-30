@@ -1,0 +1,27 @@
+schema: https://files.remotivelabs.com/schemas/launcher-0.1.schema.json
+
+# Launcher configuration when running in a cloud deployment
+# Currently only supported by Google Horizon
+
+topology_instances:
+  - instances/android/main.instance.yaml
+  - instances/android/cuttlefish.instance.yaml
+
+compose_overlays:
+  - instances/android/cuttlefish.compose.yaml
+
+compose_profiles:
+  - playback
+  - 3dcar
+
+test_service: tester
+
+forward_ports:
+  - name: RemotiveBroker
+    port: 50051
+  - name: Car3D
+    port: 3000
+
+adb_devices:
+  - name: IHU
+    port: 6520

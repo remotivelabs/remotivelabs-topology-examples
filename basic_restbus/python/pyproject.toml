@@ -2,6 +2,7 @@
 name = "basic-restbus-tests"
 description = "RemotiveTopology Basic Restbus Example Tests"
 version = "1.0.0"
+license = "MIT"
 
 requires-python = ">=3.10,<4.0"
 

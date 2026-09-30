@@ -2,6 +2,7 @@
 name = "remotivelabs-topology-remotive-car-sccm-behavioral-model-example"
 description = "RemotiveTopology Remotive Car SCCM Behavioral Model using physical steering wheel simulating vehicle driver inputs"
 version = "1.0.0"
+license = "MIT"
 
 requires-python = ">=3.10,<4.0"
 

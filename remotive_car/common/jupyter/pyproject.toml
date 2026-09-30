@@ -1,6 +1,7 @@
 [project]
 name = "remotivelabs-topology-remotive-car-notebook"
 version = "0.1.0"
+license = "MIT"
 
 requires-python = ">=3.10,<4.0"
 

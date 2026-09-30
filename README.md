@@ -33,6 +33,14 @@ To run these examples, you'll need:
 
 **New to RemotiveTopology?** Get started with our [installation guide](https://docs.remotivelabs.com/docs/remotive-topology) to create your free trial subscription. You can also [book a meeting](https://meetings-eu1.hubspot.com/per-sigurdson/remotivelabs-platform-intro?uuid=16d16894-7cf9-471a-8ed8-7481ba152fc3) if you want a hands-on demo.
 
+## License
+
+The example code in this repository is licensed under the [MIT License](./LICENSE), so you are free to copy, modify and reuse it in your own projects.
+
+Running the examples, however, requires a RemotiveLabs account. The RemotiveLabs software the examples depend on (such as RemotiveBroker, RemotiveTopology and RemotiveCLI) is not covered by the MIT License; it is provided under the RemotiveLabs Terms of Use at https://www.remotivelabs.com/license.
+
+Some examples include third-party files that keep their original licenses, as noted in those files.
+
 ## Support
 
 Contact support@remotivelabs.com if you have any problems or questions!
