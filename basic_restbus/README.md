@@ -13,8 +13,8 @@ While RemotiveTopology allows you to spin up full vehicle platforms, it can also
 ## Prerequisites
 
 - [Docker](https://docs.docker.com/engine/install/)
-- [RemotiveTopology CLI](https://docs.remotivelabs.com/docs/remotive-cli) (`remotive`)
-- [RemotiveBus](https://docs.remotivelabs.com/docs/remotive-bus)
+- [RemotiveTopology CLI](https://developer.remotivelabs.com/docs/remotive-cli) (`remotive`)
+- [RemotiveBus](https://developer.remotivelabs.com/docs/remotive-bus)
 - [uv](https://docs.astral.sh/uv/getting-started/installation/)
 
 ## Key Concepts
@@ -50,7 +50,7 @@ await broker_client.restbus.update_signals(
 
 ### Recordings
 
-The recordings can be used to replay an existing candump or csv log of frames/signals. It can optionally include transformations of signals in case recordings come from a different channel/platform than they are replayed on. The example's recording is a minimal version of the larger `remotive_car` example. You can look at the more advanced recording examples in the `remotive_car` example or read more about it in the [documentation](https://docs.remotivelabs.com/docs/remotive-topology/usage/recordings).
+The recordings can be used to replay an existing candump or csv log of frames/signals. It can optionally include transformations of signals in case recordings come from a different channel/platform than they are replayed on. The example's recording is a minimal version of the larger `remotive_car` example. You can look at the more advanced recording examples in the `remotive_car` example or read more about it in the [documentation](https://developer.remotivelabs.com/docs/remotive-topology/usage/recordings).
 
 ## Quick Start
 
@@ -69,7 +69,7 @@ uv sync
 uv run -m update_restbus --signal SCCM-DriverCan0:SteeringAngle.SteeringAngle --value 123.45
 ```
 
-Use [RemotiveStudio](https://docs.remotivelabs.com/docs/remotive-studio) to view signals and select the `SteeringAngle` frame on the `topology-DriverCan0` namespace.
+Use [RemotiveStudio](https://developer.remotivelabs.com/docs/remotive-studio) to view signals and select the `SteeringAngle` frame on the `topology-DriverCan0` namespace.
 
 By adding subscriptions logic to this code, the ECU becomes bi-directional. Find more examples in the [models](../remotive_car/models) folder.
 
@@ -125,4 +125,4 @@ To use a different recording, add a new recording-session yaml file in the `reco
 
 ## LIN and non SocketCAN compatible devices
 
-RemotiveLabs support custom devices using a plugin architecture. Navigate to the `plugin` section of our [docs](https://docs.remotivelabs.com/). Example plugin for LIN using Kvaser hybrid device can be found [here](https://github.com/remotivelabs/kvaser-remotivebus-plugin).
+RemotiveLabs support custom devices using a plugin architecture. Navigate to the `plugin` section of our [docs](https://developer.remotivelabs.com/). Example plugin for LIN using Kvaser hybrid device can be found [here](https://github.com/remotivelabs/kvaser-remotivebus-plugin).

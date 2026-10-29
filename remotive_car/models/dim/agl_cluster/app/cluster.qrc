@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/">
+        <file>qml/Cluster.qml</file>
+        <file>qml/SvgText.qml</file>
+        <file>qml/SpeedGauge.qml</file>
+        <file>qml/PowerBar.qml</file>
+        <file>qml/BatteryGauge.qml</file>
+        <file>qml/TurnArrow.qml</file>
+    </qresource>
+</RCC>

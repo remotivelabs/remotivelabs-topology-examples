@@ -1,0 +1,20 @@
+schema: remotive-topology-instance:0.17
+
+# Tester for an instance where the DIM is an instrument cluster on the bus, such as
+# instances/agl_cluster. The default tester in ../../pytest.instance.yaml cannot be
+# used there, it depends on the DIM broker that the cluster container replaces.
+containers:
+  tester:
+    profiles: [tester]
+    build:
+      target: tester
+      dockerfile: ../../../Dockerfile
+    volumes:
+      - ..:/app
+    working_dir: /app
+    command: "pytest --broker_url=http://topology-broker.com:50051 -m cluster -s -vv"
+    depends_on:
+      - dim
+      - abs-mock
+      - bms-mock
+      - bcm-mock

@@ -56,7 +56,7 @@ docker compose -f remotive_car/build/remotive_car_android/docker-compose.yml \
 
 You should then be able to reach the Cuttlefish instance by going to <https://localhost:8443>. The first time it starts you will have to configure some settings and permission for the maps application. If using the Organic Map you will also have to download maps for the areas you are interested in.
 
-Use [RemotiveStudio](https://docs.remotivelabs.com/docs/remotive-studio) to view signals and observe the temperature signals being sent back from the Cuttlefish instance.
+Use [RemotiveStudio](https://developer.remotivelabs.com/docs/remotive-studio) to view signals and observe the temperature signals being sent back from the Cuttlefish instance.
 
 ### Tests
 

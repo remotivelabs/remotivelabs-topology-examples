@@ -54,6 +54,13 @@ BO_ 109 ProximityInfo: 2 PAM
   SG_ ProximityDistance : 0|8@1+ (0.02,0) [0|5.10] "m"  DIM, GWM
 
 
+BO_ 150 DIMStatus: 2 DIM
+  SG_ DisplayedSpeed : 0|8@1+ (1,0) [0|255] "km/h" GWM
+  SG_ DisplayedGear : 8|2@1+ (1,0) [0|3] "" GWM
+  SG_ LeftIndicatorLamp : 10|1@1+ (1,0) [0|1] "" GWM
+  SG_ RightIndicatorLamp : 11|1@1+ (1,0) [0|1] "" GWM
+  SG_ EngineLamp : 12|2@1+ (1,0) [0|3] "" GWM
+
 BO_ 200 LocationFrame: 12 TCU
  SG_ Longitude : 28|28@1- (1E-006,0) [-134.218|134.218] "Deg"  GWM
  SG_ Latitude : 0|28@1- (1E-006,0) [-134.218|134.218] "Deg"  GWM
@@ -75,6 +82,11 @@ VAL_ 104 LeftBrakeLightRequest 0 "Off" 1 "On";
 VAL_ 104 RightBrakeLightRequest 0 "Off" 1 "On";
 VAL_ 108 GearLeverPosition 0 "Reverse" 1 "Drive";
 VAL_ 109 ProximityDistance 255 "NoObject";
+VAL_ 150 DisplayedSpeed 255 "NotDisplayed";
+VAL_ 150 DisplayedGear 0 "NotDisplayed" 1 "Reverse" 2 "Drive";
+VAL_ 150 LeftIndicatorLamp 0 "Off" 1 "On";
+VAL_ 150 RightIndicatorLamp 0 "Off" 1 "On";
+VAL_ 150 EngineLamp 0 "Off" 1 "SNA" 2 "Error";
 
 BA_ "GenSigStartValue" SG_ 100 LeftDaylightRunningLightRequest 0;
 BA_ "GenSigStartValue" SG_ 100 RightDaylightRunningLightRequest 0;
@@ -91,6 +103,9 @@ BA_ "GenSigStartValue" SG_ 107 AcceleratorPedalPosition 0;
 BA_ "GenSigStartValue" SG_ 108 GearLeverPosition 1;
 BA_ "GenSigStartValue" SG_ 109 ProximityDistance 255;
 BA_ "GenSigStartValue" SG_ 110 VehicleSpeed 0;
+BA_ "GenSigStartValue" SG_ 150 DisplayedSpeed 255;
+BA_ "GenSigStartValue" SG_ 150 DisplayedGear 0;
+BA_ "GenSigStartValue" SG_ 150 EngineLamp 0;
 
 BA_ "GenMsgCycleTime" BO_ 100 50;
 BA_ "GenMsgCycleTime" BO_ 101 50;
@@ -102,5 +117,6 @@ BA_ "GenMsgCycleTime" BO_ 107 50;
 BA_ "GenMsgCycleTime" BO_ 108 50;
 BA_ "GenMsgCycleTime" BO_ 109 50;
 BA_ "GenMsgCycleTime" BO_ 110 50;
+BA_ "GenMsgCycleTime" BO_ 150 100;
 BA_ "GenMsgCycleTime" BO_ 200 200;
 BA_ "GenMsgCycleTime" BO_ 300 500;

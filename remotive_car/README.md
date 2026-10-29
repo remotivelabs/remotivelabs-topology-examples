@@ -2,7 +2,7 @@
 By following the steps below, you will generate and run an instance of a topology containing multiple communication protocols and multiple ECUs.
 
 ## Prerequisites
-You will need to install `RemotiveTopology`, follow the instructions here <https://docs.remotivelabs.com/docs/remotive-topology/install>
+You will need to install `RemotiveTopology`, follow the instructions here <https://developer.remotivelabs.com/docs/remotive-topology/install>
 
 ## Getting started
 Generate the instance
@@ -15,7 +15,7 @@ Start it
 docker compose -f remotive_car/build/remotive_car_hello_world/docker-compose.yml --profile jupyter up --build
 ```
 
-Use [RemotiveStudio](https://docs.remotivelabs.com/docs/remotive-studio) to view signals.
+Use [RemotiveStudio](https://developer.remotivelabs.com/docs/remotive-studio) to view signals.
 
 Browse to [http://localhost:8888/lab?token=remotivelabs](http://localhost:8888/lab?token=remotivelabs) to interact with the instance through a Jupyter notebook.
 

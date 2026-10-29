@@ -59,9 +59,9 @@ three things:
 | `cycle_time` | `Float64` | parameter | - (blink cycle duration, default `0.7` s) |
 
 ## Host setup
-- `RemotiveTopology` <https://docs.remotivelabs.com/docs/remotive-topology/install>
+- `RemotiveTopology` <https://developer.remotivelabs.com/docs/remotive-topology/install>
 - On Linux, this example requires that you run `RemotiveBus` service on your machine to enable CAN and VLAN networks in
-  Docker, see installation instructions [here](https://docs.remotivelabs.com/docs/remotive-bus/install). Alternatively
+  Docker, see installation instructions [here](https://developer.remotivelabs.com/docs/remotive-bus/install). Alternatively
   include [can_over_udp.settings.instance.yaml](../../settings/can_over_udp.settings.instance.yaml) and
   [vlan_using_bridge.settings.instance.yaml](../../settings/vlan_using_bridge.settings.instance.yaml) in your instance,
   as shown below.
@@ -86,7 +86,7 @@ docker compose -f remotive_car/build/remotive_car_fmu/docker-compose.yml --profi
 ```
 
 Browse to [http://localhost:8888/lab?token=remotivelabs](http://localhost:8888/lab?token=remotivelabs) to drive the FMU
-from the notebook, and use [RemotiveStudio](https://docs.remotivelabs.com/docs/remotive-studio) to view the signals it
+from the notebook, and use [RemotiveStudio](https://developer.remotivelabs.com/docs/remotive-studio) to view the signals it
 produces.
 
 ### Test

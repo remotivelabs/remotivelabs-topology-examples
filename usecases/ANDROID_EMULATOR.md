@@ -44,7 +44,7 @@ docker compose -f remotive_car/build/remotive_car_android/docker-compose.yml \
 
 You should then be able to reach the emulator by going to <http://localhost:8085/vnc.html> and connecting. The first time it starts you will have to configure some settings and permission for the maps application.
 
-Use [RemotiveStudio](https://docs.remotivelabs.com/docs/remotive-studio) to view signals and observe the temperature signals being send back from the Android Emulator.
+Use [RemotiveStudio](https://developer.remotivelabs.com/docs/remotive-studio) to view signals and observe the temperature signals being send back from the Android Emulator.
 
 ## With emulator on host
 
@@ -81,4 +81,4 @@ docker compose -f remotive_car/build/remotive_car_android/docker-compose.yml \
 --profile playback up --build
 ```
 
-Use [RemotiveStudio](https://docs.remotivelabs.com/docs/remotive-studio) to view signals and observe the temperature signals being send back from the Android Emulator.
+Use [RemotiveStudio](https://developer.remotivelabs.com/docs/remotive-studio) to view signals and observe the temperature signals being send back from the Android Emulator.

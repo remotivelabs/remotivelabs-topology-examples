@@ -16,7 +16,7 @@ The purpose of the example is to show a somewhat realistic topology where multip
 Notice while the example is showing ECUs possible present in a real vehicle, the signals and implementations are simplified to make the example easy to understand. The goal is not intended to be fully realistic.
 
 ## Host setup
-On Linux, this example requires that you run `RemotiveBus` service on your machine to enable CAN networks in Docker, see installation instructions [here](https://docs.remotivelabs.com/docs/remotive-bus/install) or read about how to do this over udp in the [documentation](https://docs.remotivelabs.com/docs/remotive-topology/getting-started#can).
+On Linux, this example requires that you run `RemotiveBus` service on your machine to enable CAN networks in Docker, see installation instructions [here](https://developer.remotivelabs.com/docs/remotive-bus/install) or read about how to do this over udp in the [documentation](https://developer.remotivelabs.com/docs/remotive-topology/usage/instance/networks/can).
 
 ## Project structure
 Below is an overview of the project's directory layout and its main components:
@@ -47,8 +47,9 @@ The example contains four main instances
 > :link: [RemotiveCar Hello World instance](instances/hello_world/README.md)<br>
 > :link: [RemotiveCar FMU instance](instances/fmu/README.md)<br>
 > :link: [Instance with android emulator](instances/android/README.md)<br>
+> :link: [Instance with an instrument cluster](instances/agl_cluster/README.md)<br>
 
-The hello world instance is the most suitable starting point, the FMU instance is the same topology with the `BCM` implemented as an FMU instead of a python model, and the instance with android emulator shows how to integrate a topology with the android emulator.
+The hello world instance is the most suitable starting point, the FMU instance is the same topology with the `BCM` implemented as an FMU instead of a python model, the instance with android emulator shows how to integrate a topology with the android emulator, and the cluster instance runs a real instrument cluster (derived from the AGL cluster demo) as the `DIM` ECU on CAN.
 There is also an instance that integrates with a physical steering wheel, replacing the `SCCM` mock with a behavioral model.
 Note that running the steering wheel example requires hardware.
 

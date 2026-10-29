@@ -82,7 +82,7 @@ Redirect tcp ports from 6000 to 15554. The emulator console port is not reachabl
 
 - `adb` commands can be run as normal, however `-P 5038` needs to be appended, such as `adb -P 5038 logcat`, alternatively `ANDROID_ADB_SERVER_PORT=5038 adb logcat`
 - `run.sh` scripts (above) returns and logs your cloud broker. When you seek you Android location will be updated acordingly.
-- wireshark and edgeshark is very useful in this setup <https://docs.remotivelabs.com/docs/remotive-topology/tools/wireshark>
+- wireshark and edgeshark is very useful in this setup <https://developer.remotivelabs.com/docs/remotive-topology/tools/wireshark>
 
 ## Troubleshooting
 

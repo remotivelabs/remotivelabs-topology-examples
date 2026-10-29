@@ -224,9 +224,9 @@ config:
 
 You will need the following tools
 
-- `RemotiveCLI` <https://docs.remotivelabs.com/docs/remotive-cli/installation>
-- `RemotiveTopology` <https://docs.remotivelabs.com/docs/remotive-topology/install>
-- On Linux, this example requires that you run `RemotiveBus` service on your machine to enable CAN and VLAN networks in Docker, see installation instructions [here](https://docs.remotivelabs.com/docs/remotive-bus/install). Alternatively include [can_over_udp.instance.yaml](../../settings/can_over_udp.settings.instance.yaml) and [vlan_using_bridge.settings.instance.yaml](../../settings/vlan_using_bridge.settings.instance.yaml) in your instance, as shown in the examples below.
+- `RemotiveCLI` <https://developer.remotivelabs.com/docs/remotive-cli/installation>
+- `RemotiveTopology` <https://developer.remotivelabs.com/docs/remotive-topology/install>
+- On Linux, this example requires that you run `RemotiveBus` service on your machine to enable CAN and VLAN networks in Docker, see installation instructions [here](https://developer.remotivelabs.com/docs/remotive-bus/install). Alternatively include [can_over_udp.instance.yaml](../../settings/can_over_udp.settings.instance.yaml) and [vlan_using_bridge.settings.instance.yaml](../../settings/vlan_using_bridge.settings.instance.yaml) in your instance, as shown in the examples below.
 - `git lfs` <https://git-lfs.com/> make sure to do `git lfs pull` if `git lfs` wasn't installed during `git clone`. For Ubuntu `sudo apt install git-lfs`.
 - (Optional) `socat` [See Emulator on host](EMULATOR_ON_HOST.md)
 - (Optional) `Android-Studio` [See Emulator on host](EMULATOR_ON_HOST.md)
@@ -246,6 +246,24 @@ All configuration is done using RemotiveTopology instance files:
 > :link: [VLAN using bridge](../../settings/vlan_using_bridge.settings.instance.yaml)<br>
 
 Notice how the main instance includes other instance configuration files and also the platform configuration. RemotiveTopology is based around a modular approach to describe both platforms and different ways to instantiate them. For example in this example you can see how the IHU model is specifically built for this example, as it integrates towards android, by including [ihu.android_emulator.instance.yaml](../../models/ihu.android_emulator.instance.yaml) or [ihu.cuttlefish.instance.yaml](../../models/ihu.cuttlefish.instance.yaml).
+
+#### Optional: instrument cluster
+
+The same modularity makes the [instrument cluster](../agl_cluster/README.md) an option for this instance. Adding
+[dim.agl_cluster.instance.yaml](../../models/dim.agl_cluster.instance.yaml) to the build replaces the DIM broker with
+the cluster container, which then shows the recorded drive next to Android:
+
+```bash
+remotive topology build \
+-f remotive_car/instances/android/main.instance.yaml \
+-f remotive_car/instances/android/cuttlefish.instance.yaml \
+-f remotive_car/models/dim.agl_cluster.instance.yaml \
+remotive_car/build
+```
+
+Run the instance as usual. The cluster is served at <http://localhost:6080> and
+can be embedded in the 3D car, see the [cluster README](../agl_cluster/README.md#cluster-in-the-3d-car). The cluster
+reads the CAN buses over SocketCAN, so it needs RemotiveBus on the host.
 
 ### Use cases
 

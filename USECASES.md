@@ -4,6 +4,7 @@ This document describe a number of different things you typically want to do whe
 
 This repository includes the following use cases:
 - [3D visualization](./usecases/3D.md) - Viewing the vehicle in 3D provides an immersive way to see the current state of the vehicle.
+- [Instrument cluster](./remotive_car/instances/agl_cluster/README.md) - Running a real instrument cluster (a Qt application derived from the AGL cluster demo) in a container as an ECU on the CAN bus, viewable in a browser or inside the 3D car.
 - [Android Cuttlefish](./usecases/ANDROID_CUTTLEFISH.md) - Using Cuttlefish is useful when you are developing applications for your custom Android build or when customizing the Android build. Covers both a Cuttlefish image driven over VHAL gRPC by a behavioral model and an image with built-in SOME/IP support.
 - [Android Emulator](./usecases/ANDROID_EMULATOR.md) - Using Android Emulator is useful if you are developing Android applications.
 - [Behavioral models in python](./usecases/BEHAVIORAL_MODELS.md) - Writing behavioral models in python is a very simple way of creating models for ECUs that don't yet exist.

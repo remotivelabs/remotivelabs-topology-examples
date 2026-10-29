@@ -4,7 +4,7 @@ This example shows how to instantiate a topology that can playback recordings fr
 There are more sample recordings available from https://cloud.remotivelabs.com/
 
 ## Prerequisites
-- You will need to install `RemotiveToplogy`, follow the instructions here <https://docs.remotivelabs.com/docs/remotive-topology/install>
+- You will need to install `RemotiveTopology`, follow the instructions here <https://developer.remotivelabs.com/docs/remotive-topology/install>
 - Make sure to `git lfs pull` if `git lfs` wasn't installed during `git clone`, see https://git-lfs.com/
 
 ## Getting started
@@ -21,7 +21,7 @@ Start it
 docker compose -f tesla/build/Roundabout/docker-compose.yml up --build
 ```
 
-Use [RemotiveStudio](https://docs.remotivelabs.com/docs/remotive-studio) to view signals and start playback of `roundabout.recordingsession.yaml`.
+Use [RemotiveStudio](https://developer.remotivelabs.com/docs/remotive-studio) to view signals and start playback of `roundabout.recordingsession.yaml`.
 
 ## Credits
 

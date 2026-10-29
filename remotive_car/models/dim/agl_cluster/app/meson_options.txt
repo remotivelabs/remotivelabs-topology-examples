@@ -1,0 +1,2 @@
+option('dbc_dir', type : 'string', value : '../../../../platform/databases',
+       description : 'Directory with chassis_can.dbc and body_can.dbc')

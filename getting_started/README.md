@@ -305,12 +305,12 @@ Notice:
 
 RemotiveTopology supports two ways of instantiating a CAN network:
 
-1. [RemotiveLabs RemotiveBus](https://docs.remotivelabs.com/docs/remotive-bus) driver for SocketCAN (default)
+1. [RemotiveLabs RemotiveBus](https://developer.remotivelabs.com/docs/remotive-bus) driver for SocketCAN (default)
 2. Emulation using UDP (by broadcasting ethernet PDUs)
 
 RemotiveBus is needed to connect to physical hardware and to use standard CAN tooling such as `candump`. RemotiveBus using SocketCAN is the natural way to implement CAN and is therefore the default setting in RemotiveTopology.
 
-:warning: SocketCAN is only supported on Linux with [RemotiveLabs RemotiveBus](https://docs.remotivelabs.com/docs/remotive-bus) driver. On Mac/Windows you need to fall back to emulation. Notice that the UDP packets are still encoded in the same way as the real CAN frames, by using ethernet PDUs.
+:warning: SocketCAN is only supported on Linux with [RemotiveLabs RemotiveBus](https://developer.remotivelabs.com/docs/remotive-bus) driver. On Mac/Windows you need to fall back to emulation. Notice that the UDP packets are still encoded in the same way as the real CAN frames, by using ethernet PDUs.
 
 To make this example run on all platforms use CAN over UDP. This is configured by adding the following instance.yaml:
 
@@ -431,7 +431,7 @@ There are several ways of moving forward from what you have here:
 Before running the example, ensure the following software is installed on your system:
 
 - **Remotive Topology CLI**
-  ➤ [Installation instructions](https://docs.remotivelabs.com/docs/remotive-topology/install)
+  ➤ [Installation instructions](https://developer.remotivelabs.com/docs/remotive-topology/install)
 
 - **Docker**
   ➤ [Learn more about Docker](https://www.docker.com/)

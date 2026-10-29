@@ -1,0 +1,138 @@
+{
+  "schema": "remotive-dashboard:0.2",
+  "panels": [
+    {
+      "type": "iframe",
+      "grid": {
+        "x": 0,
+        "y": 3,
+        "w": 7,
+        "h": 7
+      },
+      "content": {
+        "url": "http://localhost:6080"
+      }
+    },
+    {
+      "type": "restbus",
+      "grid": {
+        "x": 0,
+        "y": 10,
+        "w": 12,
+        "h": 6
+      },
+      "content": {
+        "frames": [
+          {
+            "channel": "ChassisCan0",
+            "frame": "UISpeedFrame"
+          },
+          {
+            "channel": "BodyCan0",
+            "frame": "TurnLightControl"
+          },
+          {
+            "channel": "BodyCan0",
+            "frame": "GearInfo"
+          }
+        ]
+      }
+    },
+    {
+      "type": "signal-value-timeseries",
+      "settings": {
+        "useSuggestedMinMax": false,
+        "yAxisSettings": {
+          "showDecimal": false,
+          "showHex": false,
+          "showNamed": true
+        },
+        "syncChart": true,
+        "chartWidthSeconds": 30,
+        "maxFps": 60
+      },
+      "grid": {
+        "x": 7,
+        "y": 3,
+        "w": 5,
+        "h": 7
+      },
+      "content": {
+        "signals": [
+          {
+            "namespace": "topology-BodyCan0",
+            "frame": "TurnLightControl",
+            "signal": "TurnLightControl.LeftTurnLightRequest"
+          },
+          {
+            "namespace": "topology-BodyCan0",
+            "frame": "DIMStatus",
+            "signal": "DIMStatus.LeftIndicatorLamp"
+          },
+          {
+            "namespace": "topology-BodyCan0",
+            "frame": "TurnLightControl",
+            "signal": "TurnLightControl.RightTurnLightRequest"
+          },
+          {
+            "namespace": "topology-BodyCan0",
+            "frame": "DIMStatus",
+            "signal": "DIMStatus.RightIndicatorLamp"
+          },
+          {
+            "namespace": "topology-ChassisCan0",
+            "frame": "UISpeedFrame",
+            "signal": "UISpeedFrame.uispeed"
+          },
+          {
+            "namespace": "topology-BodyCan0",
+            "frame": "DIMStatus",
+            "signal": "DIMStatus.DisplayedSpeed"
+          }
+        ]
+      }
+    },
+    {
+      "type": "trace",
+      "settings": {
+        "groupByFrame": true,
+        "expandSignals": true,
+        "bufferSize": 10000,
+        "sortOrder": "newest-first"
+      },
+      "grid": {
+        "x": 0,
+        "y": 16,
+        "w": 6,
+        "h": 2
+      },
+      "content": {
+        "frames": [
+          {
+            "namespace": "topology-BodyCan0",
+            "frame": "DIMStatus",
+            "signals": []
+          },
+          {
+            "namespace": "topology-BodyCan0",
+            "frame": "GearInfo",
+            "signals": []
+          }
+        ]
+      }
+    },
+    {
+      "type": "markdown",
+      "grid": {
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 3
+      },
+      "content": {
+        "text": "# Instrument cluster\n\nThe restbus panel sets the frames the cluster consumes, on the mocks that send them. The chart shows them next to what the cluster reports back in `DIMStatus` on BodyCan0.\n\n**Speed**: `UISpeedFrame.uispeed` on ChassisCan0, in m/s. 20 shows as **72 km/h** and comes back as `DIMStatus.DisplayedSpeed`.\n\n**Turn lights**: `TurnLightControl.LeftTurnLightRequest` / `RightTurnLightRequest` on BodyCan0, 1 lights the lamp. The cluster reports it in `DIMStatus.LeftIndicatorLamp` / `RightIndicatorLamp`. A BCM blinks the request, here it stays as set.\n\n**Gear**: `GearInfo.GearLeverPosition` on BodyCan0, 0 Reverse, 1 Drive, traced below with `DIMStatus`. `DisplayedGear` 1 = Reverse, 2 = Drive."
+      }
+    }
+  ],
+  "name": "cluster"
+}

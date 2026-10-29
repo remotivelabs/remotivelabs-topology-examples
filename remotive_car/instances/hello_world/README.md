@@ -185,8 +185,8 @@ config:
   - brake lights
 
 ## Host setup
-- `RemotiveTopology` <https://docs.remotivelabs.com/docs/remotive-topology/install>
-- On Linux, this example requires that you run `RemotiveBus` service on your machine to enable CAN and VLAN networks in Docker, see installation instructions [here](https://docs.remotivelabs.com/docs/remotive-bus/install). Alternatively include [can_over_udp.instance.yaml](../../settings/can_over_udp.settings.instance.yaml) and [vlan_using_bridge.settings.instance.yaml](../../settings/vlan_using_bridge.settings.instance.yaml) in your instance, as shown in the examples below.
+- `RemotiveTopology` <https://developer.remotivelabs.com/docs/remotive-topology/install>
+- On Linux, this example requires that you run `RemotiveBus` service on your machine to enable CAN and VLAN networks in Docker, see installation instructions [here](https://developer.remotivelabs.com/docs/remotive-bus/install). Alternatively include [can_over_udp.instance.yaml](../../settings/can_over_udp.settings.instance.yaml) and [vlan_using_bridge.settings.instance.yaml](../../settings/vlan_using_bridge.settings.instance.yaml) in your instance, as shown in the examples below.
 
 ## Getting started
 In order to run the commands in the sections below, first navigate to the root of this repository.
@@ -269,4 +269,4 @@ docker compose -f remotive_car/build/remotive_car_hello_world/docker-compose.yml
 and then browse to [http://localhost:8888/lab?token=remotivelabs](http://localhost:8888/lab?token=remotivelabs).
 
 ### RemotiveStudio
-Use [RemotiveStudio](https://docs.remotivelabs.com/docs/remotive-studio) to view signals.
+Use [RemotiveStudio](https://developer.remotivelabs.com/docs/remotive-studio) to view signals.

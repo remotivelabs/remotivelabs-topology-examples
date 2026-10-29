@@ -11,7 +11,7 @@ dependencies = [
   "pytest-asyncio==1.0.0",
   "gherkin-official >=30.0.4",
   "behave >=1.2.6",
-  "remotivelabs-topology~=0.22.0",
+  "remotivelabs-topology~=0.23.0",
   "adb-shell==0.4.4",
 ]
 
@@ -45,8 +45,11 @@ asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "function"
 testpaths = ["pytest"]
 cache_dir = "/tmp/.pytest_cache"
-addopts = "-m 'not android'"
-markers = ["android: marks tests that require an android device"]
+addopts = "-m 'not android and not cluster'"
+markers = [
+  "android: marks tests that require an android device",
+  "cluster: marks tests that require an instrument cluster as the DIM",
+]
 
 [[tool.mypy.overrides]]
 module = ["behave.*"]

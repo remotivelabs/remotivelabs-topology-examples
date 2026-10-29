@@ -16,14 +16,15 @@ Explore a more comprehensive setup:
 
 - [RemotiveCar - Larger Example](./remotive_car/README.md)
 - [RemotiveCar - Android](./remotive_car/instances/android/README.md)
+- [RemotiveCar - Instrument cluster](./remotive_car/instances/agl_cluster/README.md)
 
 ![RemotiveCar Android Example](./remotive_car/instances/android/docs/RemotiveTopology_ans_AAOS.gif)
 
 ## Documentation
 
-- [RemotiveTopology documentation](https://docs.remotivelabs.com/docs/remotive-topology)
-- [RemotiveLabs RemotiveTopology framework documentation](https://docs.remotivelabs.com/apis/python/remotivelabs/topology) (python API)
-- [RemotiveLabs documentation home](https://docs.remotivelabs.com/)
+- [RemotiveTopology documentation](https://developer.remotivelabs.com/docs/remotive-topology)
+- [RemotiveLabs RemotiveTopology framework documentation](https://developer.remotivelabs.com/apis/python/remotivelabs/topology) (python API)
+- [RemotiveLabs documentation home](https://developer.remotivelabs.com/)
 
 ## Prerequisites
 
@@ -31,7 +32,7 @@ To run these examples, you'll need:
 - A valid RemotiveTopology subscription (free trial available)
 - RemotiveCLI installed
 
-**New to RemotiveTopology?** Get started with our [installation guide](https://docs.remotivelabs.com/docs/remotive-topology) to create your free trial subscription. You can also [book a meeting](https://meetings-eu1.hubspot.com/per-sigurdson/remotivelabs-platform-intro?uuid=16d16894-7cf9-471a-8ed8-7481ba152fc3) if you want a hands-on demo.
+**New to RemotiveTopology?** Get started with our [installation guide](https://developer.remotivelabs.com/docs/remotive-topology) to create your free trial subscription. You can also [book a meeting](https://meetings-eu1.hubspot.com/per-sigurdson/remotivelabs-platform-intro?uuid=16d16894-7cf9-471a-8ed8-7481ba152fc3) if you want a hands-on demo.
 
 ## License
 
