@@ -10,7 +10,7 @@ back onto the bus. The model itself needs no knowledge of the platform.
 - Part of the [RemotiveCar example](../remotive_car/DOCS.md)
 - Instance: [RemotiveCar FMU instance](../remotive_car/instances/fmu/README.md)
 - FMU model: [bcm/fmu](../remotive_car/models/bcm/fmu/bcm)
-- Instance file: [bcm.fmu.instance.yaml](../remotive_car/models/bcm.fmu.instance.yaml)
+- Instance file: [BCM/fmu.instance.yaml](../remotive_car/instances/ecus/BCM/fmu.instance.yaml)
 
 The `BCM` of the RemotiveCar example has two interchangeable implementations, a
 [python behavioral model](../remotive_car/models/bcm/python/bcm) and an [FMU](../remotive_car/models/bcm/fmu/bcm). Both

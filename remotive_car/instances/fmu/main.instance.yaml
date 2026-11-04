@@ -2,31 +2,29 @@ schema: remotive-topology-instance:0.17
 
 name: remotive_car_fmu
 
-includes:
-  - ./../../models/bcm_fmu_gwm_ihu.instance.yaml
-  - ./../../models/rl_rlcm.instance.yaml
-  - ./../../common/jupyter/jupyter.instance.yaml
-  - ./../../common/3d_car/3d_car.instance.yaml
-  - ./../../tests/tester_fmu.instance.yaml
+# The hello world car with the BCM as an FMU instead of the Python model, and
+# the BMS as a mock. The tester deselects the one test the FMU does not cover,
+# see README.md.
 
 platform:
   includes:
     - ../../platform/remotive-car.platform.yaml
 
-ecus:
-  SCCM:
-    mock: {}
-  DIM: {}
-  FLCM: {}
-  RL: {}
-  PAM:
-    mock: {}
-  TCU:
-    mock: {}
-  ABS:
-    mock: {}
-  BMS:
-    mock: {}
-  PCM:
-    mock: {}
-  HVAC: {}
+includes:
+  - ../ecus/BCM/fmu.instance.yaml
+  - ../ecus/GWM/python.instance.yaml
+  - ../ecus/IHU/python.instance.yaml
+  - ../ecus/BMS/mock.instance.yaml
+  - ../ecus/RL/python.instance.yaml
+  - ../ecus/RLCM/python.instance.yaml
+  - ../ecus/SCCM/mock.instance.yaml
+  - ../ecus/PAM/mock.instance.yaml
+  - ../ecus/TCU/mock.instance.yaml
+  - ../ecus/ABS/mock.instance.yaml
+  - ../ecus/PCM/mock.instance.yaml
+  - ../ecus/DIM/broker.instance.yaml
+  - ../ecus/FLCM/broker.instance.yaml
+  - ../ecus/HVAC/broker.instance.yaml
+  - ../../common/jupyter/jupyter.instance.yaml
+  - ../../common/3d_car/3d_car.instance.yaml
+  - ../../tests/tester_fmu.instance.yaml

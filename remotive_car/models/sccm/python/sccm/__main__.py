@@ -1,9 +1,8 @@
 from __future__ import annotations
 
-import asyncio
-
 import structlog
 from remotivelabs.broker import BrokerClient
+from remotivelabs.topology.cli import run
 from remotivelabs.topology.mapping import MappingModel
 
 from sccm.args import SteeringWheelArgs
@@ -33,4 +32,4 @@ async def main(args: SteeringWheelArgs) -> None:
 if __name__ == "__main__":
     args = SteeringWheelArgs.parse()
     configure_logging(level=args.loglevel)
-    asyncio.run(main(args))
+    run(main(args))

@@ -5,21 +5,21 @@ schema: remotive-topology-instance:0.17
 # The container replaces the DIM RemotiveBroker and is attached directly to the
 # DIM CAN buses. The cluster, a Qt application derived from the AGL cluster demo
 # dashboard, reads the buses over SocketCAN with decoders generated from the
-# platform DBC files. See dim/agl_cluster.
+# platform DBC files. See models/dim/agl_cluster.
 #
 # The cluster display is served as a web page on http://localhost:6080, which
 # can be shown on its own or embedded in the 3D car.
 
 platform:
   includes:
-    - ../platform/remotive-car.platform.yaml
+    - ../../../platform/remotive-car.platform.yaml
 
 ecus:
   DIM:
     container:
       build:
-        context: ..
-        dockerfile: dim/agl_cluster/Dockerfile
+        context: ../../..
+        dockerfile: ../../../models/dim/agl_cluster/Dockerfile
       ports:
         - "6080:6080"
       environment:

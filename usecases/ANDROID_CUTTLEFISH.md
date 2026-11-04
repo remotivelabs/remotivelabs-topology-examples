@@ -80,7 +80,7 @@ The Android 15 image is a stock Android Automotive with VHAL gRPC support. The I
 - Location is sent to the Cuttlefish GNSS gRPC proxy over HTTPS (port `1443`).
 - HVAC temperature changes made in the Android UI are streamed back as VHAL property updates and re-published as SOME/IP events.
 
-[cuttlefish_vhal_grpc.instance.yaml](../remotive_car/instances/android/cuttlefish_vhal_grpc.instance.yaml) adds a separate `cuttlefish` container next to the IHU model and includes [ihu.cuttlefish.instance.yaml](../remotive_car/models/ihu.cuttlefish.instance.yaml), which configures the model with `VIRTUAL_DEVICE_TYPE=cuttlefish` and the URLs of the two Cuttlefish services.
+[cuttlefish_vhal_grpc.instance.yaml](../remotive_car/instances/android/cuttlefish_vhal_grpc.instance.yaml) adds a separate `cuttlefish` container next to the IHU model and includes [IHU/vhal_grpc.instance.yaml](../remotive_car/instances/ecus/IHU/vhal_grpc.instance.yaml), which configures the model with `VIRTUAL_DEVICE_TYPE=cuttlefish` and the URLs of the two Cuttlefish services.
 
 This approach needs no changes to the Android build, since VHAL and GNSS are reached through the standard Cuttlefish gRPC interfaces. It is a natural first step when integrating Android with a topology; the signal-to-property mapping lives in the behavioral model and can later move into a custom Android build.
 

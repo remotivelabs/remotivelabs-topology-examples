@@ -6,7 +6,7 @@ schema: remotive-topology-instance:0.17
 # server (port 9300) and the GNSS gRPC proxy (port 1443).
 
 includes:
-  - ../../models/ihu.cuttlefish.instance.yaml
+  - ../ecus/IHU/vhal_grpc.instance.yaml
 
 containers:
   cuttlefish:

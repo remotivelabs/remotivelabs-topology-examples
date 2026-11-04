@@ -245,19 +245,19 @@ All configuration is done using RemotiveTopology instance files:
 > :link: [CAN over UDP](../../settings/can_over_udp.settings.instance.yaml)<br>
 > :link: [VLAN using bridge](../../settings/vlan_using_bridge.settings.instance.yaml)<br>
 
-Notice how the main instance includes other instance configuration files and also the platform configuration. RemotiveTopology is based around a modular approach to describe both platforms and different ways to instantiate them. For example in this example you can see how the IHU model is specifically built for this example, as it integrates towards android, by including [ihu.android_emulator.instance.yaml](../../models/ihu.android_emulator.instance.yaml) or [ihu.cuttlefish.instance.yaml](../../models/ihu.cuttlefish.instance.yaml).
+Notice how the main instance includes other instance configuration files and also the platform configuration. RemotiveTopology is based around a modular approach to describe both platforms and different ways to instantiate them. Every ECU is one file from [instances/ecus](../ecus/README.md). The IHU has one file per way of attaching Android to it: [IHU/android_emulator.instance.yaml](../ecus/IHU/android_emulator.instance.yaml) for an emulator, [IHU/vhal_grpc.instance.yaml](../ecus/IHU/vhal_grpc.instance.yaml) for a separate Cuttlefish container over VHAL gRPC and [IHU/cuttlefish.instance.yaml](../ecus/IHU/cuttlefish.instance.yaml) for Cuttlefish as the IHU container itself. The files next to this one pick one of them and add what it needs.
 
 #### Optional: instrument cluster
 
 The same modularity makes the [instrument cluster](../agl_cluster/README.md) an option for this instance. Adding
-[dim.agl_cluster.instance.yaml](../../models/dim.agl_cluster.instance.yaml) to the build replaces the DIM broker with
+[DIM/agl_cluster.instance.yaml](../ecus/DIM/agl_cluster.instance.yaml) to the build replaces the DIM broker with
 the cluster container, which then shows the recorded drive next to Android:
 
 ```bash
 remotive topology build \
 -f remotive_car/instances/android/main.instance.yaml \
 -f remotive_car/instances/android/cuttlefish.instance.yaml \
--f remotive_car/models/dim.agl_cluster.instance.yaml \
+-f remotive_car/instances/ecus/DIM/agl_cluster.instance.yaml \
 remotive_car/build
 ```
 

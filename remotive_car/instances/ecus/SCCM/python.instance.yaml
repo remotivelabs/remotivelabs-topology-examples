@@ -1,0 +1,24 @@
+schema: remotive-topology-instance:0.17
+
+# SCCM as the Python behavioral model in models/sccm/python: a physical steering
+# wheel on the host (/dev/input) mapped to the stalk and button frames. Needs
+# the hardware; the mock or the playback file next to this one does not.
+
+platform:
+  includes:
+    - ../../../platform/remotive-car.platform.yaml
+
+ecus:
+  SCCM:
+    models:
+      sccm:
+        type: container
+        container:
+          build:
+            args:
+              - MODEL_PATH=sccm/python
+            target: model
+            dockerfile: ../../../Dockerfile
+          command: python -m sccm -m config/moza.gateway-mapping.yaml
+          devices:
+            - /dev/input

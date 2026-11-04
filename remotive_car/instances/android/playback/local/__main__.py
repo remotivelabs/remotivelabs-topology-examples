@@ -5,6 +5,7 @@ import asyncio
 
 import structlog
 from remotivelabs.broker.recording_session import RecordingSessionClient
+from remotivelabs.topology.cli import run
 from remotivelabs.topology.cli.behavioral_model import BehavioralModelArgs
 
 from .log import configure_logging
@@ -35,4 +36,4 @@ if __name__ == "__main__":
     configure_logging(args.loglevel)
     recording_args = parse_recording_args()
 
-    asyncio.run(main(args, recording_args.recording_session))
+    run(main(args, recording_args.recording_session))

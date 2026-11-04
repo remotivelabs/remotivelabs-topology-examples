@@ -1,8 +1,11 @@
 schema: remotive-topology-instance:0.17
 
+# BCM as the FMU in models/bcm/fmu, wrapped by a small Python model that maps
+# frames to FMU variables. Same ECU as python.instance.yaml, other implementation.
+
 platform:
   includes:
-    - ../platform/remotive-car.platform.yaml
+    - ../../../platform/remotive-car.platform.yaml
 
 ecus:
   BCM:
@@ -14,5 +17,5 @@ ecus:
             args:
               - MODEL_PATH=bcm/fmu
             target: model
-            dockerfile: ../Dockerfile
+            dockerfile: ../../../Dockerfile
           command: python -m bcm

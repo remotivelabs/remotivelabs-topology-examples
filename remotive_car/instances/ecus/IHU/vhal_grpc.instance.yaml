@@ -1,5 +1,10 @@
 schema: remotive-topology-instance:0.17
 
+# IHU as the Python model bridging the SOME/IP events to a separate Cuttlefish
+# container over its VHAL gRPC server (port 9300) and GNSS gRPC proxy (port
+# 1443). The Cuttlefish container itself comes from the instance that includes
+# this file, see ../../android/cuttlefish_vhal_grpc.instance.yaml.
+
 ecus:
   IHU:
     models:
@@ -10,7 +15,7 @@ ecus:
             args:
               - MODEL_PATH=ihu/python
             target: model
-            dockerfile: ../Dockerfile
+            dockerfile: ../../../Dockerfile
           command: python -m ihu
           environment:
             - VIRTUAL_DEVICE_TYPE=cuttlefish

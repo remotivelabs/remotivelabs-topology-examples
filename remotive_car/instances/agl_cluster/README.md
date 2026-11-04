@@ -13,7 +13,7 @@ with the same look as the instrument cluster of the [3D car](../../../usecases/3
 on its own or embedded in the 3D car.
 
 > :link: [main.instance.yaml](main.instance.yaml)<br>
-> :link: [dim.agl_cluster.instance.yaml](../../models/dim.agl_cluster.instance.yaml) - the DIM ECU as the cluster container<br>
+> :link: [DIM/agl_cluster.instance.yaml](../ecus/DIM/agl_cluster.instance.yaml) - the DIM ECU as the cluster container<br>
 > :link: [models/dim/agl_cluster](../../models/dim/agl_cluster) - the container image and the cluster application
 
 ## How the cluster is connected
@@ -134,6 +134,9 @@ the dashboard:
 remotive studio
 ```
 
+[Open `cluster.dashboard.json` in Studio](http://localhost:57123/files?path=%2Fremotive_car%2Finstances%2Fagl_cluster%2Fcluster.dashboard.json&viewMode=dashboard)
+(the path in the link is relative to the directory Studio was started from).
+
 It shows the cluster page next to a restbus panel that sets what the cluster receives, with charts of what the
 cluster reports back in `DIMStatus` on BodyCan0, so every stimulus can be checked against the display and against
 the bus:
@@ -172,7 +175,7 @@ the same drive on the map, and the BCM blinks the indicators from the turn stalk
 remotive topology build \
 -f remotive_car/instances/android/main.instance.yaml \
 -f remotive_car/instances/android/cuttlefish.instance.yaml \
--f remotive_car/models/dim.agl_cluster.instance.yaml \
+-f remotive_car/instances/ecus/DIM/agl_cluster.instance.yaml \
 remotive_car/build
 
 docker compose -f remotive_car/build/remotive_car_android/docker-compose.yml \

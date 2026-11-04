@@ -1,12 +1,12 @@
 from __future__ import annotations
 
-import asyncio
 from enum import Enum
 from typing import cast
 
 import structlog
 from remotivelabs.broker import BrokerClient, Frame
 from remotivelabs.topology.behavioral_model import BehavioralModel, RebootRequest
+from remotivelabs.topology.cli import run
 from remotivelabs.topology.cli.behavioral_model import BehavioralModelArgs
 from remotivelabs.topology.control import (
     ControlRequest,
@@ -307,4 +307,4 @@ async def main(avp: BehavioralModelArgs):
 if __name__ == "__main__":
     args = BehavioralModelArgs.parse()
     configure_logging(level=args.loglevel)
-    asyncio.run(main(args))
+    run(main(args))

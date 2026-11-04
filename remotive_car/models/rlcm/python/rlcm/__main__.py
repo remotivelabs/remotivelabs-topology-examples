@@ -1,11 +1,11 @@
 from __future__ import annotations
 
-import asyncio
 from typing import Final
 
 import structlog
 from remotivelabs.broker import BrokerClient, Frame, WriteSignal
 from remotivelabs.topology.behavioral_model import BehavioralModel
+from remotivelabs.topology.cli import run
 from remotivelabs.topology.cli.behavioral_model import BehavioralModelArgs
 from remotivelabs.topology.namespaces import filters
 from remotivelabs.topology.namespaces.can import CanNamespace
@@ -84,4 +84,4 @@ async def main(avp: BehavioralModelArgs):
 if __name__ == "__main__":
     args = BehavioralModelArgs.parse()
     configure_logging(args.loglevel)
-    asyncio.run(main(args))
+    run(main(args))

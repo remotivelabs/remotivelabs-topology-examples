@@ -5,6 +5,7 @@ import os
 import structlog
 from remotivelabs.broker import BrokerClient, FrameSubscription, RestbusSignalConfig
 from remotivelabs.broker.auth import TokenAuth
+from remotivelabs.topology.cli import run
 from remotivelabs.topology.cli.behavioral_model import BehavioralModelArgs
 from remotivelabs.topology.namespaces.can import CanNamespace
 
@@ -161,4 +162,4 @@ if __name__ == "__main__":
     logging.basicConfig(level=args.loglevel)
     logging.getLogger("remotivelabs.topology").setLevel(logging.DEBUG)
     # logging.getLogger("remotivelabs.broker").setLevel(logging.DEBUG)
-    asyncio.run(main(args))
+    run(main(args))

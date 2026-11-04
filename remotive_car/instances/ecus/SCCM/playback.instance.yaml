@@ -1,0 +1,18 @@
+schema: remotive-topology-instance:0.17
+
+# SCCM replaying a recorded drive: the model publishes the stalk and button
+# signals of the recording that ../../android/local_playback.instance.yaml plays back.
+
+platform:
+  includes:
+    - ../../../platform/remotive-car.platform.yaml
+
+ecus:
+  SCCM:
+    models:
+      sccm:
+        type: container
+        container:
+          build:
+            dockerfile: ../../android/Dockerfile
+          command: python -m playback.local.sccm

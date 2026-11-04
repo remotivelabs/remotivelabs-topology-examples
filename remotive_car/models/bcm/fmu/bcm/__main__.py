@@ -1,10 +1,10 @@
 from __future__ import annotations
 
-import asyncio
 from pathlib import Path
 
 import structlog
 from remotivelabs.broker import BrokerClient, RestbusSignalConfig
+from remotivelabs.topology.cli import run
 from remotivelabs.topology.cli.behavioral_model import BehavioralModelArgs
 from remotivelabs.topology.fmu.behavioral_model import FMUBehavioralModel
 from remotivelabs.topology.fmu.simulation import FMUSimulation, FMUVars
@@ -97,4 +97,4 @@ async def main(avp: BehavioralModelArgs) -> None:
 if __name__ == "__main__":
     args = BehavioralModelArgs.parse()
     configure_logging(level=args.loglevel)
-    asyncio.run(main(args))
+    run(main(args))

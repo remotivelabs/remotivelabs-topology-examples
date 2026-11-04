@@ -1,0 +1,11 @@
+schema: remotive-topology-instance:0.17
+
+# DIM as a bare RemotiveBroker: no model and no restbus. What it sends is set
+# by hand (RemotiveStudio, the CLI, a test) and what it receives can be read there.
+
+platform:
+  includes:
+    - ../../../platform/remotive-car.platform.yaml
+
+ecus:
+  DIM: {}

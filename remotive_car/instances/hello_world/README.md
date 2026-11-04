@@ -226,7 +226,7 @@ All configuration is done using RemotiveTopology instance files:
 > :link: [CAN over UDP](../../settings/can_over_udp.settings.instance.yaml)
 > :link: [VLAN using bridge](../../settings/vlan_using_bridge.settings.instance.yaml)
 
-Notice how the main instance includes other instance configuration files and also the platform configuration. RemotiveTopology is based around a modular approach to describe both platforms and different ways to instantiate them. For example in this example you can see how the ECU models are composed from reusable instance files like [bcm_gwm_ihu.instance.yaml](../../models/bcm_gwm_ihu.instance.yaml) and [rl_rlcm.instance.yaml](../../models/rl_rlcm.instance.yaml).
+Notice how the main instance includes other instance configuration files and also the platform configuration. RemotiveTopology is based around a modular approach to describe both platforms and different ways to instantiate them. In this instance every ECU is one line, a file from [instances/ecus](../ecus/README.md): [BCM/python.instance.yaml](../ecus/BCM/python.instance.yaml) runs the BCM model, [SCCM/mock.instance.yaml](../ecus/SCCM/mock.instance.yaml) mocks the steering column, and swapping a line swaps the ECU. The [FMU instance](../fmu/README.md) is this one with two lines changed.
 
 ### Test
 This instance includes the tests from [tester.instance.yaml](./../../tests/tester.instance.yaml), which contains both pytest and scenario based tests using behave. To run these you use the profile `tester` for pytest and `behave` for behave.

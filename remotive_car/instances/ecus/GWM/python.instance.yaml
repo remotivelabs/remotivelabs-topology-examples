@@ -1,8 +1,11 @@
 schema: remotive-topology-instance:0.17
 
+# GWM as the Python behavioral model in models/gwm/python: the gateway that
+# routes signals between the CAN buses and SOME/IP.
+
 platform:
   includes:
-    - ../platform/remotive-car.platform.yaml
+    - ../../../platform/remotive-car.platform.yaml
 
 ecus:
   GWM:
@@ -14,5 +17,5 @@ ecus:
             args:
               - MODEL_PATH=gwm/python
             target: model
-            dockerfile: ../Dockerfile
+            dockerfile: ../../../Dockerfile
           command: python -m gwm

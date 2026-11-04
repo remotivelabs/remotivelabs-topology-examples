@@ -1,19 +1,9 @@
 schema: remotive-topology-instance:0.17
 
-includes:
-  - ../../tests/pytest/android/cuttlefish.instance.yaml
+# Android as a Cuttlefish device in the IHU container (../ecus/IHU/cuttlefish),
+# with the Android tests as the tester. Add to main.instance.yaml together with
+# cuttlefish.compose.yaml, see README.md.
 
-ecus:
-  IHU:
-    container:
-      image: remotivelabs/remotivelabs-cuttlefish:16.0.0_r4-1
-      environment:
-        - CUTTLEFISH_CPUS=${CUTTLEFISH_CPUS:-4}
-        - CUTTLEFISH_MEMORY_MB=${CUTTLEFISH_MEMORY_MB:-4096}
-        - CUTTLEFISH_DISPLAY_MAIN=width=1600,height=1280,dpi=160,refersh_rate_hz=60
-      ports:
-        - "6520:6520"
-        - "8443:8443"
-      volumes:
-        - ./cuttlefish/apks:/root/apks
-        - ./cuttlefish/state:/root/state
+includes:
+  - ../ecus/IHU/cuttlefish.instance.yaml
+  - ../../tests/pytest/android/cuttlefish.instance.yaml

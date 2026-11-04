@@ -1,0 +1,12 @@
+schema: remotive-topology-instance:0.17
+
+# ABS as a mock: a restbus sending every ABS frame with default signal values.
+# A test, a dashboard or the command line sets what it sends.
+
+platform:
+  includes:
+    - ../../../platform/remotive-car.platform.yaml
+
+ecus:
+  ABS:
+    mock: {}

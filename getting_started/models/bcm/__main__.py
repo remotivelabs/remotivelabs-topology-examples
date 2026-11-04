@@ -1,9 +1,9 @@
-import asyncio
 import logging
 from dataclasses import dataclass
 
 from remotivelabs.broker import BrokerClient, Frame
 from remotivelabs.topology.behavioral_model import BehavioralModel
+from remotivelabs.topology.cli import run
 from remotivelabs.topology.cli.behavioral_model import BehavioralModelArgs
 from remotivelabs.topology.namespaces import filters
 from remotivelabs.topology.namespaces.can import CanNamespace, RestbusConfig
@@ -68,4 +68,4 @@ if __name__ == "__main__":
     args = BehavioralModelArgs.parse()
     logging.basicConfig(level=args.loglevel)
     logging.getLogger("remotivelabs.topology").setLevel(logging.DEBUG)
-    asyncio.run(main(args))
+    run(main(args))

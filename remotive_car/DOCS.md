@@ -21,12 +21,13 @@ On Linux, this example requires that you run `RemotiveBus` service on your machi
 ## Project structure
 Below is an overview of the project's directory layout and its main components:
 ```
-common/
-docs/
-instances/
-models/
-platform/
-tests/
+common/        shared fragments: the 3D car, the Jupyter notebook
+docs/          Sphinx-Needs documentation
+instances/     the topologies, one folder each, composed from instances/ecus
+instances/ecus/   one folder per ECU, one file per way of running it (mock, python, fmu, ...)
+models/        the ECU implementations: Python packages, the FMU, the cluster image
+platform/      the network: channels and signal databases
+tests/         the test runners (pytest, behave) included by the instances
 ```
 
 ### Common
@@ -43,6 +44,8 @@ The [instances](instances) directory contains different deployment configuration
 
 These instances serve as the input sources from which the final system setup is generated. They are commonly called `main.instance.yaml`.
 
+A main instance is little more than a list of includes: the platform, one file per ECU from [instances/ecus](instances/ecus/README.md) and the shared fragments from [common](common) and [tests](tests). Every ECU has its own folder there with one file per way of running it, `mock`, `python`, `fmu`, `playback` and so on, so what an ECU is in an instance is a single line, and two instances that differ by one ECU differ by one line. [instances/ecus/README.md](instances/ecus/README.md) has the table of what each instance uses.
+
 The example contains four main instances
 > :link: [RemotiveCar Hello World instance](instances/hello_world/README.md)<br>
 > :link: [RemotiveCar FMU instance](instances/fmu/README.md)<br>
@@ -54,11 +57,9 @@ There is also an instance that integrates with a physical steering wheel, replac
 Note that running the steering wheel example requires hardware.
 
 ### Models (ECU implementation)
-The [models](models) directory contains multiple implementations of ECUs. The most simple instance bundles all Python behavioral models using [bcm_gwm_ihu.instance.yaml](models/bcm_gwm_ihu.instance.yaml) and [rl_rlcm.instance.yaml](models/rl_rlcm.instance.yaml).
+The [models](models) directory contains the implementations of the ECUs: a Python package per model, the BCM FMU and the instrument cluster image. How a model is run as an ECU is not in `models` but in [instances/ecus](instances/ecus/README.md): the container, its command and environment, in a file named after the implementation.
 
-An ECU can have more than one implementation. The `BCM` has both a [python behavioral model](models/bcm/python/bcm) and an [FMU](models/bcm/fmu/bcm), selected by including either [bcm.bm.instance.yaml](models/bcm.bm.instance.yaml) or [bcm.fmu.instance.yaml](models/bcm.fmu.instance.yaml).
-
-Each model specifies how it should be instantiated from the main instance, and these definitions are used to generate the final output.
+An ECU can have more than one implementation. The `BCM` has both a [python behavioral model](models/bcm/python/bcm) and an [FMU](models/bcm/fmu/bcm), selected by including either [BCM/python.instance.yaml](instances/ecus/BCM/python.instance.yaml) or [BCM/fmu.instance.yaml](instances/ecus/BCM/fmu.instance.yaml). The [hello world](instances/hello_world/main.instance.yaml) and [FMU](instances/fmu/main.instance.yaml) instances differ by that line and the BMS, a model in one and a mock in the other.
 
 #### Running unit tests
 It is important to test early, and local unit/integration tests are important tools to achieve this. As each python model is its separate package it is easy to write unit tests. For the a bit mor complicated model `BCM` there is tests located here [models/bcm/python/tests](models/bcm/python/tests).

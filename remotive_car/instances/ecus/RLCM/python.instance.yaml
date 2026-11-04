@@ -1,8 +1,12 @@
 schema: remotive-topology-instance:0.17
 
+# RLCM, the rear light control module, as the Python behavioral model in
+# models/rlcm/python: the LIN master on RearLightLIN, translating the BCM's
+# requests on CAN to the rear light.
+
 platform:
   includes:
-    - ../platform/remotive-car.platform.yaml
+    - ../../../platform/remotive-car.platform.yaml
 
 channels:
   RearLightLIN:
@@ -19,5 +23,5 @@ ecus:
             args:
               - MODEL_PATH=rlcm/python
             target: model
-            dockerfile: ../Dockerfile
+            dockerfile: ../../../Dockerfile
           command: python -m rlcm

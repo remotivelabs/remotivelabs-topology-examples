@@ -1,0 +1,12 @@
+schema: remotive-topology-instance:0.17
+
+# SCCM as a mock: a restbus sending every SCCM frame (turn stalk, beams, gear
+# selector) with default signal values, for a test or a dashboard to drive.
+
+platform:
+  includes:
+    - ../../../platform/remotive-car.platform.yaml
+
+ecus:
+  SCCM:
+    mock: {}

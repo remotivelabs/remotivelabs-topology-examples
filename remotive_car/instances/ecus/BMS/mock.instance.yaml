@@ -1,0 +1,11 @@
+schema: remotive-topology-instance:0.17
+
+# BMS as a mock: a restbus sending every BMS frame with default signal values.
+
+platform:
+  includes:
+    - ../../../platform/remotive-car.platform.yaml
+
+ecus:
+  BMS:
+    mock: {}

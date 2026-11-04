@@ -8,8 +8,8 @@ Everything else in the topology is unchanged, so this instance is a good way to 
 model without any of the surrounding ECUs knowing about it.
 
 > :link: [main.instance.yaml](main.instance.yaml)<br>
-> :link: [bcm.fmu.instance.yaml](../../models/bcm.fmu.instance.yaml) - the BCM running the FMU<br>
-> :link: [bcm.bm.instance.yaml](../../models/bcm.bm.instance.yaml) - the BCM running the python model, for comparison
+> :link: [BCM/fmu.instance.yaml](../ecus/BCM/fmu.instance.yaml) - the BCM running the FMU<br>
+> :link: [BCM/python.instance.yaml](../ecus/BCM/python.instance.yaml) - the BCM running the python model, for comparison
 
 ## How the FMU is connected to the buses
 

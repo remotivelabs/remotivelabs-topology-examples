@@ -1,8 +1,11 @@
 schema: remotive-topology-instance:0.17
 
+# BMS as the Python behavioral model in models/bms/python: battery state of
+# charge and derived values from the motor data on the bus.
+
 platform:
   includes:
-    - ../platform/remotive-car.platform.yaml
+    - ../../../platform/remotive-car.platform.yaml
 
 ecus:
   BMS:
@@ -14,7 +17,7 @@ ecus:
             args:
               - MODEL_PATH=bms/python
             target: model
-            dockerfile: ../Dockerfile
+            dockerfile: ../../../Dockerfile
           command: python -m bms
           environment:
             # State of charge the battery simulation starts from once motor data

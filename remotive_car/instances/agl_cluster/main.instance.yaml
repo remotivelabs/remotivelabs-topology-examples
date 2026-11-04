@@ -6,23 +6,15 @@ name: remotive_car_agl_cluster
 # what it displays. Every frame the cluster consumes is set directly on a mock,
 # from the dashboard, the command line or the tests, with no behavioral model in
 # between. The full car around the cluster is the Android instance with the DIM
-# model file added, see README.md.
-
-includes:
-  - ./../../models/dim.agl_cluster.instance.yaml
-  - ./../../common/3d_car/3d_car.instance.yaml
+# cluster file added, see README.md.
 
 platform:
   includes:
     - ../../platform/remotive-car.platform.yaml
 
-ecus:
-  ABS:
-    mock: {}
-  BMS:
-    mock: {}
-  BCM:
-    mock:
-      # The BCM only receives on DriverCan0, a mock there has nothing to send
-      channels:
-        BodyCan0:
+includes:
+  - ../ecus/DIM/agl_cluster.instance.yaml
+  - ../ecus/ABS/mock.instance.yaml
+  - ../ecus/BMS/mock.instance.yaml
+  - ../ecus/BCM/mock.instance.yaml
+  - ../../common/3d_car/3d_car.instance.yaml

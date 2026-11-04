@@ -8,6 +8,7 @@ from typing import Any
 import structlog
 from remotivelabs.broker import BrokerClient
 from remotivelabs.topology.behavioral_model import BehavioralModel
+from remotivelabs.topology.cli import run
 from remotivelabs.topology.cli.behavioral_model import BehavioralModelArgs
 from remotivelabs.topology.namespaces import filters
 from remotivelabs.topology.namespaces.some_ip import SomeIPEvent, SomeIPNamespace
@@ -147,4 +148,4 @@ async def main(avp: BehavioralModelArgs):
 if __name__ == "__main__":
     model_args = BehavioralModelArgs.parse()
     configure_logging(model_args.loglevel)
-    asyncio.run(main(model_args))
+    run(main(model_args))

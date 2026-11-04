@@ -1,0 +1,11 @@
+schema: remotive-topology-instance:0.17
+
+# PAM as a mock: a restbus sending every PAM frame with default signal values.
+
+platform:
+  includes:
+    - ../../../platform/remotive-car.platform.yaml
+
+ecus:
+  PAM:
+    mock: {}

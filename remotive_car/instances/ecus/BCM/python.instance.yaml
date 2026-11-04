@@ -1,8 +1,11 @@
 schema: remotive-topology-instance:0.17
 
+# BCM as the Python behavioral model in models/bcm/python: turn signals, beams
+# and gears as state machines driven by the SCCM frames.
+
 platform:
   includes:
-    - ../platform/remotive-car.platform.yaml
+    - ../../../platform/remotive-car.platform.yaml
 
 ecus:
   BCM:
@@ -14,5 +17,5 @@ ecus:
             args:
               - MODEL_PATH=bcm/python
             target: model
-            dockerfile: ../Dockerfile
+            dockerfile: ../../../Dockerfile
           command: python -m bcm

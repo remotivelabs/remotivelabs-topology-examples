@@ -5,7 +5,7 @@ Writing behavioral models in python is a very simple way of creating models for 
 - Part of the [RemotiveCar example](../remotive_car/DOCS.md) 
 - Behavioral models: [bcm](../remotive_car/models/bcm/python/bcm) and [gwm](../remotive_car/models/gwm/python/gwm)
 - Unit tests: [tests](../remotive_car/models/bcm/python/tests)
-- Instance files: [bcm](../remotive_car/models/bcm.bm.instance.yaml) and [gwm](../remotive_car/models/gwm.bm.instance.yaml)
+- Instance files: [BCM/python](../remotive_car/instances/ecus/BCM/python.instance.yaml) and [GWM/python](../remotive_car/instances/ecus/GWM/python.instance.yaml)
 
 Notice:
 - The platform is included in each instance, since the instance depends on the platform. However, in a larger platform it would probably make sense to only include the part of the platform describing each ECU.
