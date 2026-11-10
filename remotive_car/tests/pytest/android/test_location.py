@@ -22,7 +22,7 @@ async def broker_client(request: pytest.FixtureRequest) -> AsyncIterator[BrokerC
 
         await broker_client.restbus.update_signals(
             (
-                "TCU-BodyCan0",
+                "TCU-BodyCan",
                 [
                     RestbusSignalConfig.set(name="LocationFrame.Latitude", value=-48.526),
                     RestbusSignalConfig.set(name="LocationFrame.Longitude", value=-123.236),
@@ -86,7 +86,7 @@ async def get_location(adb_device: AdbDevice):
 async def test_feed_location_to_android(broker_client: BrokerClient, adb_device: AdbDevice):
     await broker_client.restbus.update_signals(
         (
-            "TCU-BodyCan0",
+            "TCU-BodyCan",
             [
                 RestbusSignalConfig.set(name="LocationFrame.Latitude", value=69.059967),
                 RestbusSignalConfig.set(name="LocationFrame.Longitude", value=20.548735),

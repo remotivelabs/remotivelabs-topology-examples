@@ -31,8 +31,8 @@ NS_ :
 
 BU_: ABS BMS PCM GWM DIM
 
-BO_ 123 UISpeedFrame: 8   ABS
- SG_ uispeed : 0|16@1+ (0.01,0) [0|250] "m/s" GWM
+BO_ 123 VehicleSpeedInfo: 8   ABS
+ SG_ VehicleSpeed : 0|16@1+ (0.01,0) [0|250] "m/s" GWM
 
 BO_ 140 BatteryMeasurement: 8 BMS
  SG_ BatteryVoltage : 0|16@1+ (0.01,0) [0|655.33] "V"  GWM, DIM
@@ -46,6 +46,8 @@ BO_ 150 MotorInfo: 8 PCM
  SG_ MotorSpeed : 0|16@1+ (0.25,-8192) [-8192|8191.25] "rpm"  GWM, DIM, BMS
  SG_ MotorTorque : 16|16@1+ (0.1,-3276.8) [-3276.8|3276.5] "Nm"  GWM, DIM, BMS
 
+CM_ BO_ 123 "Vehicle speed as estimated by the ABS from the wheel speed sensors";
+CM_ SG_ 123 VehicleSpeed "Longitudinal speed of the vehicle over ground, in m/s";
 CM_ BO_ 140 "Raw high-voltage battery sensor measurements from the Battery Management System";
 CM_ SG_ 140 BatteryVoltage "Voltage across the high-voltage battery pack terminals. Sags under load, rises under regen/charging. Reserved values: 65534 = Error (value known to be wrong), 65535 = SNA (signal not available); reported as these raw numbers, not scaled";
 CM_ SG_ 140 BatteryCurrent "Current flowing out of the high-voltage battery pack. Positive = discharging (power being drawn to drive the car; high at high speed or hard acceleration), negative = charging or regenerative braking. Multiply by pack voltage for power. Reserved values: 65534 = Error (value known to be wrong), 65535 = SNA (signal not available); reported as these raw numbers, not scaled";

@@ -27,7 +27,7 @@ def _value(frame: Frame) -> float:
 class BMS:
     ecu_name: str = "BMS"
     vss_namespace_name: str = "BMS-VSS"
-    chassis_can_namespace_name: str = "BMS-ChassisCan0"
+    chassis_can_namespace_name: str = "BMS-ChassisCan"
 
     voltage_signal_vss: str = "Vehicle.Powertrain.TractionBattery.CurrentVoltage"
     current_signal_vss: str = "Vehicle.Powertrain.TractionBattery.CurrentCurrent"

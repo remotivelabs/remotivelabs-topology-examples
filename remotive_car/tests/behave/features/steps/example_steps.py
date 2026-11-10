@@ -22,7 +22,7 @@ class TurnStalk:
     """
 
     target_signal_name = "TurnStalk.TurnSignal"
-    target_namespace = "SCCM-DriverCan0"
+    target_namespace = "SCCM-DriverCan"
 
     def __init__(self, broker_client: BrokerClient):
         self._client = broker_client
@@ -59,7 +59,7 @@ class HazardLight:
 
         await self._client.restbus.update_signals(
             (
-                "SCCM-DriverCan0",
+                "SCCM-DriverCan",
                 [
                     RestbusSignalConfig(name="HazardLightButton.HazardLightButton", loop=[0], initial=[1]),
                 ],
@@ -119,7 +119,7 @@ async def when_hazard_light_button(context, status: str):
 async def step_then_validate_turn_light_toggle(context, turn: str):
     frame_name = "TurnLightControl"
     signal_name = f"TurnLightControl.{turn.capitalize()}TurnLightRequest"
-    ns_names = ["RLCM-BodyCan0", "FLCM-BodyCan0", "DIM-BodyCan0"]
+    ns_names = ["RLCM-BodyCan", "FLCM-BodyCan", "DIM-BodyCan"]
 
     async def check_namespace(ns_name: str) -> None:
         async with capture_frames((context.broker_client, ns_name), [frame_name]) as cap:
@@ -133,7 +133,7 @@ async def step_then_validate_turn_light_toggle(context, turn: str):
 async def step_then_validate_turn_light_static(context, turn: str):
     frame_name = "TurnLightControl"
     signal_name = f"TurnLightControl.{turn.capitalize()}TurnLightRequest"
-    ns_names = ["RLCM-BodyCan0", "FLCM-BodyCan0", "DIM-BodyCan0"]
+    ns_names = ["RLCM-BodyCan", "FLCM-BodyCan", "DIM-BodyCan"]
 
     async def check_namespace(ns_name: str) -> None:
         async with capture_frames((context.broker_client, ns_name), [frame_name]) as cap:

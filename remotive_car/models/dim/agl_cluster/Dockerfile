@@ -60,8 +60,8 @@ COPY models/dim/agl_cluster/index.html /usr/share/novnc/index.html
 ENV LANG=C.UTF-8 \
     QT_QPA_PLATFORM=vnc:size=1920x720 \
     QT_QUICK_BACKEND=software \
-    CAN_CHASSIS=chassiscan0 \
-    CAN_BODY=bodycan0
+    CAN_CHASSIS=chassiscan \
+    CAN_BODY=bodycan
 
 EXPOSE 6080
 

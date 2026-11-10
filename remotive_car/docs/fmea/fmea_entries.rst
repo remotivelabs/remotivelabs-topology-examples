@@ -14,10 +14,10 @@ FMEA Entries
    **Failure Mode:** Hazard light button press does not activate
    both turn indicators simultaneously.
 
-   **Cause:** The HazardLightButton input is corrupted on DriverCan0
+   **Cause:** The HazardLightButton input is corrupted on DriverCan
    (harness fault or stuck-low contact); the BCM hazard-button handler
    fails to evaluate the input; or the BCM fails to drive both
-   ``LeftTurnLightRequest`` and ``RightTurnLightRequest`` on BodyCan0
+   ``LeftTurnLightRequest`` and ``RightTurnLightRequest`` on BodyCan
    within one signal-processing cycle.
 
    **Effect:** Other road users are not warned of emergency situation,
@@ -41,7 +41,7 @@ FMEA Entries
 
    **Cause:** The deactivation transition of the turn-signal state
    machine fails to fire because the off-state stalk edge is missed on
-   DriverCan0 (intermittent contact or single-frame loss) or because
+   DriverCan (intermittent contact or single-frame loss) or because
    the BCM continues to drive the turn-indicator output even though the
    internal state has reached the off state.
 
@@ -65,7 +65,7 @@ FMEA Entries
    turn indicators when commanded.
 
    **Cause:** The ``TurnLightControl`` frame is lost or corrupted on
-   BodyCan0 between BCM and FLCM (harness fault or bus error); or the
+   BodyCan between BCM and FLCM (harness fault or bus error); or the
    FLCM does not actuate the front-indicator lamp driver despite a
    valid frame.
 
@@ -95,7 +95,7 @@ FMEA Entries
    reducing visibility of turn intention to following vehicles.
 
    **Detection:** Test case TC_RLCM verifies end-to-end signal
-   path from BodyCan0 through RearLightLIN to RL.
+   path from BodyCan through RearLightLIN to RL.
 
 .. fmea:: Turn Signal Left Failure to Activate
    :id: FMEA_TURN_LEFT_NO_ACTIVATE
@@ -110,11 +110,11 @@ FMEA Entries
    **Failure Mode:** Left turn signal does not activate when the
    driver engages the turn stalk.
 
-   **Cause:** The left turn-stalk input is stuck low on DriverCan0
+   **Cause:** The left turn-stalk input is stuck low on DriverCan
    (harness fault or stuck-at-zero sensor); the BCM turn-signal state
    machine fails to transition to the left-active state due to missed
    CAN frame; or the BCM fails to drive the ``LeftTurnLightRequest``
-   output on BodyCan0.
+   output on BodyCan.
 
    **Effect:** Left turn intention is not communicated to other
    road users, increasing risk of side collision.
@@ -135,11 +135,11 @@ FMEA Entries
    **Failure Mode:** Right turn signal does not activate when the
    driver engages the turn stalk.
 
-   **Cause:** The right turn-stalk input is stuck low on DriverCan0
+   **Cause:** The right turn-stalk input is stuck low on DriverCan
    (harness fault or stuck-at-zero sensor); the BCM turn-signal state
    machine fails to transition to the right-active state due to missed
    CAN frame; or the BCM fails to drive the ``RightTurnLightRequest``
-   output on BodyCan0.
+   output on BodyCan.
 
    **Effect:** Right turn intention is not communicated to other
    road users, increasing risk of side collision.

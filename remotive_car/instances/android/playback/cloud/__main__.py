@@ -66,7 +66,7 @@ async def handle_location(itr, broker_client):
         logger.info("received location", frame=frame)
         await broker_client.restbus.update_signals(
             (
-                "TCU-BodyCan0",
+                "TCU-BodyCan",
                 [
                     RestbusSignalConfig.set(name="LocationFrame.Latitude", value=frame.signals["ID04FGPSLatLong.GPSLatitude04F"]),
                     RestbusSignalConfig.set(name="LocationFrame.Longitude", value=frame.signals["ID04FGPSLatLong.GPSLongitude04F"]),
@@ -83,7 +83,7 @@ async def handle_heading(itr, broker_client):
         ) % 360
         await broker_client.restbus.update_signals(
             (
-                "TCU-BodyCan0",
+                "TCU-BodyCan",
                 [RestbusSignalConfig.set(name="LocationFrame.Heading", value=heading)],
             )
         )
@@ -93,9 +93,11 @@ async def handle_speed(itr, broker_client):
     async for frame in itr:
         await broker_client.restbus.update_signals(
             (
-                "ABS-ChassisCan0",
+                "ABS-ChassisCan",
                 [
-                    RestbusSignalConfig.set(name="UISpeedFrame.uispeed", value=(float(frame.signals["ID257DIspeed.DI_uiSpeed"]) / 3.6)),
+                    RestbusSignalConfig.set(
+                        name="VehicleSpeedInfo.VehicleSpeed", value=float(frame.signals["ID257DIspeed.DI_uiSpeed"]) / 3.6
+                    ),
                 ],
             )
         )
@@ -107,7 +109,7 @@ async def handle_steering_angle(itr, broker_client):
         if steering_angle is not None:
             await broker_client.restbus.update_signals(
                 (
-                    "SCCM-DriverCan0",
+                    "SCCM-DriverCan",
                     [RestbusSignalConfig.set(name="SteeringAngle.SteeringAngle", value=steering_angle)],
                 )
             )
@@ -120,7 +122,7 @@ async def handle_brake_pedal(itr, broker_client):
             if brake_pedal is not None:
                 await broker_client.restbus.update_signals(
                     (
-                        "SCCM-DriverCan0",
+                        "SCCM-DriverCan",
                         [RestbusSignalConfig.set(name="BrakePedalPositionSensor.BrakePedalPosition", value=brake_pedal * 100)],
                     )
                 )
@@ -132,7 +134,7 @@ async def handle_accelerator_pedal(itr, broker_client):
         if accelerator_pedal is not None and accelerator_pedal != 127:
             await broker_client.restbus.update_signals(
                 (
-                    "SCCM-DriverCan0",
+                    "SCCM-DriverCan",
                     [RestbusSignalConfig.set(name="AcceleratorPedalPositionSensor.AcceleratorPedalPosition", value=accelerator_pedal)],
                 )
             )
@@ -151,7 +153,7 @@ async def handle_lighting(itr, broker_client):
 
             await broker_client.restbus.update_signals(
                 (
-                    "SCCM-DriverCan0",
+                    "SCCM-DriverCan",
                     [RestbusSignalConfig.set(name="TurnStalk.TurnSignal", value=turn_signal)],
                 )
             )

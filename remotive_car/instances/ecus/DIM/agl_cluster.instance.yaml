@@ -23,5 +23,5 @@ ecus:
       ports:
         - "6080:6080"
       environment:
-        - CAN_CHASSIS=chassiscan0
-        - CAN_BODY=bodycan0
+        - CAN_CHASSIS=chassiscan
+        - CAN_BODY=bodycan

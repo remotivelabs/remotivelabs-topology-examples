@@ -1,6 +1,6 @@
 schema: remotive-topology-instance:0.17
 
-# BCM as a mock on BodyCan0 only: the BCM just receives on DriverCan0, so a
+# BCM as a mock on BodyCan only: the BCM just receives on DriverCan, so a
 # mock there would have nothing to send.
 
 platform:
@@ -11,4 +11,4 @@ ecus:
   BCM:
     mock: 
       channels:
-        BodyCan0:
+        BodyCan:

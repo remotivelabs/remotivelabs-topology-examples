@@ -1,6 +1,6 @@
 """
 Instrument cluster tests that only rely on the CAN buses the DIM is connected to: the frames the cluster
-consumes are set on the mocks that send them, and what it reports back in `DIMStatus` on BodyCan0 is checked.
+consumes are set on the mocks that send them, and what it reports back in `DIMStatus` on BodyCan is checked.
 
 They pass for every DIM that follows the platform DBCs, the cluster container in this example as well as a
 real cluster behind a broker on physical CAN, so the same tests serve both.
@@ -18,9 +18,9 @@ import pytest
 
 pytestmark = pytest.mark.cluster
 
-ABS = "ABS-ChassisCan0"
-BCM = "BCM-BodyCan0"
-# Any broker on BodyCan0 sees what the DIM sends
+ABS = "ABS-ChassisCan"
+BCM = "BCM-BodyCan"
+# Any broker on BodyCan sees what the DIM sends
 BODY_CAN = BCM
 
 DIM_STATUS = "DIMStatus"
@@ -47,7 +47,8 @@ STATUS_TIMEOUT = 6.0
 
 
 async def set_speed(broker_client: BrokerClient, meters_per_second: float) -> None:
-    await broker_client.restbus.update_signals((ABS, [RestbusSignalConfig.set(name="UISpeedFrame.uispeed", value=meters_per_second)]))
+    speed = RestbusSignalConfig.set(name="VehicleSpeedInfo.VehicleSpeed", value=meters_per_second)
+    await broker_client.restbus.update_signals((ABS, [speed]))
 
 
 async def set_gear_lever(broker_client: BrokerClient, position: int) -> None:
@@ -75,7 +76,7 @@ async def broker_client(request: pytest.FixtureRequest) -> AsyncIterator[BrokerC
         await set_turn_lights(broker_client, left=[0], right=[0])
 
 
-# @req COMP_REQ_DIM_SPEED: Displayed speed follows UISpeedFrame
+# @req COMP_REQ_DIM_SPEED: Displayed speed follows VehicleSpeedInfo
 @pytest.mark.asyncio
 async def test_displayed_speed_follows_ui_speed(broker_client: BrokerClient):
     async with capture_frames((broker_client, BODY_CAN), [DIM_STATUS]) as cap:
@@ -131,9 +132,9 @@ async def test_right_indicator_lamp_follows_right_turn_light_request(broker_clie
         )
 
 
-# @req COMP_REQ_DIM_SPEED_TIMEOUT: Speed is blanked when UISpeedFrame stops
+# @req COMP_REQ_DIM_SPEED_TIMEOUT: Speed is blanked when VehicleSpeedInfo stops
 @pytest.mark.asyncio
-async def test_speed_not_displayed_without_ui_speed_frames(broker_client: BrokerClient):
+async def test_speed_not_displayed_without_vehicle_speed_frames(broker_client: BrokerClient):
     """
     Stopping the ABS restbus is the closest a test gets to a lost sender. The cluster blanks the speed,
     reported as DisplayedSpeed NotDisplayed (255), until frames return.

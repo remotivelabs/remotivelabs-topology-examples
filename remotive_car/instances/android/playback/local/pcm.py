@@ -27,7 +27,7 @@ def _value(frame: Frame) -> float:
 class PCM:
     ecu_name: str = "PCM"
     vss_namespace_name: str = "PCM-VSS"
-    chassis_can_namespace_name: str = "PCM-ChassisCan0"
+    chassis_can_namespace_name: str = "PCM-ChassisCan"
 
     motor_speed_signal_vss: str = "Vehicle.Powertrain.ElectricMotor.Speed"
     motor_torque_signal_vss: str = "Vehicle.Powertrain.ElectricMotor.Torque"

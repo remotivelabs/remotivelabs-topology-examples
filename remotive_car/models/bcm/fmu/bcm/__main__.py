@@ -17,8 +17,8 @@ logger = structlog.get_logger(__name__)
 
 # ECU configuration. Must match values in interfaces.json.
 ECU_NAME = "BCM"
-SRC_NAMESPACE = "BCM-DriverCan0"
-TARGET_NAMESPACE = "BCM-BodyCan0"
+SRC_NAMESPACE = "BCM-DriverCan"
+TARGET_NAMESPACE = "BCM-BodyCan"
 
 FMU_PATH = Path(__file__).parent / "model" / "BCM.fmu"
 

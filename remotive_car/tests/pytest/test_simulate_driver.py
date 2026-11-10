@@ -18,7 +18,7 @@ async def broker_client(request: pytest.FixtureRequest) -> AsyncIterator[BrokerC
         # reset the state of SCCM after the test is done
         await c.restbus.update_signals(
             (
-                "SCCM-DriverCan0",
+                "SCCM-DriverCan",
                 [
                     RestbusSignalConfig.set(name="TurnStalk.TurnSignal", value=0),
                     RestbusSignalConfig.set(name="HazardLightButton.HazardLightButton", value=0),
@@ -37,14 +37,14 @@ async def test_turn_left(broker_client: BrokerClient):
     # 1. turn left
     await broker_client.restbus.update_signals(
         (
-            "SCCM-DriverCan0",
+            "SCCM-DriverCan",
             [
                 RestbusSignalConfig.set(name="TurnStalk.TurnSignal", value=1),
             ],
         )
     )
     # 2. validate that FLCM and RLCM are blinking
-    async with capture_frames((broker_client, "FLCM-BodyCan0"), ["TurnLightControl"]) as cap:
+    async with capture_frames((broker_client, "FLCM-BodyCan"), ["TurnLightControl"]) as cap:
         await cap.wait_for_frame(
             "TurnLightControl",
             {
@@ -54,7 +54,7 @@ async def test_turn_left(broker_client: BrokerClient):
             timeout=2,
         )
 
-    async with capture_frames((broker_client, "RLCM-BodyCan0"), ["TurnLightControl"]) as cap:
+    async with capture_frames((broker_client, "RLCM-BodyCan"), ["TurnLightControl"]) as cap:
         await cap.wait_for_frame(
             "TurnLightControl",
             {
@@ -83,7 +83,7 @@ async def test_turn_right(broker_client: BrokerClient):
     # 1. turn right
     await broker_client.restbus.update_signals(
         (
-            "SCCM-DriverCan0",
+            "SCCM-DriverCan",
             [
                 RestbusSignalConfig.set(name="TurnStalk.TurnSignal", value=2),
             ],
@@ -91,7 +91,7 @@ async def test_turn_right(broker_client: BrokerClient):
     )
 
     # 2. validate that FLCM and RLCM are blinking
-    async with capture_frames((broker_client, "FLCM-BodyCan0"), ["TurnLightControl"]) as cap:
+    async with capture_frames((broker_client, "FLCM-BodyCan"), ["TurnLightControl"]) as cap:
         await cap.wait_for_frame(
             "TurnLightControl",
             {
@@ -101,7 +101,7 @@ async def test_turn_right(broker_client: BrokerClient):
             timeout=2,
         )
 
-    async with capture_frames((broker_client, "RLCM-BodyCan0"), ["TurnLightControl"]) as cap:
+    async with capture_frames((broker_client, "RLCM-BodyCan"), ["TurnLightControl"]) as cap:
         await cap.wait_for_frame(
             "TurnLightControl",
             {
@@ -129,7 +129,7 @@ async def test_turn_right(broker_client: BrokerClient):
 async def test_hazard(broker_client: BrokerClient):
     await broker_client.restbus.update_signals(
         (
-            "SCCM-DriverCan0",
+            "SCCM-DriverCan",
             [
                 RestbusSignalConfig.set(name="HazardLightButton.HazardLightButton", value=1),
             ],
@@ -137,7 +137,7 @@ async def test_hazard(broker_client: BrokerClient):
     )
 
     async with (
-        capture_frames((broker_client, "FLCM-BodyCan0"), ["TurnLightControl"]) as cap_flcm,
+        capture_frames((broker_client, "FLCM-BodyCan"), ["TurnLightControl"]) as cap_flcm,
         capture_frames((broker_client, "RL-RearLightLIN"), ["DEVMLIN01Fr01"]) as cap_lin,
     ):
         await cap_flcm.wait_for_frame(
@@ -159,7 +159,7 @@ async def test_hazard(broker_client: BrokerClient):
 
         await broker_client.restbus.update_signals(
             (
-                "SCCM-DriverCan0",
+                "SCCM-DriverCan",
                 [
                     RestbusSignalConfig.set(name="HazardLightButton.HazardLightButton", value=1),
                 ],
@@ -190,7 +190,7 @@ async def test_lights_on(broker_client: BrokerClient):
     # 1. turn light on
     await broker_client.restbus.update_signals(
         (
-            "SCCM-DriverCan0",
+            "SCCM-DriverCan",
             [
                 RestbusSignalConfig.set(name="LightStalk.LightMode", value=1),
             ],
@@ -198,7 +198,7 @@ async def test_lights_on(broker_client: BrokerClient):
     )
 
     # 2. validate that FLCM and RLCM turn on their daylight running lights
-    async with capture_frames((broker_client, "FLCM-BodyCan0"), ["DaylightRunningLightControl"]) as cap:
+    async with capture_frames((broker_client, "FLCM-BodyCan"), ["DaylightRunningLightControl"]) as cap:
         await cap.wait_for_frame(
             "DaylightRunningLightControl",
             {
@@ -208,7 +208,7 @@ async def test_lights_on(broker_client: BrokerClient):
             timeout=2,
         )
 
-    async with capture_frames((broker_client, "RLCM-BodyCan0"), ["DaylightRunningLightControl"]) as cap:
+    async with capture_frames((broker_client, "RLCM-BodyCan"), ["DaylightRunningLightControl"]) as cap:
         await cap.wait_for_frame(
             "DaylightRunningLightControl",
             {
@@ -226,7 +226,7 @@ async def test_low_beams_on(broker_client: BrokerClient):
     # 1. turn daylight running lights on
     await broker_client.restbus.update_signals(
         (
-            "SCCM-DriverCan0",
+            "SCCM-DriverCan",
             [
                 RestbusSignalConfig(name="LightStalk.LightMode", loop=[2], initial=[1]),
             ],
@@ -234,7 +234,7 @@ async def test_low_beams_on(broker_client: BrokerClient):
     )
 
     # 2. validate that FLCM and RLCM turn on their low beams
-    async with capture_frames((broker_client, "FLCM-BodyCan0"), ["DaylightRunningLightControl", "LowBeamLightControl"]) as cap:
+    async with capture_frames((broker_client, "FLCM-BodyCan"), ["DaylightRunningLightControl", "LowBeamLightControl"]) as cap:
         await cap.wait_for_frame(
             "DaylightRunningLightControl",
             {
@@ -252,7 +252,7 @@ async def test_low_beams_on(broker_client: BrokerClient):
             timeout=2,
         )
 
-    async with capture_frames((broker_client, "RLCM-BodyCan0"), ["DaylightRunningLightControl", "LowBeamLightControl"]) as cap:
+    async with capture_frames((broker_client, "RLCM-BodyCan"), ["DaylightRunningLightControl", "LowBeamLightControl"]) as cap:
         await cap.wait_for_frame(
             "DaylightRunningLightControl",
             {
@@ -276,7 +276,7 @@ async def test_high_beams_on(broker_client: BrokerClient):
     # 1. turn high beams on
     await broker_client.restbus.update_signals(
         (
-            "SCCM-DriverCan0",
+            "SCCM-DriverCan",
             [
                 RestbusSignalConfig.set(name="LightStalk.HighBeam", value=1),
             ],
@@ -284,7 +284,7 @@ async def test_high_beams_on(broker_client: BrokerClient):
     )
 
     # 2. validate that FLCM turns on high beams
-    async with capture_frames((broker_client, "FLCM-BodyCan0"), ["HighBeamLightControl"]) as cap:
+    async with capture_frames((broker_client, "FLCM-BodyCan"), ["HighBeamLightControl"]) as cap:
         await cap.wait_for_frame(
             "HighBeamLightControl",
             {
@@ -312,7 +312,7 @@ async def set_operating_mode_emergency(broker_client: BrokerClient) -> AsyncIter
 @pytest.mark.asyncio
 async def test_emergency(set_operating_mode_emergency: BrokerClient):
     # We toggle using fixture, so we just need to validate that FLCM and RLCM are blinking
-    async with capture_frames((set_operating_mode_emergency, "FLCM-BodyCan0"), ["TurnLightControl"]) as cap:
+    async with capture_frames((set_operating_mode_emergency, "FLCM-BodyCan"), ["TurnLightControl"]) as cap:
         await cap.wait_for_frame(
             "TurnLightControl",
             {
@@ -322,7 +322,7 @@ async def test_emergency(set_operating_mode_emergency: BrokerClient):
             timeout=2,
         )
 
-    async with capture_frames((set_operating_mode_emergency, "RLCM-BodyCan0"), ["TurnLightControl"]) as cap:
+    async with capture_frames((set_operating_mode_emergency, "RLCM-BodyCan"), ["TurnLightControl"]) as cap:
         await cap.wait_for_frame(
             "TurnLightControl",
             {

@@ -17,8 +17,8 @@ from remotivelabs.topology.testing.frames import capture_frames
 
 import pytest
 
-SCCM = "SCCM-DriverCan0"
-FLCM = "FLCM-BodyCan0"
+SCCM = "SCCM-DriverCan"
+FLCM = "FLCM-BodyCan"
 TURN_LIGHT_FRAME = "TurnLightControl"
 
 LEFT = {"TurnLightControl.LeftTurnLightRequest": 1, "TurnLightControl.RightTurnLightRequest": 0}

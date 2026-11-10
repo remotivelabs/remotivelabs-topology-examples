@@ -25,7 +25,7 @@ class RLCM(BehavioralModel):
     """
 
     ecu_name: Final[str] = "RLCM"
-    can_ns: Final[str] = "RLCM-BodyCan0"
+    can_ns: Final[str] = "RLCM-BodyCan"
     lin_ns: Final[str] = "RLCM-RearLightLIN"
 
     can_turn_light_frame: Final[str] = "TurnLightControl"

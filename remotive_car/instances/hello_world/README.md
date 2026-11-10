@@ -75,15 +75,15 @@ config:
         class RemotiveBroker_TCU
     }
 
-    class BodyCan0 {
+    class BodyCan {
         <<CAN>>
     }
 
-    class DriverCan0 {
+    class DriverCan {
         <<CAN>>
     }
 
-    class ChassisCan0 {
+    class ChassisCan {
         <<CAN>>
     }
 
@@ -102,36 +102,36 @@ config:
     class Webapp
     class Behave
 
-    RemotiveBroker_ABS -- ChassisCan0
+    RemotiveBroker_ABS -- ChassisCan
 
-    RemotiveBroker_BMS -- ChassisCan0
+    RemotiveBroker_BMS -- ChassisCan
 
-    RemotiveBroker_BCM -- BodyCan0
-    RemotiveBroker_BCM -- DriverCan0
+    RemotiveBroker_BCM -- BodyCan
+    RemotiveBroker_BCM -- DriverCan
 
-    RemotiveBroker_DIM -- BodyCan0
+    RemotiveBroker_DIM -- BodyCan
 
-    RemotiveBroker_FLCM -- BodyCan0
+    RemotiveBroker_FLCM -- BodyCan
 
-    RemotiveBroker_GWM -- BodyCan0
-    RemotiveBroker_GWM -- ChassisCan0
+    RemotiveBroker_GWM -- BodyCan
+    RemotiveBroker_GWM -- ChassisCan
     RemotiveBroker_GWM -- SOMEIP
 
-    RemotiveBroker_HVAC -- BodyCan0
+    RemotiveBroker_HVAC -- BodyCan
 
     RemotiveBroker_IHU -- SOMEIP
 
-    RemotiveBroker_PAM -- BodyCan0
+    RemotiveBroker_PAM -- BodyCan
 
-    RemotiveBroker_PCM -- ChassisCan0
+    RemotiveBroker_PCM -- ChassisCan
 
     RemotiveBroker_RL -- RearLightLIN
 
-    RemotiveBroker_RLCM -- BodyCan0
+    RemotiveBroker_RLCM -- BodyCan
 
-    RemotiveBroker_SCCM -- DriverCan0
+    RemotiveBroker_SCCM -- DriverCan
 
-    RemotiveBroker_TCU -- BodyCan0
+    RemotiveBroker_TCU -- BodyCan
 
     Behavioral_Model_BCM -- RemotiveBroker_BCM
     Behavioral_Model_GWM -- RemotiveBroker_GWM

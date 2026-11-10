@@ -4,19 +4,19 @@ includes:
   - someip.platform.yaml
 
 channels:
-  DriverCan0:
+  DriverCan:
     database: ./databases/driver_can.dbc
     type: can
     baudrate: 500000
     baudrate_fd: 8000000
 
-  BodyCan0:
+  BodyCan:
     database: ./databases/body_can.dbc
     type: can
     baudrate: 500000
     baudrate_fd: 8000000
 
-  ChassisCan0:
+  ChassisCan:
     type: can
     database: ./databases/chassis_can.dbc
 

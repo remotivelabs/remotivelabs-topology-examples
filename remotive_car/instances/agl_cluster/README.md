@@ -20,12 +20,12 @@ on its own or embedded in the 3D car.
 
 ```mermaid
 graph LR
-    ABS["ABS mock<br/><small>UISpeedFrame</small>"]
+    ABS["ABS mock<br/><small>VehicleSpeedInfo</small>"]
     BMS["BMS mock<br/><small>BatteryStatus</small>"]
     BCM["BCM mock<br/><small>GearInfo, TurnLightControl</small>"]
     TESTER["Tester<br/><small>receives DIMStatus</small>"]
-    CHASSIS([ChassisCan0])
-    BODY([BodyCan0])
+    CHASSIS([ChassisCan])
+    BODY([BodyCan])
     subgraph DIM container
         CAN["CanSignals<br/><small>SocketCAN + DBC decoders<br/>sends DIMStatus</small>"]
         UI["Cluster<br/><small>Qt/QML</small>"]
@@ -66,16 +66,16 @@ Signals shown today:
 
 | Cluster element | Bus | Frame / signal |
 | --- | --- | --- |
-| Speed | ChassisCan0 | `UISpeedFrame.uispeed` (m/s, shown in km/h) |
-| Power / regen bar | ChassisCan0 | `BatteryStatus.BatteryPower` |
-| Battery, range | ChassisCan0 | `BatteryStatus.StateOfCharge` |
-| Gear strip | BodyCan0 | `GearInfo.GearLeverPosition` |
-| Turn indicators | BodyCan0 | `TurnLightControl.Left/RightTurnLightRequest` |
+| Speed | ChassisCan | `VehicleSpeedInfo.VehicleSpeed` (m/s, shown in km/h) |
+| Power / regen bar | ChassisCan | `BatteryStatus.BatteryPower` |
+| Battery, range | ChassisCan | `BatteryStatus.StateOfCharge` |
+| Gear strip | BodyCan | `GearInfo.GearLeverPosition` |
+| Turn indicators | BodyCan | `TurnLightControl.Left/RightTurnLightRequest` |
 
 To show another signal, add a case to `cansignals.cpp` using the generated decoder and bind it in QML, then rebuild.
 
 What the cluster displays is reported back on the bus, as a real cluster does. Every 100 ms the DIM sends
-`DIMStatus` on BodyCan0 with the displayed speed in km/h (`NotDisplayed` while no valid speed is shown), the
+`DIMStatus` on BodyCan with the displayed speed in km/h (`NotDisplayed` while no valid speed is shown), the
 displayed gear, both indicator lamps and the engine lamp state. Other ECUs and testers can verify the display over
 CAN alone, with no side channel into the container, and a cluster that cannot be told from a real one.
 
@@ -138,14 +138,14 @@ remotive studio
 (the path in the link is relative to the directory Studio was started from).
 
 It shows the cluster page next to a restbus panel that sets what the cluster receives, with charts of what the
-cluster reports back in `DIMStatus` on BodyCan0, so every stimulus can be checked against the display and against
+cluster reports back in `DIMStatus` on BodyCan, so every stimulus can be checked against the display and against
 the bus:
 
-- **Speed**: `UISpeedFrame.uispeed` on ChassisCan0, in m/s. 20 shows as 72 km/h and comes back as
+- **Speed**: `VehicleSpeedInfo.VehicleSpeed` on ChassisCan, in m/s. 20 shows as 72 km/h and comes back as
   `DIMStatus.DisplayedSpeed`.
-- **Turn lights**: `TurnLightControl.LeftTurnLightRequest` and `RightTurnLightRequest` on BodyCan0, 1 lights the
+- **Turn lights**: `TurnLightControl.LeftTurnLightRequest` and `RightTurnLightRequest` on BodyCan, 1 lights the
   lamp, which comes back as `DIMStatus.LeftIndicatorLamp` and `RightIndicatorLamp`.
-- **Gear**: `GearInfo.GearLeverPosition` on BodyCan0, 0 Reverse, 1 Drive, traced together with `DIMStatus`.
+- **Gear**: `GearInfo.GearLeverPosition` on BodyCan, 0 Reverse, 1 Drive, traced together with `DIMStatus`.
 
 The restbus panel controls the running instance of the workspace Studio was started in, so build and run the
 topology from the same directory as `remotive studio`.
@@ -155,14 +155,14 @@ topology from the same directory as `remotive studio`.
 The same signals can be set with the RemotiveCli, for example the speed and the left indicator:
 
 ```sh
-remotive broker restbus update --signal ABS-ChassisCan0:UISpeedFrame.uispeed:20
-remotive broker restbus update --signal BCM-BodyCan0:TurnLightControl.LeftTurnLightRequest:1
+remotive broker restbus update --signal ABS-ChassisCan:VehicleSpeedInfo.VehicleSpeed:20
+remotive broker restbus update --signal BCM-BodyCan:TurnLightControl.LeftTurnLightRequest:1
 ```
 
 `candump` inside the container shows the frames as the cluster reads them:
 
 ```bash
-docker compose -f remotive_car/build/remotive_car_agl_cluster/docker-compose.yml exec dim candump chassiscan0
+docker compose -f remotive_car/build/remotive_car_agl_cluster/docker-compose.yml exec dim candump chassiscan
 ```
 
 ### With the Android example
@@ -190,8 +190,8 @@ cluster at <http://localhost:6080>.
 ### Tests
 
 [tests/pytest/cluster](../../tests/pytest/cluster) checks the cluster over CAN alone: it drives the frames the DIM
-consumes on the ABS and BCM mocks and waits for the matching `DIMStatus` on BodyCan0. Displayed speed, gear, the
-indicator lamps following a blinking request and the blanked speed when `UISpeedFrame` stops are covered. Build the
+consumes on the ABS and BCM mocks and waits for the matching `DIMStatus` on BodyCan. Displayed speed, gear, the
+indicator lamps following a blinking request and the blanked speed when `VehicleSpeedInfo` stops are covered. Build the
 instance with the tester added and run the `tester` profile, from the root of this repository:
 
 ```bash

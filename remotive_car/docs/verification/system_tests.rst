@@ -19,9 +19,9 @@ Hazard Light System Test
 
    **Steps:**
 
-   1. Inject HazardLightButton press via SCCM on DriverCan0
+   1. Inject HazardLightButton press via SCCM on DriverCan
    2. Wait one processing cycle for BCM to process
-   3. Verify BCM commands both turn indicators on BodyCan0
+   3. Verify BCM commands both turn indicators on BodyCan
    4. Verify FLCM activates front left and right indicators
    5. Verify RLCM activates rear left and right indicators
 
@@ -44,7 +44,7 @@ Hazard Light System Test
 
    1. Drive the scenario outline with ``<turn_direction>`` = ``left``
       via the SCCM behave step (which asserts the corresponding CAN
-      signal on DriverCan0).
+      signal on DriverCan).
    2. Within one processing cycle, observe the front-left, rear-left,
       front-right, and rear-right indicator outputs.
    3. Repeat for ``<turn_direction>`` = ``right``.

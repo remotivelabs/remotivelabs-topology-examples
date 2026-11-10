@@ -21,7 +21,7 @@ logger = structlog.get_logger(__name__)
 class TCU:
     ecu_name: str = "TCU"
     vss_namespace_name: str = "TCU-VSS"
-    body_can_namespace_name: str = "TCU-BodyCan0"
+    body_can_namespace_name: str = "TCU-BodyCan"
 
     vss_latitude: str = "Vehicle.CurrentLocation.Latitude"
     vss_longitude: str = "Vehicle.CurrentLocation.Longitude"

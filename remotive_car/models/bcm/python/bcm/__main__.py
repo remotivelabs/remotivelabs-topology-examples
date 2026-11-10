@@ -62,8 +62,8 @@ class BCM:
 
     # ECU configuration. Must match values in interfaces.json.
     ecu_name: str = "BCM"
-    src_namespace: str = "BCM-DriverCan0"
-    target_namespace: str = "BCM-BodyCan0"
+    src_namespace: str = "BCM-DriverCan"
+    target_namespace: str = "BCM-BodyCan"
     virt_interface_name: str = "virt"
 
     # Signals on source namespace (DriverCan) we're interested in. Must match values in the signal database

@@ -18,10 +18,10 @@ logger = structlog.get_logger(__name__)
 class ABS:
     ecu_name: str = "ABS"
     vss_namespace_name: str = "ABS-VSS"
-    chassis_can_namespace_name: str = "ABS-ChassisCan0"
+    chassis_can_namespace_name: str = "ABS-ChassisCan"
 
     speed_signal_vss: str = "Vehicle.Speed"
-    speed_signal: str = "UISpeedFrame.uispeed"
+    speed_signal: str = "VehicleSpeedInfo.VehicleSpeed"
 
     def __init__(self, avp: BehavioralModelArgs) -> None:
         self._broker_client = BrokerClient(avp.url, auth=avp.auth)

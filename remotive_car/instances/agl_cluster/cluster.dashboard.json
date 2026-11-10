@@ -24,15 +24,15 @@
       "content": {
         "frames": [
           {
-            "channel": "ChassisCan0",
-            "frame": "UISpeedFrame"
+            "channel": "ChassisCan",
+            "frame": "VehicleSpeedInfo"
           },
           {
-            "channel": "BodyCan0",
+            "channel": "BodyCan",
             "frame": "TurnLightControl"
           },
           {
-            "channel": "BodyCan0",
+            "channel": "BodyCan",
             "frame": "GearInfo"
           }
         ]
@@ -60,32 +60,32 @@
       "content": {
         "signals": [
           {
-            "namespace": "topology-BodyCan0",
+            "namespace": "topology-BodyCan",
             "frame": "TurnLightControl",
             "signal": "TurnLightControl.LeftTurnLightRequest"
           },
           {
-            "namespace": "topology-BodyCan0",
+            "namespace": "topology-BodyCan",
             "frame": "DIMStatus",
             "signal": "DIMStatus.LeftIndicatorLamp"
           },
           {
-            "namespace": "topology-BodyCan0",
+            "namespace": "topology-BodyCan",
             "frame": "TurnLightControl",
             "signal": "TurnLightControl.RightTurnLightRequest"
           },
           {
-            "namespace": "topology-BodyCan0",
+            "namespace": "topology-BodyCan",
             "frame": "DIMStatus",
             "signal": "DIMStatus.RightIndicatorLamp"
           },
           {
-            "namespace": "topology-ChassisCan0",
-            "frame": "UISpeedFrame",
-            "signal": "UISpeedFrame.uispeed"
+            "namespace": "topology-ChassisCan",
+            "frame": "VehicleSpeedInfo",
+            "signal": "VehicleSpeedInfo.VehicleSpeed"
           },
           {
-            "namespace": "topology-BodyCan0",
+            "namespace": "topology-BodyCan",
             "frame": "DIMStatus",
             "signal": "DIMStatus.DisplayedSpeed"
           }
@@ -109,12 +109,12 @@
       "content": {
         "frames": [
           {
-            "namespace": "topology-BodyCan0",
+            "namespace": "topology-BodyCan",
             "frame": "DIMStatus",
             "signals": []
           },
           {
-            "namespace": "topology-BodyCan0",
+            "namespace": "topology-BodyCan",
             "frame": "GearInfo",
             "signals": []
           }
@@ -130,7 +130,7 @@
         "h": 3
       },
       "content": {
-        "text": "# Instrument cluster\n\nThe restbus panel sets the frames the cluster consumes, on the mocks that send them. The chart shows them next to what the cluster reports back in `DIMStatus` on BodyCan0.\n\n**Speed**: `UISpeedFrame.uispeed` on ChassisCan0, in m/s. 20 shows as **72 km/h** and comes back as `DIMStatus.DisplayedSpeed`.\n\n**Turn lights**: `TurnLightControl.LeftTurnLightRequest` / `RightTurnLightRequest` on BodyCan0, 1 lights the lamp. The cluster reports it in `DIMStatus.LeftIndicatorLamp` / `RightIndicatorLamp`. A BCM blinks the request, here it stays as set.\n\n**Gear**: `GearInfo.GearLeverPosition` on BodyCan0, 0 Reverse, 1 Drive, traced below with `DIMStatus`. `DisplayedGear` 1 = Reverse, 2 = Drive."
+        "text": "# Instrument cluster\n\nThe restbus panel sets the frames the cluster consumes, on the mocks that send them. The chart shows them next to what the cluster reports back in `DIMStatus` on BodyCan.\n\n**Speed**: `VehicleSpeedInfo.VehicleSpeed` on ChassisCan, in m/s. 20 shows as **72 km/h** and comes back as `DIMStatus.DisplayedSpeed`.\n\n**Turn lights**: `TurnLightControl.LeftTurnLightRequest` / `RightTurnLightRequest` on BodyCan, 1 lights the lamp. The cluster reports it in `DIMStatus.LeftIndicatorLamp` / `RightIndicatorLamp`. A BCM blinks the request, here it stays as set.\n\n**Gear**: `GearInfo.GearLeverPosition` on BodyCan, 0 Reverse, 1 Drive, traced below with `DIMStatus`. `DisplayedGear` 1 = Reverse, 2 = Drive."
       }
     }
   ],

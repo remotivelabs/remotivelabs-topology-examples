@@ -17,9 +17,9 @@ Hazard Light Tests
 
    **Steps:**
 
-   1. Send HazardLightButton = 1 on DriverCan0
+   1. Send HazardLightButton = 1 on DriverCan
    2. Wait one processing cycle
-   3. Read LeftTurnLightRequest and RightTurnLightRequest on BodyCan0
+   3. Read LeftTurnLightRequest and RightTurnLightRequest on BodyCan
 
    **Expected:** Both LeftTurnLightRequest and RightTurnLightRequest
    shall be active (value = 1).
@@ -36,9 +36,9 @@ Hazard Light Tests
 
    **Steps:**
 
-   1. Send HazardLightButton = 0 on DriverCan0
+   1. Send HazardLightButton = 0 on DriverCan
    2. Wait one processing cycle
-   3. Read LeftTurnLightRequest and RightTurnLightRequest on BodyCan0
+   3. Read LeftTurnLightRequest and RightTurnLightRequest on BodyCan
 
    **Expected:** Both turn light requests shall be inactive (value = 0).
 
@@ -57,9 +57,9 @@ Turn Signal Tests
 
    **Steps:**
 
-   1. Send TurnSignalLeft = 1 on DriverCan0
+   1. Send TurnSignalLeft = 1 on DriverCan
    2. Wait one processing cycle
-   3. Read LeftTurnLightRequest on BodyCan0
+   3. Read LeftTurnLightRequest on BodyCan
 
    **Expected:** LeftTurnLightRequest shall be active.
    RightTurnLightRequest shall remain inactive.
@@ -80,9 +80,9 @@ Turn Signal Tests
 
    **Steps:**
 
-   1. Send TurnSignalRight = 1 on DriverCan0
+   1. Send TurnSignalRight = 1 on DriverCan
    2. Wait one processing cycle
-   3. Read RightTurnLightRequest on BodyCan0
+   3. Read RightTurnLightRequest on BodyCan
 
    **Expected:** RightTurnLightRequest shall be active.
    LeftTurnLightRequest shall remain inactive.
@@ -156,17 +156,17 @@ State Machine Tests
    :verifies: COMP_REQ_BCM_TURN_SM
 
    **Preconditions:** Full topology running with BCM model active;
-   ``LeftTurnLightRequest`` and ``RightTurnLightRequest`` on BodyCan0
+   ``LeftTurnLightRequest`` and ``RightTurnLightRequest`` on BodyCan
    both inactive.
 
    **Steps:**
 
-   1. Publish ``TurnSignalLeft`` = 1 on DriverCan0.
+   1. Publish ``TurnSignalLeft`` = 1 on DriverCan.
    2. Within one signal-processing cycle, sample
       ``LeftTurnLightRequest`` and ``RightTurnLightRequest`` on
-      BodyCan0.
+      BodyCan.
    3. While ``TurnSignalLeft`` is asserted, publish
-      ``HazardLightButton`` = 1 on DriverCan0.
+      ``HazardLightButton`` = 1 on DriverCan.
    4. Within one signal-processing cycle, sample both outputs again.
    5. Publish ``HazardLightButton`` = 0.
    6. Within one signal-processing cycle, sample both outputs.
@@ -193,11 +193,11 @@ Integration Tests
    :source_doc: getting_started/tests/test_hazard_light.py
    :verifies: COMP_REQ_FLCM_CONTROL
 
-   **Preconditions:** Topology running with FLCM connected to BodyCan0.
+   **Preconditions:** Topology running with FLCM connected to BodyCan.
 
    **Steps:**
 
-   1. Send HazardLightButton = 1 on DriverCan0.
+   1. Send HazardLightButton = 1 on DriverCan.
    2. Within one bus cycle, sample the FLCM front turn indicator
       outputs for both left and right sides.
 
@@ -215,12 +215,12 @@ Integration Tests
    :source_doc: tests/pytest/test_simulate_driver.py
    :verifies: COMP_REQ_RLCM_CONTROL
 
-   **Preconditions:** Topology running with RLCM connected to BodyCan0
+   **Preconditions:** Topology running with RLCM connected to BodyCan
    and RearLightLIN.
 
    **Steps:**
 
-   1. Send rear turn signal command on BodyCan0
+   1. Send rear turn signal command on BodyCan
    2. Verify signal reaches rear light unit via RearLightLIN
 
    **Expected:** RLCM forwards the lighting command to the rear

@@ -139,15 +139,15 @@ config:
     class IHU {
     }
 
-    class BodyCan0 {
+    class BodyCan {
         <<CAN>>
     }
 
-    class DriverCan0 {
+    class DriverCan {
         <<CAN>>
     }
 
-    class ChassisCan0 {
+    class ChassisCan {
         <<CAN>>
     }
 
@@ -164,34 +164,34 @@ config:
     RL -- RearLightLIN
 
     RLCM -- RearLightLIN
-    RLCM -- BodyCan0
+    RLCM -- BodyCan
 
-    ABS -- ChassisCan0
+    ABS -- ChassisCan
 
-    BMS -- ChassisCan0
+    BMS -- ChassisCan
 
-    PCM -- ChassisCan0
+    PCM -- ChassisCan
 
-    DIM -- BodyCan0
+    DIM -- BodyCan
 
-    FLCM -- BodyCan0
+    FLCM -- BodyCan
 
-    PAM -- BodyCan0
+    PAM -- BodyCan
 
-    HVAC -- BodyCan0
+    HVAC -- BodyCan
 
-    BCM -- BodyCan0
-    BCM -- DriverCan0
+    BCM -- BodyCan
+    BCM -- DriverCan
 
-    GWM -- BodyCan0
-    GWM -- ChassisCan0
+    GWM -- BodyCan
+    GWM -- ChassisCan
     GWM -- SOMEIP
 
     IHU -- SOMEIP
 
-    SCCM -- DriverCan0
+    SCCM -- DriverCan
 
-    TCU -- DriverCan0
+    TCU -- DriverCan
 
 ```
 

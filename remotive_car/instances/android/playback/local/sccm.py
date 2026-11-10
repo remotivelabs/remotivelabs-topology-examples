@@ -21,7 +21,7 @@ logger = structlog.get_logger(__name__)
 class SCCM:
     ecu_name: str = "SCCM"
     vss_namespace_name: str = "SCCM-VSS"
-    driver_can_namespace_name: str = "SCCM-DriverCan0"
+    driver_can_namespace_name: str = "SCCM-DriverCan"
 
     vss_indicator_left: str = "Vehicle.Body.Lights.DirectionIndicator.Left.IsSignaling"
     vss_indicator_right: str = "Vehicle.Body.Lights.DirectionIndicator.Right.IsSignaling"

@@ -3,8 +3,8 @@
 # on a VNC framebuffer and noVNC serving it as a web page on port 6080.
 set -eu
 
-CAN_CHASSIS="${CAN_CHASSIS:-chassiscan0}"
-CAN_BODY="${CAN_BODY:-bodycan0}"
+CAN_CHASSIS="${CAN_CHASSIS:-chassiscan}"
+CAN_BODY="${CAN_BODY:-bodycan}"
 
 trap 'kill 0' INT TERM
 

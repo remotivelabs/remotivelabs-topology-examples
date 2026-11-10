@@ -60,17 +60,17 @@
       "content": {
         "signals": [
           {
-            "namespace": "topology-ChassisCan0",
-            "frame": "UISpeedFrame",
-            "signal": "UISpeedFrame.uispeed"
+            "namespace": "topology-ChassisCan",
+            "frame": "VehicleSpeedInfo",
+            "signal": "VehicleSpeedInfo.VehicleSpeed"
           },
           {
-            "namespace": "topology-BodyCan0",
+            "namespace": "topology-BodyCan",
             "frame": "TurnLightControl",
             "signal": "TurnLightControl.LeftTurnLightRequest"
           },
           {
-            "namespace": "topology-BodyCan0",
+            "namespace": "topology-BodyCan",
             "frame": "HVACControl",
             "signal": "HVACControl.LeftTemperature"
           }
@@ -94,7 +94,7 @@
       "content": {
         "frames": [
           {
-            "namespace": "topology-BodyCan0",
+            "namespace": "topology-BodyCan",
             "frame": "TurnLightControl",
             "signals": []
           }

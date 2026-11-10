@@ -21,8 +21,8 @@ logger = structlog.get_logger(__name__)
 class GWM:
     ecu_name: str = "GWM"
     someip_ns: str = "GWM-SOMEIP"
-    can_ns: str = "GWM-BodyCan0"
-    chassis_ns: str = "GWM-ChassisCan0"
+    can_ns: str = "GWM-BodyCan"
+    chassis_ns: str = "GWM-ChassisCan"
 
     left_turn_light_request: str = "TurnLightControl.LeftTurnLightRequest"
     right_turn_light_request: str = "TurnLightControl.RightTurnLightRequest"
@@ -48,7 +48,7 @@ class GWM:
                 self.body_can_0.create_input_handler([filters.FrameFilter("TurnLightControl")], self.on_frame),
                 self.body_can_0.create_input_handler([filters.FrameFilter("LocationFrame")], self.on_location_frame),
                 self.body_can_0.create_input_handler([filters.FrameFilter("GearInfo")], self.on_gear_frame),
-                self.chassis_can_0.create_input_handler([filters.FrameFilter("UISpeedFrame")], self.on_speed_frame),
+                self.chassis_can_0.create_input_handler([filters.FrameFilter("VehicleSpeedInfo")], self.on_speed_frame),
                 self.someip_bus.create_input_handler(
                     [filters.SomeIPEventFilter(service_instance_name="HVACService", event_name="CompartmentControl")],
                     self.on_hvac_control,
@@ -99,7 +99,7 @@ class GWM:
                 name="SpeedEvent",
                 service_instance_name="SpeedService",
                 parameters={
-                    "Speed": frame.signals["UISpeedFrame.uispeed"],
+                    "Speed": frame.signals["VehicleSpeedInfo.VehicleSpeed"],
                 },
             )
         )

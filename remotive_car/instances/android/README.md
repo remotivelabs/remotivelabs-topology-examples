@@ -48,15 +48,15 @@ config:
         class RemotiveBroker_IHU
     }
 
-    class ChassisCan0 {
+    class ChassisCan {
         <<CAN>>
     }
 
-    class BodyCan0 {
+    class BodyCan {
         <<CAN>>
     }
 
-    class DriverCan0 {
+    class DriverCan {
         <<CAN>>
     }
 
@@ -72,15 +72,15 @@ config:
     class Webapp
     class Behave
 
-    RemotiveBroker_ABS -- ChassisCan0
-    RemotiveBroker_GWM -- ChassisCan0
+    RemotiveBroker_ABS -- ChassisCan
+    RemotiveBroker_GWM -- ChassisCan
 
-    RemotiveBroker_GWM -- BodyCan0
-    RemotiveBroker_TCU -- BodyCan0
-    RemotiveBroker_HVAC -- BodyCan0
+    RemotiveBroker_GWM -- BodyCan
+    RemotiveBroker_TCU -- BodyCan
+    RemotiveBroker_HVAC -- BodyCan
 
-    RemotiveBroker_BCM -- BodyCan0
-    RemotiveBroker_BCM -- DriverCan0
+    RemotiveBroker_BCM -- BodyCan
+    RemotiveBroker_BCM -- DriverCan
 
 
     RemotiveBroker_IHU -- SOMEIP
@@ -166,15 +166,15 @@ config:
     class IHU {
     }
 
-    class BodyCan0 {
+    class BodyCan {
         <<CAN>>
     }
 
-    class DriverCan0 {
+    class DriverCan {
         <<CAN>>
     }
 
-    class ChassisCan0 {
+    class ChassisCan {
         <<CAN>>
     }
 
@@ -192,30 +192,30 @@ config:
     RL -- RearLightLIN
 
     RLCM -- RearLightLIN
-    RLCM -- BodyCan0
+    RLCM -- BodyCan
 
-    ABS -- ChassisCan0
+    ABS -- ChassisCan
 
-    DIM -- BodyCan0
+    DIM -- BodyCan
 
-    FLCM -- BodyCan0
+    FLCM -- BodyCan
 
-    PAM -- BodyCan0
+    PAM -- BodyCan
 
-    HVAC -- BodyCan0
+    HVAC -- BodyCan
 
-    BCM -- BodyCan0
-    BCM -- DriverCan0
+    BCM -- BodyCan
+    BCM -- DriverCan
 
-    GWM -- BodyCan0
-    GWM -- ChassisCan0
+    GWM -- BodyCan
+    GWM -- ChassisCan
     GWM -- SOMEIP
 
     IHU -- SOMEIP
 
-    SCCM -- DriverCan0
+    SCCM -- DriverCan
 
-    TCU -- DriverCan0
+    TCU -- DriverCan
 
     classDef supress fill:#ffffffff
 ```

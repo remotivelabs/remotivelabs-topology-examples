@@ -77,7 +77,7 @@ async def adb_device(request: pytest.FixtureRequest) -> AsyncIterator[AdbDevice]
 @pytest.mark.asyncio
 @pytest.mark.android
 async def test_update_hvac_left_temperature(broker_client: BrokerClient, adb_device: AdbDevice):
-    async with capture_frames((broker_client, "HVAC-BodyCan0"), ["HVACControl"]) as cap:
+    async with capture_frames((broker_client, "HVAC-BodyCan"), ["HVACControl"]) as cap:
 
         async def decrease_left_temperature() -> None:
             # Android resets the temperature to its own initial value at some point during boot, so read

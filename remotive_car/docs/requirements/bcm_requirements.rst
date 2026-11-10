@@ -13,8 +13,8 @@ BCM Component Requirements
    :approved_date: 2026-05-10
 
    The Body Control Module shall activate both left and right turn
-   light requests on BodyCan0 when the HazardLightButton signal
-   transitions to the active state on DriverCan0.
+   light requests on BodyCan when the HazardLightButton signal
+   transitions to the active state on DriverCan.
 
 .. comp_req:: Turn Signal Left Activation
    :id: COMP_REQ_BCM_TURN_LEFT
@@ -28,8 +28,8 @@ BCM Component Requirements
    :approved_date: 2026-05-13
 
    The Body Control Module shall maintain the LeftTurnLight output on
-   BodyCan0 in the active state within one signal-processing cycle
-   when and only when the TurnSignalLeft input on DriverCan0 is
+   BodyCan in the active state within one signal-processing cycle
+   when and only when the TurnSignalLeft input on DriverCan is
    asserted.
 
 .. comp_req:: Turn Signal Right Activation
@@ -44,8 +44,8 @@ BCM Component Requirements
    :approved_date: 2026-05-13
 
    The Body Control Module shall maintain the RightTurnLight output on
-   BodyCan0 in the active state within one signal-processing cycle
-   when and only when the TurnSignalRight input on DriverCan0 is
+   BodyCan in the active state within one signal-processing cycle
+   when and only when the TurnSignalRight input on DriverCan is
    asserted.
 
 .. comp_req:: Turn Signal Hazard Priority

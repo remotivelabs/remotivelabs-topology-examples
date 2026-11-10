@@ -14,7 +14,7 @@ Lighting System Requirements
 
    The Front Light Control Module shall activate the front turn
    indicator on the side corresponding to the active TurnLightControl
-   signal received on BodyCan0 within one bus cycle of signal change.
+   signal received on BodyCan within one bus cycle of signal change.
 
 .. comp_req:: Rear Turn Indicator Control
    :id: COMP_REQ_RLCM_CONTROL
@@ -28,6 +28,6 @@ Lighting System Requirements
    :approved_date: 2026-05-13
 
    The Rear Light Control Module shall translate rear turn indicator
-   commands received on BodyCan0 into corresponding LIN frames on
+   commands received on BodyCan into corresponding LIN frames on
    RearLightLIN within one bus cycle so the rear light unit
    illuminates the indicator on the requested side.

@@ -57,7 +57,7 @@ class BatteryPack:
 
 class BMS:
     ecu_name: str = "BMS"
-    chassis_ns: str = "BMS-ChassisCan0"
+    chassis_ns: str = "BMS-ChassisCan"
 
     motor_info_frame: str = "MotorInfo"
     motor_speed_signal: str = "MotorInfo.MotorSpeed"

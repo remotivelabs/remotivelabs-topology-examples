@@ -137,8 +137,8 @@ int main(int argc, char *argv[])
 	if (!screen)
 		screen = qApp->primaryScreen();
 
-	CanSignals can(qEnvironmentVariable("CAN_CHASSIS", "chassiscan0"),
-		       qEnvironmentVariable("CAN_BODY", "bodycan0"));
+	CanSignals can(qEnvironmentVariable("CAN_CHASSIS", "chassiscan"),
+		       qEnvironmentVariable("CAN_BODY", "bodycan"));
 
 	QQmlApplicationEngine engine;
 	engine.rootContext()->setContextProperty("Can", &can);

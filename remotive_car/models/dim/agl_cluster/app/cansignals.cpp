@@ -100,12 +100,12 @@ void CanSignals::readChassis()
 	struct can_frame frame;
 	while (read(m_chassisFd, &frame, sizeof(frame)) == sizeof(frame)) {
 		switch (frame.can_id & CAN_SFF_MASK) {
-		case CHASSIS_CAN_UI_SPEED_FRAME_FRAME_ID: {
-			struct chassis_can_ui_speed_frame_t msg;
-			if (chassis_can_ui_speed_frame_unpack(&msg, frame.data, frame.len) != 0)
+		case CHASSIS_CAN_VEHICLE_SPEED_INFO_FRAME_ID: {
+			struct chassis_can_vehicle_speed_info_t msg;
+			if (chassis_can_vehicle_speed_info_unpack(&msg, frame.data, frame.len) != 0)
 				break;
-			if (chassis_can_ui_speed_frame_uispeed_is_in_range(msg.uispeed))
-				update(m_speed, chassis_can_ui_speed_frame_uispeed_decode(msg.uispeed) * 3.6, Ok);
+			if (chassis_can_vehicle_speed_info_vehicle_speed_is_in_range(msg.vehicle_speed))
+				update(m_speed, chassis_can_vehicle_speed_info_vehicle_speed_decode(msg.vehicle_speed) * 3.6, Ok);
 			else
 				update(m_speed, 0.0, Error);
 			break;
