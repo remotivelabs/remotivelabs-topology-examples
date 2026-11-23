@@ -8,7 +8,7 @@ This example demonstrates how to use RemotiveTopology as a simple way to simulat
   <img alt="Computer connected to hardware ECU" src="platform_light.png">
 </picture>
 
-While RemotiveTopology allows you to spin up full vehicle platforms, it can also be a useful tool if the only thing you need is a simple restbus. By defining a minimal platform with only a single ECU, you can attach it to a CAN bus and use it as a way to stimulate other ECUs. This example instantiates a restbus for a limited SCCM module that is attached to a CAN bus named `DriverCan0`, and allows you to update the signals programmatically. It also shows how you can use recorded data to replay it onto a CAN bus. It works both using a virtual and hardware CAN bus. For a more extensive example, check out [remotive_car](../remotive_car/README.md).
+While RemotiveTopology allows you to spin up full vehicle platforms, it can also be a useful tool if the only thing you need is a simple restbus. By defining a minimal platform with only a single ECU, you can attach it to a CAN bus and use it as a way to stimulate other ECUs. This example instantiates a restbus for a limited SCCM module that is attached to a CAN bus named `DriverCan0`, and allows you to update the signals programmatically. It also shows how you can use recorded data to replay it onto a CAN bus. It works both using a virtual and hardware CAN bus. For a more extensive example, check out [RemotiveCar](https://github.com/remotivelabs/remotivelabs-remotive-car).
 
 ## Prerequisites
 
@@ -50,7 +50,7 @@ await broker_client.restbus.update_signals(
 
 ### Recordings
 
-The recordings can be used to replay an existing candump or csv log of frames/signals. It can optionally include transformations of signals in case recordings come from a different channel/platform than they are replayed on. The example's recording is a minimal version of the larger `remotive_car` example. You can look at the more advanced recording examples in the `remotive_car` example or read more about it in the [documentation](https://developer.remotivelabs.com/docs/remotive-topology/usage/recordings).
+The recordings can be used to replay an existing candump or csv log of frames/signals. It can optionally include transformations of signals in case recordings come from a different channel/platform than they are replayed on. The example's recording is a minimal version of the larger [RemotiveCar](https://github.com/remotivelabs/remotivelabs-remotive-car) example. You can look at the more advanced recording examples in the RemotiveCar example or read more about it in the [documentation](https://developer.remotivelabs.com/docs/remotive-topology/usage/recordings).
 
 ## Quick Start
 
@@ -71,7 +71,7 @@ uv run -m update_restbus --signal SCCM-DriverCan0:SteeringAngle.SteeringAngle --
 
 Use [RemotiveStudio](https://developer.remotivelabs.com/docs/remotive-studio) to view signals and select the `SteeringAngle` frame on the `topology-DriverCan0` namespace.
 
-By adding subscriptions logic to this code, the ECU becomes bi-directional. Find more examples in the [models](../remotive_car/models) folder.
+By adding subscriptions logic to this code, the ECU becomes bi-directional. Find more examples in the [models](https://github.com/remotivelabs/remotivelabs-remotive-car/tree/main/models) folder.
 
 > The restbus does respect CRC and e2e profiles when present in the database along with default values.
 
@@ -121,7 +121,7 @@ To use the example with a different database and signals you can change which da
 
 ### Use a different non matching recording with conversions
 
-To use a different recording, add a new recording-session yaml file in the `recordings/` folder that references a different csv file or candump. If the signals needs to be renamed or values modified there needs to be an added step to convert them, see the more advanced example in `remotive_car/instances/android/playback/local` for how it can be done.
+To use a different recording, add a new recording-session yaml file in the `recordings/` folder that references a different csv file or candump. If the signals needs to be renamed or values modified there needs to be an added step to convert them, see the more advanced example in [instances/android/playback/local](https://github.com/remotivelabs/remotivelabs-remotive-car/tree/main/instances/android/playback/local) in the RemotiveCar repository for how it can be done.
 
 ## LIN and non SocketCAN compatible devices
 

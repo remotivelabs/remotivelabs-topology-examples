@@ -1,24 +1,35 @@
 # RemotiveLabs Topology Examples
 This repository contains example topologies showcasing how to set up and run RemotiveLabs tools.
-It includes minimal examples for getting started quickly, as well as more advanced configurations demonstrating complex setups.
+It includes minimal examples for getting started quickly, as well as examples of specific features.
+
+> **RemotiveCar has moved.** The larger RemotiveCar example now lives in its own repository,
+> [remotivelabs-remotive-car](https://github.com/remotivelabs/remotivelabs-remotive-car). The history of this repository was reset when it moved, which made it much
+> smaller to clone. If you cloned this repository before, clone it again, or run `git fetch && git reset --hard origin/main`.
 
 ## Quick Start
 Get up and running with a minimal example:
 
 - [Getting Started](./getting_started/README.md)
 - [Basic restbus](./basic_restbus/README.md)
+- [Quickstart template](https://github.com/remotivelabs/remotivelabs-topology-quickstart) - the finished project of the [Your first topology](https://developer.remotivelabs.com/docs/get-started/first-topology) tutorial, ready to use as a template for your own project
+
+## More Examples
+
+- [Ethernet peer-to-peer](./ethernet_p2p/README.md) - Validate ECUs that communicate over Ethernet, from behavioral model to hardware
+- [Tesla](./tesla/README.md) - Play back a recording from a Tesla Model 3, including camera videos
+- [EdgeShark for Podman](./edgeshark_for_podman/README.md) - A docker compose file for EdgeShark that works with Podman
 
 ## Use Cases
 Understand what you can do with RemotiveTopology by exploring [various use cases](./USECASES.md).
 
-## Larger Examples
-Explore a more comprehensive setup:
+## RemotiveCar (separate repository)
+Explore a more comprehensive setup with 14 ECUs, Android, an instrument cluster, a 3D car and Jupyter:
 
-- [RemotiveCar - Larger Example](./remotive_car/README.md)
-- [RemotiveCar - Android](./remotive_car/instances/android/README.md)
-- [RemotiveCar - Instrument cluster](./remotive_car/instances/agl_cluster/README.md)
+- [RemotiveCar - Larger Example](https://github.com/remotivelabs/remotivelabs-remotive-car)
+- [RemotiveCar - Android](https://github.com/remotivelabs/remotivelabs-remotive-car/tree/main/instances/android)
+- [RemotiveCar - Instrument cluster](https://github.com/remotivelabs/remotivelabs-remotive-car/tree/main/instances/agl_cluster)
 
-![RemotiveCar Android Example](./remotive_car/instances/android/docs/RemotiveTopology_ans_AAOS.gif)
+![RemotiveCar Android Example](https://github.com/remotivelabs/remotivelabs-remotive-car/raw/main/instances/android/docs/RemotiveTopology_ans_AAOS.gif)
 
 ## Documentation
 

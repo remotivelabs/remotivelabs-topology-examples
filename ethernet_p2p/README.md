@@ -97,7 +97,7 @@ ecus:
 
 ### Container — `instances/container.instance.yaml`
 
-`ECUB` runs as a plain Python container ([`ecub_container/ecub.py`](ecub_container/ecub.py)) that opens two UDP sockets and forwards raw  datagrams from `NET1` to `NET2`. No RemotiveTopology framework is required, this shows how any language or runtime can act as a gateway ECU.
+`ECUB` runs as a plain Python container ([`ecub_standalone/ecub.py`](ecub_standalone/ecub.py)) that opens two UDP sockets and forwards raw  datagrams from `NET1` to `NET2`. No RemotiveTopology framework is required, this shows how any language or runtime can act as a gateway ECU.
 
 ```yaml
 ecus:
@@ -109,7 +109,7 @@ ecus:
       image: python:3.11-slim
       working_dir: /app
       volumes:
-        - ../ecub_container:/app
+        - ../ecub_standalone:/app
       command: ./ecub.py
 
   ECUC: {}

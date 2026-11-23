@@ -1,8 +1,6 @@
 # Getting started example
 
-Check out [prerequisites](#Prerequisites) if you have not already installed necessary tools.
-
-If you just like to get going within 1 minute before digging into the details try the [Hello World example](../remotive_car/instances/hello_world/README.md).
+Check out [prerequisites](#prerequisites) if you have not already installed necessary tools.
 
 In this example, the goal is to write a test that verifies whether the front light control module (`FLCM`) receives the correct signal when the hazard lights button is pressed. Pressing the hazard lights button triggers the Steering Column Control Module (`SCCM`) to send a message to the body control module (`BCM`), which contains the logic for forwarding the correct information to the light control modules.
 
@@ -20,7 +18,7 @@ To achieve this:
 - Describe the platform
 - Write a behavioral model
 - Describe how to instantiate the model
-- Write test case that controls mocks for the `HLCU` and `FLCM`, to simulate inputs and outputs
+- Write a test case that controls the `SCCM` mock to simulate input and checks what `FLCM` receives
 - Configure shared settings
 - Run the test case using Docker
 
@@ -42,7 +40,7 @@ This includes quite a lot of information but from RemotiveTopology perspective i
 
 In fact, given this information RemotiveTopology understands that there exists two ECUs `SCCM` and `BCM` that are communicating on a CAN channel.
 
-Similarly, given this extract from `driver_can.dbc`:
+Similarly, given this extract from `body_can.dbc`:
 
 ```
 BO_ 103 TurnLightControl: 1 BCM
@@ -406,7 +404,6 @@ config:
 
     ECU_Mock_SCCM -- RemotiveBroker_SCCM
     Behavioral_Model_BCM -- RemotiveBroker_BCM
-    ECU_Mock_FLCM -- RemotiveBroker_FLCM
 
     class TopologyBroker
     class Tester
@@ -418,7 +415,7 @@ config:
     TopologyBroker .. RemotiveBroker_FLCM
 ```
 
-## Steps forward
+## Next steps
 
 There are several ways of moving forward from what you have here:
 
@@ -426,12 +423,14 @@ There are several ways of moving forward from what you have here:
 2. By adding more test cases, you can create a test suite that verifies that all the parts in the topology work together.
 3. The included ECUs can be "upgraded" to higher fidelity models, such as an FMU or Synopsis Silver. It's even possible to use real hardware in the topology as long as everything is running on the correct networks.
 
+You could also try the larger [RemotiveCar Hello World example](https://github.com/remotivelabs/remotivelabs-remotive-car/tree/main/instances/hello_world).
+
 ## Prerequisites
 
 Before running the example, ensure the following software is installed on your system:
 
 - **Remotive Topology CLI**
-  ➤ [Installation instructions](https://developer.remotivelabs.com/docs/remotive-topology/install)
+  ➤ [Installation instructions](https://developer.remotivelabs.com/docs/get-started/install)
 
 - **Docker**
   ➤ [Learn more about Docker](https://www.docker.com/)

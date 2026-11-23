@@ -7,17 +7,15 @@ run it against the real communication of the rest of the platform.
 RemotiveTopology maps network signals onto the input variables of the FMU, steps the FMU, and publishes its output variables
 back onto the bus. The model itself needs no knowledge of the platform.
 
-- Part of the [RemotiveCar example](../remotive_car/DOCS.md)
-- Instance: [RemotiveCar FMU instance](../remotive_car/instances/fmu/README.md)
-- FMU model: [bcm/fmu](../remotive_car/models/bcm/fmu/bcm)
-- Instance file: [BCM/fmu.instance.yaml](../remotive_car/instances/ecus/BCM/fmu.instance.yaml)
+- Part of the [RemotiveCar example](https://github.com/remotivelabs/remotivelabs-remotive-car/blob/main/DOCS.md)
+- Instance: [RemotiveCar FMU instance](https://github.com/remotivelabs/remotivelabs-remotive-car/tree/main/instances/fmu)
+- FMU model: [bcm/fmu](https://github.com/remotivelabs/remotivelabs-remotive-car/tree/main/models/bcm/fmu/bcm)
+- Instance file: [BCM/fmu.instance.yaml](https://github.com/remotivelabs/remotivelabs-remotive-car/blob/main/instances/ecus/BCM/fmu.instance.yaml)
 
 The `BCM` of the RemotiveCar example has two interchangeable implementations, a
-[python behavioral model](../remotive_car/models/bcm/python/bcm) and an [FMU](../remotive_car/models/bcm/fmu/bcm). Both
+[python behavioral model](https://github.com/remotivelabs/remotivelabs-remotive-car/tree/main/models/bcm/python/bcm) and an [FMU](https://github.com/remotivelabs/remotivelabs-remotive-car/tree/main/models/bcm/fmu/bcm). Both
 are driven by the same signals and verified by the same tests, so the two instances are a direct comparison of the two
 approaches.
-
-For a minimal FMU example, without the surrounding platform, see the [simple FMU example](../simple_fmu/README.md).
 
 Notice:
 - FMU support is an optional dependency of the library, install it as `remotivelabs-topology[fmu]`.
