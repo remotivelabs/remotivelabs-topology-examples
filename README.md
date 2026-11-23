@@ -22,15 +22,6 @@ Get up and running with a minimal example:
 ## Use Cases
 Understand what you can do with RemotiveTopology by exploring [various use cases](./USECASES.md).
 
-## RemotiveCar (separate repository)
-Explore a more comprehensive setup with 14 ECUs, Android, an instrument cluster, a 3D car and Jupyter:
-
-- [RemotiveCar - Larger Example](https://github.com/remotivelabs/remotivelabs-remotive-car)
-- [RemotiveCar - Android](https://github.com/remotivelabs/remotivelabs-remotive-car/tree/main/instances/android)
-- [RemotiveCar - Instrument cluster](https://github.com/remotivelabs/remotivelabs-remotive-car/tree/main/instances/agl_cluster)
-
-![RemotiveCar Android Example](https://github.com/remotivelabs/remotivelabs-remotive-car/raw/main/instances/android/docs/RemotiveTopology_ans_AAOS.gif)
-
 ## Documentation
 
 - [RemotiveTopology documentation](https://developer.remotivelabs.com/docs/remotive-topology)
