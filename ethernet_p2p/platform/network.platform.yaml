@@ -1,0 +1,78 @@
+schema: remotive-topology-platform:0.17
+
+channels:
+  NET1:
+    type: ethernet
+    subnet: 172.40.0.0/24
+    endpoints:
+      ecu_a_net_1:
+        host: 172.40.0.1
+        sockets:
+          ecu_a_net_1_socket:
+            type: udp
+            port: 1234
+            socket_connections:
+              - ecu_b_net_1_socket
+      ecu_b_net_1:
+        host: 172.40.0.2
+        sockets:
+          ecu_b_net_1_socket:
+            type: udp
+            port: 1234
+            socket_connections:
+              - ecu_a_net_1_socket
+
+  NET2:
+    type: ethernet
+    subnet: 172.41.0.0/24
+    endpoints:
+      ecu_b_net_2:
+        host: 172.41.0.1
+        sockets:
+          ecu_b_net_2_socket:
+            type: udp
+            port: 4321
+            socket_connections:
+              - ecu_c_net_2_socket
+      ecu_c_net_2:
+        host: 172.41.0.2
+        sockets:
+          ecu_c_net_2_socket:
+            type: udp
+            port: 4321
+            socket_connections:
+              - ecu_b_net_2_socket
+
+ecus:
+  ECUA:
+    channels:
+      NET1:
+        database: ./db/eth1.dbc
+        config:
+          type: ethernet
+          provided_endpoints:
+            - ecu_a_net_1
+
+  ECUB:
+    channels:
+      NET1:
+        database: ./db/eth1.dbc
+        config:
+          type: ethernet
+          provided_endpoints:
+            - ecu_b_net_1
+      NET2:
+        database: ./db/eth2.dbc
+        config:
+          type: ethernet
+          provided_endpoints:
+            - ecu_b_net_2
+
+  ECUC:
+    channels:
+      NET2:
+        database: ./db/eth2.dbc
+        config:
+          type: ethernet
+          provided_endpoints:
+            - ecu_c_net_2

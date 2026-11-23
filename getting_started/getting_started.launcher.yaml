@@ -1,0 +1,17 @@
+schema: https://files.remotivelabs.com/schemas/launcher-0.1.schema.json
+
+# Launcher configuration when running in a cloud deployment
+# Currently only supported by Google Horizon
+
+topology_instances:
+  - instances/main.instance.yaml
+
+compose_overlays: []
+
+compose_profiles: []
+
+test_service: tester
+
+forward_ports:
+  - name: RemotiveBroker
+    port: 50051

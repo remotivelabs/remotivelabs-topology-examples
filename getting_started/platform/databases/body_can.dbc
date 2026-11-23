@@ -1,0 +1,27 @@
+VERSION "1.0"
+
+NS_ :
+    BO_
+    SG_
+    BA_DEF_
+    BA_
+    VAL_
+    BU_
+
+BU_:
+    BCM
+    DIM
+    FLCM
+    RLCM
+    GWM
+
+BO_ 103 TurnLightControl: 1 BCM
+  SG_ LeftTurnLightRequest : 0|1@1+ (1,0) [0|1] ""  DIM, FLCM, RLCM, GWM
+  SG_ RightTurnLightRequest : 1|1@1+ (1,0) [0|1] ""  DIM, FLCM, RLCM, GWM
+
+VAL_ 103 LeftTurnLightRequest 0 "Off" 1 "On";
+VAL_ 103 RightTurnLightRequest 0 "Off" 1 "On";
+
+BA_DEF_ BO_ "GenMsgCycleTime" FLOAT 0 10000;
+
+BA_ "GenMsgCycleTime" BO_ 103 50;

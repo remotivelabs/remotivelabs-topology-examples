@@ -1,0 +1,13 @@
+schema: remotive-topology-instance:0.17
+
+name: basic_restbus_recording
+
+platform:
+  includes:
+    - ../platform/topology.platform.yaml
+
+ecus:
+  SCCM: {}
+
+settings:
+  recordings: ../

@@ -1,0 +1,40 @@
+[project]
+name = "remotivelabs-topology-ethernet-p2p-integration-test-example"
+description = "RemotiveTopology Ethernet p2p integration test example"
+version = "1.0.0"
+license = "MIT"
+
+requires-python = ">=3.10,<4.0"
+
+dependencies = [
+  "pytest==8.4.2",
+  "pytest-asyncio==1.0.0",
+  "remotivelabs-topology~=0.23.0",
+]
+
+[dependency-groups]
+dev = ["poethepoet>=0.34.0", "ruff>=0.11.10", "mypy>=1.14.1"]
+
+[tool.poe.tasks]
+format = [{ cmd = "ruff format ." }, { cmd = "ruff check --fix ." }]
+ruff = [{ cmd = "ruff check ." }, { cmd = "ruff format --check --diff ." }]
+mypy = [{ cmd = "mypy . --pretty" }]
+lint = ["ruff", "mypy"]
+test = { cmd = "echo no test in project, to run integration test, run `uv run pytest` or `uv run behave`" }
+
+[tool.ruff]
+extend = "../../ruff.toml"
+
+[tool.mypy]
+python_version = "3.10"
+disallow_untyped_calls = false
+check_untyped_defs = true
+warn_return_any = true
+warn_unused_ignores = true
+hide_error_codes = false
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+testpaths = ["pytest"]
+cache_dir = "/tmp/.pytest_cache"

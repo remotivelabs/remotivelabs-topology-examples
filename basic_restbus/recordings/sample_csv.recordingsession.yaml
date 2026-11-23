@@ -1,0 +1,14 @@
+schema: remotive-recording-session:0.1
+
+name: Sample recording (csv)
+start_time: 1753865525523429us
+end_time: 1753865585523429us
+
+files:
+  - location: ./log.csv
+    type: recording
+    default_device: DriverCan0
+
+mapping:
+  platform:
+    - ../platform/topology.platform.yaml
