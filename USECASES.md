@@ -1,23 +1,18 @@
-# Use Cases
+# Use cases
 
-This document describe a number of different things you typically want to do when working with RemotiveTopology.
+<!-- Generated from the front matter in usecases/*.md by `./run.py gallery usecases-md`. Do not edit by hand. -->
 
-Each use case links to the example that shows it. Most of them are part of the [RemotiveCar example](https://github.com/remotivelabs/remotivelabs-remotive-car), which has its own repository.
+What you can do with RemotiveTopology, shown with the examples in this repository. The
+[example gallery](https://developer.remotivelabs.com/docs/get-started/examples) on the developer site has all of them, with pictures and filters.
 
-The use cases:
-- [3D visualization](./usecases/3D.md) - Viewing the vehicle in 3D provides an immersive way to see the current state of the vehicle.
-- [Instrument cluster](https://github.com/remotivelabs/remotivelabs-remotive-car/tree/main/instances/agl_cluster) - Running a real instrument cluster (a Qt application derived from the AGL cluster demo) in a container as an ECU on the CAN bus, viewable in a browser or inside the 3D car.
-- [Android Cuttlefish](./usecases/ANDROID_CUTTLEFISH.md) - Using Cuttlefish is useful when you are developing applications for your custom Android build or when customizing the Android build. Covers both a Cuttlefish image driven over VHAL gRPC by a behavioral model and an image with built-in SOME/IP support.
-- [Android Emulator](./usecases/ANDROID_EMULATOR.md) - Using Android Emulator is useful if you are developing Android applications.
-- [Behavioral models in python](./usecases/BEHAVIORAL_MODELS.md) - Writing behavioral models in python is a very simple way of creating models for ECUs that don't yet exist.
-- [FMU models](./usecases/FMU_MODELS.md) - Using Functional Mock-up Units (FMUs) allows you to integrate standardized simulation models as ECU behavior.
-- [Jupyter notebook](./usecases/JUPYTER.md) - Using RemotiveTopology framework from Jupyter notebook allows you to interact with a running instance and easily create custom user interfaces.
-- [Playback signals](./usecases/PLAYBACK_SIGNALS.md) - Using playback of recorded signals can be useful to test longer scenarios.
-- [Playback of raw recordings](./usecases/PLAYBACK_RAW.md) - Using playback of raw recordings can be useful when testing user interfaces.
-- [Restbus](./usecases/RESTBUS.md) - Use RemotiveTopology to create a simple restbus, i.e. automatically send all frames by one or more ECUs.
-- [Test cases in python (behave)](./usecases/TESTCASES_BEHAVE.md) - Using behave to write test cases allows your domain experts to more easily understand the tests that are being run.
-- [Test cases in python (pytest)](./usecases/TESTCASES_PYTEST.md) - Using pytest to write test cases is a simple way to express your test cases as code.
-- [Traceability with Sphinx-Needs](./usecases/TRACEABILITY_SPHINX.md) - Sphinx-Needs allows you to combine Docs-as-Code with Application Lifecycle Management.
+| Use case | Goal | What it shows |
+|---|---|---|
+| [Behavioral model and test](usecases/BEHAVIORAL_MODEL_TEST.md) ([gallery](https://developer.remotivelabs.com/docs/get-started/examples/behavioral-model-test)) | Start here | A BCM model and a test of the hazard lights, explained step by step |
+| [Restbus](usecases/RESTBUS.md) ([gallery](https://developer.remotivelabs.com/docs/get-started/examples/restbus)) | Simulate | Send every frame of an ECU from its database, and set signal values from Python |
+| [Same tests as the ECU matures](usecases/ETHERNET_GATEWAY.md) ([gallery](https://developer.remotivelabs.com/docs/get-started/examples/ethernet-gateway)) | Test | One test for a gateway ECU, whether it is a model, a container or hardware |
+| [Raw playback with video](usecases/PLAYBACK_RAW.md) ([gallery](https://developer.remotivelabs.com/docs/get-started/examples/raw-playback)) | Replay | Replay a recorded Tesla Model 3 drive, with its camera videos, onto its CAN buses |
+| [Replay candump or CSV](usecases/REPLAY_CAN.md) ([gallery](https://developer.remotivelabs.com/docs/get-started/examples/replay-can)) | Replay | Play a candump or CSV recording onto a CAN bus |
+| [Inspect traffic with Edgeshark](usecases/EDGESHARK.md) ([gallery](https://developer.remotivelabs.com/docs/get-started/examples/edgeshark)) | Visualize | Capture the network traffic of the topology's containers in Wireshark |
+| [Physical CAN device](usecases/HARDWARE_CAN.md) ([gallery](https://developer.remotivelabs.com/docs/get-started/examples/hardware-can)) | Integrate | Attach a simulated ECU to a real CAN interface on the host |
 
-## Related use cases
-- Open/Closed loop simulation - In RemotiveTopology both of these are achieved using the playback mechanism, see [Playback signals](./usecases/PLAYBACK_SIGNALS.md) and [Playback of raw recordings](./usecases/PLAYBACK_RAW.md)
+More use cases are in [RemotiveCar](https://github.com/remotivelabs/remotivelabs-remotive-car/blob/main/USECASES.md).
