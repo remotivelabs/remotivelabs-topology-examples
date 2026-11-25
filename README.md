@@ -20,7 +20,7 @@ Get up and running with a minimal example:
 - [EdgeShark for Podman](./edgeshark_for_podman/README.md) - A docker compose file for EdgeShark that works with Podman
 
 ## Use Cases
-Understand what you can do with RemotiveTopology by exploring [various use cases](./USECASES.md).
+Understand what you can do with RemotiveTopology by exploring the use cases in the [example gallery](https://developer.remotivelabs.com/docs/get-started/examples).
 
 ## Documentation
 
